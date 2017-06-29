@@ -1,1 +1,1 @@
-return 'build'
+return 'debug'

@@ -37,6 +37,10 @@ function Game:initialize()
   i18n.loadFile('resources/i18n.lua')
 end
 
+function Game:createWorld()
+  self.world = Bump.newWorld(conf.cellSize)
+end
+
 function Game:destroy()
   self:writeGameState()
 end
@@ -211,6 +215,7 @@ function Game:mousefocus(focus)
   end
 end
 
+-- Create a new camera with size w,h, margin mx,my, offset ox,oy and grid size gs
 function Game:createCamera(w,h,mx,my,ox,oy,gs)
   mx,my = mx or 0,my or 0
   ox,oy = ox or 0,oy or 0

@@ -1,77 +1,36 @@
 -- entity.lua
 
--- Entity fields:
--- id
--- x,y
--- w,h
--- zOrder
+-- An entity is a node with logic (update function) and physics.
 
--- hidden entities are not drawn and do not participate in touch events
+-- XXX prefix self/internal variables with double underscore (__)
 
--- TODO implement node/parent entity
-
--- Physic world entity
-local Entity = Class('Entity')
+local Node = require 'entities.node'
+local Entity = Class('Entity',Node)
 
 local DELTA = 1e-10 -- floating-point margin of error
 
 function Entity:initialize(world, x,y, w,h, opt)
-  opt = opt or {}
-  Lume.extend(self,{
-    world = world,
-    x = x, y = y, -- position
-    w = w, h = h, -- size
-    -- Options
-    zOrder = opt.zOrder or 0, -- draw and touch order
-    id = opt.id,
-    children = {},
-  })
+  Node.initialize(self,x,y,w,h,opt)
+  self.world = world
   -- add this instance to the physics world
   world:add(self, x,y, w,h)
 end
 
 function Entity:destroy()
-  for _,child in ipairs(self.childre) do
-    child:destroy()
-  end
-  Beholder.stopObserving(self)
+  Node.destroy(self)
   self.world:remove(self)
 end
 
-function Entity:addChild(child)
-  table.insert(self.children,child)
+function Entity:addSprite(sprite)
+  if not self.spritesNode then
+    self.spritesNode = Node:new(self.x,self.y,0,0)
+  end
+  self.spritesNode:addChild(sprite)
 end
 
-function Entity:removeChild(child)
-  Lume.remove(self.children,child)
-end
-
-function Entity:setVisible(visible)
-  Lume.all(self.children,Entity.setVisible)
-  self.hiden = not visible
-  return true
-end
-
-function Entity:getPosition()
-  return self.x,self.y
-end
-
-function Entity:getLocalPoint(x,y)
-  return x-self.x,y-self.y
-end
-
-function Entity:getCenter()
-  return self.x + self.w / 2, self.y + self.h / 2
-end
-
-function Entity:containsPoint(x,y)
-  return x - self.x > DELTA and y - self.y > DELTA and
-         self.x + self.w - x > DELTA and self.y + self.h - y > DELTA
-end
-
-function Entity:getEdges()
-  local x,y,w,h = self.x,self.y,self.w,self.h
-  return x,y, x+w,y, x+w,y+h, x,y+h
+function Entity:removeSprite(sprite)
+  assert(self.spritesNode,'No sprites')
+  self.spritesNode:removeChild(sprite)
 end
 
 function Entity:resize(w,h)
@@ -79,11 +38,19 @@ function Entity:resize(w,h)
   self.world:update(self,self.x,self.y,self.w,self.h)
 end
 
+function Entity:setPosition(x,y)
+  self:teleport(x,y)
+end
+
 function Entity:teleport(x,y)
+  local dx,dy = self.x-x, self.y-y
   self.x,self.y = x,y
   self.world:update(self,self.x,self.y)
-  for _,child in ipairs(self.childre) do
-    child:teleport(x,y)
+  for _,child in ipairs(self.children) do
+    child:teleport(child.x-dx,child.y-dy)
+  end
+  if self.spritesNode then
+    self.spritesNode:setPosition(x,y)
   end
 end
 
@@ -94,32 +61,13 @@ function Entity:move(x,y,filter)
   return cols,len
 end
 
--- TODO to be tested. Need to add push:toScreen but it does not work
-function Entity:getCenterToScreen()
-  if game.camera then
-    return game.camera:toScreen(self:getCenter())
-  end
-  return self:getCenter()
-end
-
--- Ascending ZOrder sort
-function Entity:sortByZOrderAsc(other)
-  return self.zOrder < other.zOrder
-end
-
--- Descending ZOrder sort
-function Entity:sortByZOrderDesc(other)
-  return self.zOrder > other.zOrder
-end
-
 function Entity:update(dt)
-  -- nothing
+  -- nothing to do
 end
 
--- debug draw
 function Entity:draw()
-  g.setColor(0,255,255,255)
-  g.rectangle('line',self.x,self.y,self.w,self.h)
+  if self.spritesNode then self.spritesNode:draw() end
+  self:drawBoundingBox()
 end
 
 function Entity:loadState()
@@ -160,17 +108,6 @@ function Entity:restoreState()
     return state.state
   end
   return nil
-end
-
-function Entity:observeOnce(...)
-  local param, id = {...}
-  local callback = table.remove(param,#param)
-  table.insert(param, function(...)
-    callback(...)
-    Beholder.stopObserving(id)
-  end)
-  id = Beholder.observe(unpack(param))
-  return id
 end
 
 return Entity

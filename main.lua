@@ -91,9 +91,10 @@ require 'gamestates.credits'
 if conf.build == 'debug' then
   require 'gamestates.tests'
 end
--- Create the derived class 'MyGame' after creating the states so
--- 'MyGame' can inherite them
 
+-- Instanciate your custom Game class
+-- The derived class must be loaded/created after the states so
+-- it can inherite them
 local Game = require 'common.game'
 -- local Game = require 'common.mygame'
 
