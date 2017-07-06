@@ -4,7 +4,7 @@
 
 -- XXX prefix self/internal variables with double underscore (__)
 
-local Node = require 'entities.node'
+local Node = require 'entities.base.node'
 local Entity = Class('Entity',Node)
 
 local DELTA = 1e-10 -- floating-point margin of error

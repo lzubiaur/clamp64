@@ -1,6 +1,6 @@
 -- imagebutton.lua
 
-local Entity = require 'entities.entity'
+local Entity = require 'entities.base.entity'
 local Button = require 'entities.ui.button'
 
 local ImageButton = Class('ImageButton',Button)

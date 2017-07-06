@@ -2,7 +2,7 @@
 
 local Game   = require 'common.game'
 local Player = require 'entities.player'
-local Entity = require 'entities.entity'
+local Entity = require 'entities.base.entity'
 
 local Play = Game:addState('Play')
 

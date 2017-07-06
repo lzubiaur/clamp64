@@ -1,7 +1,7 @@
 -- body.lua
 -- Physic entity
 
-local Entity = require 'entities.entity'
+local Entity = require 'entities.base.entity'
 
 local Body = Class('Body',Entity)
 

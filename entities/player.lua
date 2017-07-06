@@ -1,6 +1,6 @@
 -- player.lua
 
-local Entity = require 'entities.entity'
+local Entity = require 'entities.base.entity'
 local Ground = require 'entities.ground'
 
 local Player = Class('Player', Entity)

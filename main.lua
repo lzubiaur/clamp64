@@ -102,8 +102,6 @@ local Game = require 'common.game'
 if conf.build == 'debug' then
   require 'gamestates.debug'
 end
-require 'entities.docked'
-require 'entities.commited'
 
 -- The global game instance
 game = nil

@@ -1,5 +1,5 @@
 -- sprite.lua
-local Node = require 'entities.node'
+local Node = require 'entities.base.node'
 
 local Sprite = Class('Sprite',Node)
 

@@ -1,8 +1,8 @@
 -- tests.lua
 local Game = require 'common.game'
-local Entity = require 'entities.entity'
-local Node = require 'entities.node'
-local Sprite = require 'entities.sprite'
+local Entity = require 'entities.base.entity'
+local Node = require 'entities.base.node'
+local Sprite = require 'entities.base.sprite'
 
 local Tests = Game:addState('Tests')
 

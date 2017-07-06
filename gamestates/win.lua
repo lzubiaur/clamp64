@@ -1,5 +1,5 @@
 local Game = require 'common.game'
-local Entity = require 'entities.entity'
+local Entity = require 'entities.base.entity'
 local Play = require 'gamestates.play'
 
 local Win = Game:addState('Win')

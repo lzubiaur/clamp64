@@ -1,6 +1,6 @@
 -- ground.lua
 
-local Entity = require 'entities.entity'
+local Entity = require 'entities.base.entity'
 
 local Ground = Class('Ground', Entity)
 
