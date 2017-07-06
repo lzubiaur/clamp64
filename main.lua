@@ -89,7 +89,7 @@ require 'gamestates.win'
 require 'gamestates.winseason'
 require 'gamestates.credits'
 if conf.build == 'debug' then
-  require 'gamestates.tests'
+  require 'tests.teststate'
 end
 
 -- Instanciate your custom Game class
@@ -133,7 +133,7 @@ function love.load()
   game = Game:new()
   -- must call gotoState "outside" Game:initialize or the global 'game'
   -- instance will not be available inside the 'start' state yet
-  game:gotoState('Tests')
+  game:gotoState('TestState')
 end
 
 function love.draw()

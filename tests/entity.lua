@@ -4,9 +4,9 @@ local Entity = require 'entities.base.entity'
 local Node = require 'entities.base.node'
 local Sprite = require 'entities.base.sprite'
 
-local TestEntity = Class('TestEntity',Test)
+local EntityTest = Class('EntityTest',Test)
 
-function TestEntity:initialize(world)
+function EntityTest:initialize(world)
   Log.info('Entered state tests')
   self.name = 'Test entity and sprite'
   -- Add children
@@ -50,4 +50,4 @@ function TestEntity:initialize(world)
 
 end
 
-return TestEntity
+return EntityTest
