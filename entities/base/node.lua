@@ -9,6 +9,8 @@
 -- ax,ay anchor point (default .5,.5)
 -- hidden entities are not drawn and do not participate in touch events
 
+local DELTA = 1e-10 -- floating-point margin of error
+
 local Node = Class('Node')
 
 function Node:initialize(x,y,w,h,opt)
