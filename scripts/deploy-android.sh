@@ -5,7 +5,7 @@
 LOVE_ANDROID=../love-android-sdl2
 
 # debug/release
-BUILD=debug
+BUILD=release
 
 # e.g. com.mycompany.myproject
 PACKAGE=com.mycompany.myproject
@@ -62,7 +62,12 @@ pushd $LOVE_ANDROID
 
 # Clean the project
 # gradlew clean
-gradlew installDebug
+gradlew uninstallAll
+if [ "$build" == "release" ]; then
+  gradlew installRelease
+else
+  gradlew installDebug
+fi
 # Start the app
 adb shell am start -n "$PACKAGE/.GameActivity" && \
 adb logcat "SDL/APP":D *:S
