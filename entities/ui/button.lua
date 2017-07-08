@@ -12,8 +12,8 @@ function Button:initialize(world, x,y, w,h, opt)
   self.oy,self.os = 0,7 -- offset
   self.text = opt.text or ''
   local onSelected = opt.onSelected or function() end
-  self.textColor = opt.textColor or {0,0,0,255}
-  self.color = opt.color or {255,255,255,255}
+  self.textColor = opt.textColor or {to_rgb(palette.text)}
+  self.color = opt.color or { to_rgb(palette.main) }
   self.shadowColor = rgb_to_color(unpack(self.color)):lighten_by(.7)
   self.shadowColor = { to_rgb(self.shadowColor) }
 

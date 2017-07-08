@@ -5,10 +5,11 @@ local EntityTest = require 'tests.entity'
 local TouchTest = require 'tests.touch'
 local TestStates = require 'tests.states'
 local TestMultiRes = require 'tests.multires'
+local TestUI = require 'tests.ui'
 
 local TestState = Game:addState('TestState')
 
-local tests = { EntityTest, TouchTest, TestMultiRes, TestStates }
+local tests = { EntityTest, TouchTest, TestUI, TestMultiRes, TestStates }
 
 function TestState:enteredState()
   if not self.testid then self.testid = 1 end
@@ -36,6 +37,8 @@ function TestState:keypressed(key, scancode, isrepeat)
       self.testid = 1
     end
     self:gotoState('TestState')
+  elseif key == 'escape' then
+    love.event.push('quit')
   end
 end
 

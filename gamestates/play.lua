@@ -2,12 +2,13 @@
 
 local Game   = require 'common.game'
 local Player = require 'entities.player'
-local Entity = require 'entities.base.entity'
 
 local Play = Game:addState('Play')
 
 function Play:enteredState()
   Log.info('Entered state Play')
+
+  self.swallowTouch = false
 
   -- Must clear the timer on entering the scene or old timer from previous
   -- state might still be running
@@ -21,13 +22,10 @@ function Play:enteredState()
   self.parallax:addLayer('layer2',1,{ relativeScale = 0.8 })
   -- self.parallax:setTranslation(px,py)
 
-  -- Push custom level
-  self:pushState('Level')
+  self:createCamera()
+  self:createBasicHandlers()
 
-  -- Load the game map
-  -- Log.debug('Map size in px:',self.worldWidth, self.worldHeight)
-  -- self:createCamera()
-  -- self:createBasicHandlers()
+  self.hud = HUD:new(self.world)
 end
 
 function Play:createBasicHandlers()
@@ -35,11 +33,7 @@ function Play:createBasicHandlers()
     Beholder.observe('GameOver',function() self:onGameOver() end)
     Beholder.observe('ResetLevel',function() self:onResetLevel() end)
     Beholder.observe('GotoMainMenu',function() self:onGotoMainMenu() end)
-    Beholder.observe('WinLevel',function()
-      Timer.after(0.5,function()
-        self:pushState('WinLevel')
-      end)
-    end)
+    Beholder.observe('WinLevel',function() self:onWinLevel() end)
     -- Observe all events (for debug purpose)
     if conf.build == 'debug' then
       -- Beholder.observe(function(...) Log.debug('Event triggered > ',...) end)
@@ -108,24 +102,42 @@ function Play:drawParallax()
   self.parallax:pop()
 end
 
-function Play:onGameOver()
-  Log.info('Game Over!')
-  self:pushState('GameplayOut')
+function Play:drawAfterCamera()
+  self.hud:draw()
+end
+
+-- Event handlers
+
+function Play:onGotoMainMenu()
+  self:gotoState('Start')
 end
 
 function Play:onResetLevel()
-  Log.info('Catch event: ResetLevel')
+  self:gotoState('Play')
+end
+
+function Play:onGameOver()
+  self:pushState('GameplayOut')
+end
+
+function Play:onWinLevel()
+  self:pushState('Win')
 end
 
 function Play:keypressed(key, scancode, isrepeat)
   if key == 'escape' then
-    self:gotoState('Start')
+    Beholder.trigger('GotoMainMenu')
+  elseif key == 'r' then
+    Beholder.trigger('ResetGame')
   elseif key == 'p' then
     self:pushState('Paused')
-  elseif key == 'd' then
-    self:pushState('Debbug')
   elseif key == 's' then
     -- enable/disable volume...
+  end
+  if conf.build == 'debug' then
+    if key == 'd' then
+      self:pushState('Debug')
+    end
   end
 end
 

@@ -1,15 +1,13 @@
--- color.lua
+-- palette.lua
 
-function createPalette(c)
-  local t1,t2 = c:triadic()
+function createPalette()
   return {
-    base = Hue.new('#484848'),
-    fg   = Hue.new('#de5a4c'),
-    bg   = Hue.new('#303030'),
-    main = Hue.new('#D8D2B0'),
-    line = c:desaturate_by(.5),
-    fill = c:desaturate_by(.2),
-    text = Hue.new('#fef8d7'),
+    main = Hue.new('#4d78cc'),
+    -- fg   = Hue.new('#de5a4c'),
+    bg   = Hue.new('#282c34'),
+    -- line = c:desaturate_by(.5),
+    -- fill = c:desaturate_by(.2),
+    text = Hue.new('#fffff6'),
   }
 end
 
@@ -19,10 +17,9 @@ function offsetHuePalette(o)
   end
 end
 
-palette = createPalette(Hue.new('#333333'))
+palette = createPalette()
 -- offsetHuePalette(60)
 
--- TODO doesnt work
 function to_rgb(c,alpha)
   local r,g,b = Hue.hsl_to_rgb(c.H,c.S,c.L)
   return r*256,g*256,b*256,alpha or 255

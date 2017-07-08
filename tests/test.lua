@@ -6,6 +6,13 @@ function Test:initialize(world,name)
   self.name = 'Test draw'
 end
 
+function Test:setResolution(w,h)
+  love.window.setMode(w,h)
+  setupMultiResolution()
+  game:createCamera()
+end
+
+
 function Test:update(dt)
 end
 

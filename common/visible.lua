@@ -23,6 +23,7 @@ end
 
 -- From design point to screen pixel
 function Visible:pointToPixel(x,y)
+  y = y or 0
   return x * conf.scaleX, y * conf.scaleY
 end
 

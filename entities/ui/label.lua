@@ -8,7 +8,7 @@ function Label:initialize(world, x,y, text, opt)
   opt = opt or {}
   opt.zOrder = opt.zOrder or 10
   self.text = text or 'label'
-  self.color = opt.color or {255,255,255,255}
+  self.color = opt.color or {to_rgb(palette.text)}
 
   local w = g.getFont():getWidth(self.text)
   local h = g.getFont():getHeight()
