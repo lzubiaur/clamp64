@@ -1,5 +1,6 @@
 -- game.lua
 local Entity = require 'entities.base.entity'
+local Visible = require 'common.visible'
 
 local Game = Class('Game'):include(Stateful)
 
@@ -35,6 +36,8 @@ function Game:initialize()
   love.graphics.setPointSize(conf.pointSize)
 
   i18n.loadFile('resources/i18n.lua')
+
+  self.visible = Visible:new()
 end
 
 function Game:createWorld()
@@ -104,11 +107,11 @@ end
 function Game:draw()
   Push:start()
   g.clear(to_rgb(palette.bg))
-  self:drawBeforeCamera()
+  self:drawBeforeCamera(self.visible:screen())
   self.camera:draw(function(l,t,w,h)
     self:drawEntities(l,t,w,h) -- Call a function so it can be override by other state
   end)
-  self:drawAfterCamera()
+  self:drawAfterCamera(self.visible:screen())
   Push:finish()
 end
 
@@ -215,20 +218,28 @@ function Game:mousefocus(focus)
   end
 end
 
--- Create a new camera with size w,h, margin mx,my, offset ox,oy and grid size gs
+-- Create a new camera with:
+-- size w,h (default to screen size),
+-- margin mx,my (default to zero),
+-- offset ox,oy (default to zero) and
+-- grid size gs (default to 32)
 function Game:createCamera(w,h,mx,my,ox,oy,gs)
+  w,h = w or conf.sw, h or conf.sh
   mx,my = mx or 0,my or 0
   ox,oy = ox or 0,oy or 0
   -- Create the follow camera. Size of the camera is the size of the map + offset.
   self.camera = Gamera.new(-mx,-my,w+mx,h+my)
   -- Camera window must be set to the game resolution and not the
   -- the actual screen resolution
-  self.camera:setWindow(0,0,conf.width,conf.height)
+  self.camera:setWindow(0,0,conf.sw,conf.sh)
 
   if self.follow then
     local px, py = self.follow:getCenter()
     self.camera:setPosition(x+ox,y+oy)
   end
+
+  Log.debug('Camera world',self.camera:getWorld())
+  Log.debug('Camera window',self.camera:getWindow())
 
   -- Create the grid
   self.grid = EditGrid.grid(self.camera,{

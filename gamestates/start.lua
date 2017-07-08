@@ -13,7 +13,7 @@ function Start:enteredState()
   Timer.clear()
 
   self.world = Bump.newWorld(conf.cellSize)
-  self:createCamera(conf.width,conf.height)
+  self:createCamera()
   self:newBackground()
   self.logo = g.newImage('resources/img/logo.png')
 

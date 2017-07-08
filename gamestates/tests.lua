@@ -3,16 +3,18 @@ local Game = require 'common.game'
 local Test = require 'tests.test'
 local EntityTest = require 'tests.entity'
 local TouchTest = require 'tests.touch'
+local TestStates = require 'tests.states'
+local TestMultiRes = require 'tests.multires'
 
 local TestState = Game:addState('TestState')
 
-local tests = { EntityTest, TouchTest }
+local tests = { EntityTest, TouchTest, TestMultiRes, TestStates }
 
 function TestState:enteredState()
   if not self.testid then self.testid = 1 end
   Log.info('Run test',self.testid)
   self:createWorld()
-  self:createCamera(conf.width,conf.height)
+  self:createCamera()
 
   self.test = tests[self.testid]:new(self.world)
 end
@@ -22,8 +24,8 @@ function TestState:update(dt)
   self.test:update(dt)
 end
 
-function TestState:drawAfterCamera()
-  self.test:draw(0,0,conf.width,conf.height)
+function TestState:drawAfterCamera(l,t,w,h)
+  self.test:draw(l,t,w,h)
 end
 
 function TestState:keypressed(key, scancode, isrepeat)

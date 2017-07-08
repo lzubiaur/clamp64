@@ -7,7 +7,7 @@ conf = {
   version = require 'common.version',
   build = require 'common.build', -- release/debug build
   profiling = false, -- enable/disable code profiling report
-  -- The game fixed resolution. Use a 16:9 aspect ratio
+  -- The game design resolution. Use a 16:9 aspect ratio
   width = 640, height = 360,
   -- Bump world cell size. Should be a multiple of the map's tile size.
   cellSize = 64,
@@ -56,6 +56,7 @@ EditGrid  = require 'modules.editgrid'
 
 if conf.build == 'debug' then
   ProFi = require 'modules.profi'
+  Lust = require 'modules.lust'
 end
 
 -- Love2D shortcuts
@@ -89,7 +90,7 @@ require 'gamestates.win'
 require 'gamestates.winseason'
 require 'gamestates.credits'
 if conf.build == 'debug' then
-  require 'tests.teststate'
+  require 'gamestates.tests'
 end
 
 -- Instanciate your custom Game class
@@ -118,10 +119,46 @@ function love.load()
   Log.info(_VERSION)
   Log.debug('bit',bit ~= nil)
 
+  setupMultiResolution()
+
+  -- Create the game instance
+  game = Game:new()
+  -- must call gotoState "outside" Game:initialize or the global 'game'
+  -- instance will not be available inside the 'start' state yet
+  game:gotoState('TestState')
+end
+
+function setupMultiResolution()
+  -- https://developer.android.com/guide/practices/screens_support.html
+  -- https://stackoverflow.com/questions/6272384/most-popular-screen-sizes-resolutions-on-android-phones
+  -- http://www.cocos2d-x.org/wiki/Multi_resolution_support
+
+  local res = {
+    small  = { x=480,  y=320  },
+    medium = { x=800,  y=480  },
+    large  = { x=1200, y=768  },
+    xlarge = { x=2560, y=1600 }
+  }
   -- Gets the width and height of the window
   local w,h = love.graphics.getDimensions()
+  -- Scaled resolution
+  local sw,sh = 0,0
 
-  Push:setupScreen(conf.width, conf.height, w,h, {
+  if w < res.medium.x then
+    sw,sh = res.small.x,res.small.y
+    conf.resolution = 'small'
+  elseif w < res.large.x then
+    sw,sh = res.medium.x,res.medium.y
+    conf.resolution = 'medium'
+  elseif w < res.xlarge.x then
+    sw,sh = res.large.x,res.large.y
+    conf.resolution = 'large'
+  else
+    sw,sh = res.xlarge.x,res.xlarge.y
+    conf.resolution = 'xlarge'
+  end
+
+  Push:setupScreen(sw,sh, w,h, {
     fullscreen = conf.mobile,
     resizable = not conf.mobile,
     highdpi = true,
@@ -129,11 +166,13 @@ function love.load()
     stretched = true, -- Keep aspect ratio or strech to borders
     pixelperfect = false,
   })
-
-  game = Game:new()
-  -- must call gotoState "outside" Game:initialize or the global 'game'
-  -- instance will not be available inside the 'start' state yet
-  game:gotoState('TestState')
+  conf.sw,conf.sh = sw,sh
+  conf.scaleX, conf.scaleY = sw / conf.width, sh / conf.height
+  Log.info('Screen size',w,h)
+  Log.info('Design size',conf.width,conf.height)
+  Log.info('Scaled size',conf.sw,conf.sh)
+  Log.info('Resolution type',conf.resolution)
+  Log.info('Resolution scale',conf.scaleX,conf.scaleY)
 end
 
 function love.draw()

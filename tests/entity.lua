@@ -9,6 +9,7 @@ local EntityTest = Class('EntityTest',Test)
 function EntityTest:initialize(world)
   Log.info('Entered state tests')
   self.name = 'Test entity and sprite'
+
   -- Add children
   local parent = Entity:new(world,100,100,50,50,{angle=45})
 
