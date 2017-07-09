@@ -28,11 +28,9 @@ end
 
 function Credits:drawAfterCamera()
   g.setColor(200,200,200,255)
-  g.printf('Puzzler '..require'common.version',0,10,conf.width,'center')
+  g.printf('Version '..require'common.version',0,10,conf.width,'center')
   g.printf([[Love2D game engine
 UI icons from Font Awesome
-Background patterns from Subtle Patterns
-Puzzles design from Polyform Puzzler
 Lua modules:
 bump,binser,beholder,editgrid,gamera,
 lume,middleclass,push,stateful,tween,hump

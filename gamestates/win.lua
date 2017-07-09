@@ -8,9 +8,8 @@ function Win:enteredState()
   Log.debug('Entered state Win')
   Beholder.trigger('Win')
   self.swallowTouch = true
-  Entity:new(self.world,0,0,conf.width,conf.height,{zOrder=9})
-  -- reset the level checkpoint
-  -- self:getCurrentLevelState().checkpoint = nil
+  local x,y,w,h = self.visible:screen()
+  Entity:new(self.world,x,y,w,h,{zOrder=9})
 end
 
 -- function Win:update(dt)
@@ -19,8 +18,9 @@ end
 
 function Win:drawAfterCamera()
   g.setColor(30,30,30,180)
-  g.rectangle('fill',0,conf.height/2-30,conf.width,60)
+  g.rectangle('fill',self.visible:rect(0,conf.height/2-30,conf.widht,60))
   g.setColor(255,255,255,255)
+  -- XXX
   g.printf('Cleared!',0,conf.height/2-self.fontHeight/2,conf.width,'center')
 end
 

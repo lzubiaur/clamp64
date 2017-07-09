@@ -40,6 +40,12 @@ function Game:initialize()
   self.visible = Visible:new()
 end
 
+function Game:setFont(path,size)
+  local font = love.graphics.newFont(path,size)
+  self.fontHeight = font:getHeight()
+  love.graphics.setFont(font)
+end
+
 function Game:createWorld()
   self.world = Bump.newWorld(conf.cellSize)
 end

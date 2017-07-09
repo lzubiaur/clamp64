@@ -1,4 +1,5 @@
 -- loading.lua
+-- TODO
 
 local Game = require 'common.game'
 
