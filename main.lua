@@ -87,6 +87,7 @@ require 'gamestates.paused'
 require 'gamestates.transitions'
 require 'gamestates.win'
 require 'gamestates.credits'
+require 'gamestates.tests'
 
 local Game = require 'common.game'
 
@@ -116,7 +117,7 @@ function love.load()
   game = Game:new()
   -- must call gotoState "outside" Game:initialize or the global 'game'
   -- instance will not be available inside the 'start' state yet
-  game:gotoState('Start')
+  game:gotoState('TestState')
 end
 
 function setupMultiResolution()
