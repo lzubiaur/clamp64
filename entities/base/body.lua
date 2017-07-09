@@ -15,17 +15,17 @@ function Body:initialize(world,x,y,w,h,opt)
   Entity.initialize(self,world,x,y,w,h,opt)
 end
 
-function Entity:applyGravity(dt)
+function Body:applyGravity(dt)
   self.vy = self.vy + self.mass * conf.gravity * dt
   return self.vy
 end
 
-function Entity:applyVelocity(dt)
+function Body:applyVelocity(dt)
   self.x = self.x + self.vx * dt
   self.y = self.y + self.vy * dt
 end
 
-function Entity:clampVelocity()
+function Body:clampVelocity()
   -- self.vx = Lume.sign(self.vx) * Lume.clamp(math.abs(self.vx), 0, self.mx)
   -- self.vy = Lume.sign(self.vy) * Lume.clamp(math.abs(self.vy), 0, self.my)
   self.vx = Lume.clamp(self.vx, -self.mx, self.mx)
@@ -33,7 +33,7 @@ function Entity:clampVelocity()
 end
 
 -- code from bump.lua demo
-function Entity:applyCollisionNormal(nx, ny, bounciness)
+function Body:applyCollisionNormal(nx, ny, bounciness)
   bounciness = bounciness or 0
   local vx, vy = self.vx, self.vy
 

@@ -16,9 +16,15 @@ end
 function Test:update(dt)
 end
 
-function Test:draw(l,t,w,h)
+function Test:drawAfterCamera(l,t,w,h)
   g.setColor(255,255,255,255)
   g.printf(self.name,0,0,w,'center')
+end
+
+function Test:drawBeforeCamera(l,t,w,h)
+end
+
+function Test:keypressed(key, scancode, isrepeat)
 end
 
 return Test

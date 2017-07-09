@@ -65,7 +65,7 @@ end
 
 function Entity:draw()
   if self.spritesNode then self.spritesNode:draw() end
-  self:drawBoundingBox()
+  self:drawBoundingBox(self.color)
 end
 
 function Entity:loadState()
