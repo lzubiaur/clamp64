@@ -17,6 +17,11 @@ function Visible:rect(x,y,w,h)
   return x * conf.scaleX, y * conf.scaleY, w * conf.scaleX, h * conf.scaleY
 end
 
+function Visible:rectCenter(x,y,w,h)
+  w,h = w * conf.scaleX, h * conf.scaleY
+  return x * conf.scaleX - w / 2, y * conf.scaleY - h / 2, w, h
+end
+
 function Visible:size()
   return conf.sw, conf.sh
 end

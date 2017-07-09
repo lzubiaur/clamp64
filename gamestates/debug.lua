@@ -1,7 +1,6 @@
 -- debug.lua
 
 local Game = require 'common.game'
-local Level = require 'gamestates.level'
 
 local Debug = Game:addState('Debug')
 
@@ -75,7 +74,7 @@ function Debug:keypressed(key, scancode, isrepeat)
   elseif key == 'd' then
     -- disable d
   else
-    Level.keypressed(self,key,scancode,isrepeat)
+    Play.keypressed(self,key,scancode,isrepeat)
   end
 end
 

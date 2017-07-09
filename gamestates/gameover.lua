@@ -11,9 +11,9 @@ function Gameover:enteredState()
   Entity:new(self.world,0,0,conf.width,conf.height,{zOrder=1})
 
   Button:new(self.world,conf.width/2-45,250,90,40,{
-    text = 'Jouer',
+    text = 'Play again',
     onSelected = function()
-      self:gotoState('Emeric')
+      self:gotoState('Play')
     end
   })
 end
@@ -27,17 +27,11 @@ function Gameover:drawAfterCamera()
 end
 
 function Gameover:update(dt)
-  if self.time + dt >= self.delay then
-    self:randomMoveEntity()
-    self.time = 0
-  else
-    self.time = self.time + dt
-  end
 end
 
 function Gameover:keypressed(key, scancode, isrepeat)
   if key == 'space' or key == 'escape' then
-    self:gotoState('Emeric')
+    self:gotoState('Play')
   end
 end
 

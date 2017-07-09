@@ -84,20 +84,11 @@ require 'gamestates.loading'
 require 'gamestates.start'
 require 'gamestates.play'
 require 'gamestates.paused'
-require 'gamestates.level'
 require 'gamestates.transitions'
 require 'gamestates.win'
-require 'gamestates.winseason'
 require 'gamestates.credits'
-if conf.build == 'debug' then
-  require 'gamestates.tests'
-end
 
--- Instanciate your custom Game class
--- The derived class must be loaded/created after the states so
--- it can inherite them
 local Game = require 'common.game'
--- local Game = require 'common.mygame'
 
 -- Entities states
 if conf.build == 'debug' then
@@ -125,7 +116,7 @@ function love.load()
   game = Game:new()
   -- must call gotoState "outside" Game:initialize or the global 'game'
   -- instance will not be available inside the 'start' state yet
-  game:gotoState('TestState')
+  game:gotoState('Start')
 end
 
 function setupMultiResolution()

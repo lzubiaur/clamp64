@@ -2,6 +2,7 @@
 
 local Game   = require 'common.game'
 local Player = require 'entities.player'
+local HUD = require 'common.hud'
 
 local Play = Game:addState('Play')
 
