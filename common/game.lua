@@ -108,6 +108,7 @@ function Game:drawBeforeCamera()
 end
 
 function Game:drawAfterCamera()
+  if self.hud then self.hud:draw() end
 end
 
 function Game:draw()
@@ -136,8 +137,10 @@ function Game:updateCamera(dt)
   if self.follow then
     local x,y = self.camera:getPosition()
     local px, py = self.follow:getCenter()
-    self.camera:setPosition(px + conf.camOffsetX, Lume.lerp(y,py,0.05))
-    self.parallax:setTranslation(px,py)
+    self.camera:setPosition(Lume.lerp(x,px + conf.camOffsetX,.05), Lume.lerp(y,py,.05))
+    if self.parallax then
+      self.parallax:setTranslation(px,py)
+    end
   end
   -- self.parallax:update(dt) -- not required
 end
@@ -241,7 +244,7 @@ function Game:createCamera(w,h,mx,my,ox,oy,gs)
 
   if self.follow then
     local px, py = self.follow:getCenter()
-    self.camera:setPosition(x+ox,y+oy)
+    self.camera:setPosition(px+ox,py+oy)
   end
 
   Log.debug('Camera world',self.camera:getWorld())

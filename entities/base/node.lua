@@ -134,7 +134,7 @@ function Node:drawBoundingBox(color)
 end
 
 function Node:draw()
-  self:drawBoundingBox()
+  self:drawBoundingBox(self.color)
   table.sort(self.children,Node.sortByZOrderAsc)
   for _,child in ipairs(self.children) do
     g.push()
