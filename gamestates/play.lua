@@ -2,6 +2,7 @@
 
 local Game   = require 'common.game'
 local Player = require 'entities.player'
+local Polygon = require 'entities.polygon'
 local HUD = require 'common.hud'
 
 local Play = Game:addState('Play')
@@ -27,6 +28,10 @@ function Play:enteredState()
   self:createBasicHandlers()
 
   self.hud = HUD:new()
+
+  Player:new(self.world,100,100)
+  Polygon:new(self.world,{},200,200,300,200,300,300,200,300)
+
 end
 
 function Play:createBasicHandlers()
@@ -132,8 +137,14 @@ function Play:keypressed(key, scancode, isrepeat)
     Beholder.trigger('ResetGame')
   elseif key == 'p' then
     self:pushState('Paused')
-  elseif key == 's' then
-    -- enable/disable volume...
+  elseif key == 'right' then
+    Beholder.trigger('right')
+  elseif key == 'left' then
+    Beholder.trigger('left')
+  elseif key == 'up' then
+    Beholder.trigger('up')
+  elseif key == 'down' then
+    Beholder.trigger('down')
   end
   if conf.build == 'debug' then
     if key == 'd' then
