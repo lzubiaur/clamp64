@@ -16,7 +16,7 @@ function Play:enteredState()
   Timer.clear()
 
   -- Create the physics world
-  self.world = Bump.newWorld(conf.cellSize)
+  self:createWorld()
 
   self.parallax = Parallax(conf.width,conf.height, {offsetX = 0, offsetY = 0})
   self.parallax:addLayer('layer1',1,{ relativeScale = 0.4 })
@@ -26,7 +26,7 @@ function Play:enteredState()
   self:createCamera()
   self:createBasicHandlers()
 
-  self.hud = HUD:new(self.world)
+  self.hud = HUD:new()
 end
 
 function Play:createBasicHandlers()

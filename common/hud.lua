@@ -23,7 +23,7 @@ function HUD:initialize(opt)
 end
 
 function HUD:draw()
-  
+
   -- g.setColor(to_rgb(palette.text))
   -- g.printf('Level '..self.currentLevel,0,0,conf.width,'center')
 end
