@@ -9,6 +9,7 @@ function Path:initialize(world,ax,ay,bx,by)
   self.sgmts = {}
   -- TODO update size when adding new segments
   Entity.initialize(self,world,ax,ay,1,1)
+
 end
 
 --- Extend this path with a new segmet

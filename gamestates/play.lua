@@ -2,6 +2,7 @@
 
 local Game   = require 'common.game'
 local Player = require 'entities.player'
+local Enemy = require 'entities.enemy'
 local Polygon = require 'entities.polygon'
 local HUD = require 'common.hud'
 
@@ -30,6 +31,7 @@ function Play:enteredState()
   self.hud = HUD:new()
 
   Player:new(self.world,100,100)
+  Enemy:new(self.world,400,200)
   Polygon:new(self.world,{},200,200,300,200,300,300,200,300)
 
 end

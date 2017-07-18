@@ -24,4 +24,7 @@ function Segment:initialize(world,ax,ay,bx,by,thickness)
   -- self.isVertical = self.w > self.h
 end
 
+function Segment:draw()
+end
+
 return Segment

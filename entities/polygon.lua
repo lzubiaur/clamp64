@@ -62,7 +62,7 @@ function Polygon:initialize(world,opt,...)
     end)
     Beholder.observe('leaved',self,function(bx,by)
       paths:add(newPath(ax,ay,bx,by))
-      local w = game.visible:pointToPixel(6) * scale
+      local w = game.visible:pointToPixel(conf.pathOffset/2) * scale
       cl:addPath(newPath(self._poly:unpack()),'subject')
       cl:addPaths(co:offsetPaths(paths,w,'miter','openSquare'),'clip')
       local out = cl:execute('difference')
@@ -75,7 +75,7 @@ function Polygon:initialize(world,opt,...)
 end
 
 function Polygon:addEdge(ax,ay,bx,by)
-  local sg = Segment:new(self.world,ax,ay,bx,by)
+  local sg = Segment:new(self.world,ax,ay,bx,by,.1)
   sg.isPolygonEdge = true
   sg.polygon = self
   table.insert(self.edges,sg)

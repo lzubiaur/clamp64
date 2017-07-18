@@ -1,13 +1,22 @@
 -- enemy.lua
 
-local Entity = require 'entities.base.entity'
+local Body = require 'entities.base.body'
 
-local Enemy = Class('Enemy', Entity)
+local Enemy = Class('Enemy', Body)
 
-function Enemy:initialize(world,x,y,w,h)
-  w = w or conf.cellSize
-  h = h or conf.cellSize
-  Entity.initialize(self,world,x,y,w,h,{ zOrder = -1 })
+function Enemy:initialize(world,x,y)
+  local w,h = game.visible:pointToPixel(10,10)
+  Body.initialize(self,world,x,y,w,h,{ vx=100,vy=100, zOrder = -1 })
+end
+
+function Enemy:update(dt)
+  local cx,cy = self:getCenter()
+  self:applyVelocity(dt)
+  local cols,len = self:move(self.x,self.y)
+  for i=1,len do
+    local n = cols[i].normal
+    self:applyCollisionNormal(self.x*n.x,self.y*n.y,1)
+  end
 end
 
 return Enemy
