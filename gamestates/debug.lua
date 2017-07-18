@@ -1,6 +1,7 @@
 -- debug.lua
 
 local Game = require 'common.game'
+local Play = require 'gamestates.play'
 
 local Debug = Game:addState('Debug')
 
