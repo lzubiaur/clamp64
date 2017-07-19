@@ -104,10 +104,10 @@ function Game:drawEntities(l,t,w,h)
   end
 end
 
-function Game:drawBeforeCamera()
+function Game:drawBeforeCamera(l,t,w,h)
 end
 
-function Game:drawAfterCamera()
+function Game:drawAfterCamera(l,t,w,h)
   if self.hud then self.hud:draw() end
 end
 
