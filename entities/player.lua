@@ -13,7 +13,7 @@ function Player:initialize(world, x,y)
     pointsLen = 0
   })
   local w,h = game.visible:pointToPixel(10,10)
-  Body.initialize(self, world, x,y, w,h, { vx = 0, vy= -self.velocity} )
+  Body.initialize(self, world, x,y, w,h, { vx = 0, vy = 0} )
 
   Beholder.group(self,function()
     Beholder.observe('ResetGame',function()
