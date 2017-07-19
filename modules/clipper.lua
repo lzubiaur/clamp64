@@ -21,7 +21,11 @@
 local ffi = require 'ffi'
 -- ffi.load doesn't use package.cpath to search for libraries but rather the
 -- default OS default search path (e.g. LD_LIBRARY_PATH).
-local C = ffi.load 'polyclipping'
+
+local C = ffi.C
+if not conf.mobile then
+	C = ffi.load 'polyclipping'
+end
 
 ffi.cdef[[
 
