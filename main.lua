@@ -112,6 +112,7 @@ function love.load()
   -- TODO get info about lua/luajit version
   Log.info(_VERSION)
   Log.debug('bit',bit ~= nil)
+  Log.info("Love version",love.getVersion())
 
   setupMultiResolution()
 
