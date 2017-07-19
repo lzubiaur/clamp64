@@ -30,10 +30,9 @@ function Play:enteredState()
 
   self.hud = HUD:new()
 
-  Player:new(self.world,100,100)
-  Enemy:new(self.world,400,200)
   Polygon:new(self.world,{},200,200,300,200,300,300,200,300)
-
+  Player:new(self.world,100,100)
+  Enemy:new(self.world,250,250)
 end
 
 function Play:createBasicHandlers()
@@ -110,10 +109,6 @@ function Play:drawParallax()
   self.parallax:pop()
 end
 
-function Play:drawAfterCamera()
-  self.hud:draw()
-end
-
 -- Event handlers
 
 function Play:onGotoMainMenu()
@@ -130,6 +125,28 @@ end
 
 function Play:onWinLevel()
   self:pushState('Win')
+end
+
+function Play:pressed(x,y)
+  self._p = Vector(x,y)
+end
+
+function Play:moved(x,y,dx,dy)
+end
+
+function Play:released(x,y)
+  local p = self._p
+  p = (Vector(x,y) - p):normalized()
+  local ax,ay = math.abs(p.x),math.abs(p.y)
+  if p.x > 0 and ax > ay then
+    Beholder.trigger('right')
+  elseif p.x < 0 and ax > ay then
+    Beholder.trigger('left')
+  elseif p.y > 0 and ay > ax then
+    Beholder.trigger('down')
+  else
+    Beholder.trigger('up')
+  end
 end
 
 function Play:keypressed(key, scancode, isrepeat)
