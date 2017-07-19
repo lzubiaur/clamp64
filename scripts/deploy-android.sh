@@ -5,10 +5,10 @@
 LOVE_ANDROID=../love-android-sdl2
 
 # debug/release
-BUILD=release
+BUILD=debug
 
 # e.g. com.mycompany.myproject
-PACKAGE=com.mycompany.myproject
+PACKAGE=com.voodoocactus.game.clamp
 
 FILES="common
 entities
@@ -70,6 +70,6 @@ else
 fi
 # Start the app
 adb shell am start -n "$PACKAGE/.GameActivity" && \
-adb logcat "SDL/APP":D *:S
+adb logcat "SDL/APP:D" "*:S"
 
 popd
