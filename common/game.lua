@@ -94,14 +94,14 @@ function Game:keypressed(key, scancode, isRepeat)
 end
 
 function Game:drawEntities(l,t,w,h)
-    -- Only draw only visible entities
-    local items,len = self.world:queryRect(l,t,w,h)
-    table.sort(items,Entity.sortByZOrderAsc)
-    for i=1,len do
-      if not items[i].hidden then
-        items[i]:draw()
-      end
+  -- Only draw only visible entities
+  local items,len = self.world:queryRect(l,t,w,h)
+  table.sort(items,Entity.sortByZOrderAsc)
+  for i=1,len do
+    if not items[i].hidden then
+      items[i]:draw()
     end
+  end
 end
 
 function Game:drawBeforeCamera()
@@ -125,7 +125,7 @@ end
 -- Update visible entities
 function Game:updateEntities(dt)
   -- TODO add a padding parameter to update outside the visible windows
-  local l,t,h,w = self.camera:getVisible()
+  local l,t,w,h = self.camera:getVisible()
   local items,len = self.world:queryRect(l,t,w,h)
   Lume.each(items,'update',dt)
 end
