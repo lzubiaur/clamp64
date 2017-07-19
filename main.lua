@@ -27,7 +27,7 @@ conf = {
   playerImpulse2 = -1000, -- jump 2 impulse
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
-  squareSize = 20,
+  -- Add custom configuration here
 }
 
 -- Load 3rd party libraries/modules globally.
@@ -49,6 +49,7 @@ Beholder  = require 'modules.beholder'
 -- Chain = require 'modules.knife.chain'
 i18n      = require 'modules.i18n'
 Timer     = require 'modules.hump.timer'
+Vector    = require 'modules.hump.vector'
 Hue       = require 'modules.colors'
 Parallax  = require 'modules.parallax'
 Binser    = require 'modules.binser'
