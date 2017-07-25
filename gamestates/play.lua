@@ -120,7 +120,7 @@ function Play:onResetLevel()
 end
 
 function Play:onGameOver()
-  self:pushState('GameplayOut')
+  self:pushState('GameOver')
 end
 
 function Play:onWinLevel()
@@ -129,9 +129,11 @@ end
 
 function Play:pressed(x,y)
   self._p = Vector(x,y)
+  Game.pressed(self,x,y)
 end
 
 function Play:moved(x,y,dx,dy)
+  Game.moved(self,x,y,dx,dy)
 end
 
 function Play:released(x,y)
@@ -147,6 +149,7 @@ function Play:released(x,y)
   else
     Beholder.trigger('up')
   end
+  Game.released(self,x,y)
 end
 
 function Play:keypressed(key, scancode, isrepeat)
