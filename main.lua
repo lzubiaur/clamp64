@@ -27,7 +27,7 @@ conf = {
   playerImpulse2 = -1000, -- jump 2 impulse
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
-  -- Add custom configuration here
+  pathOffset = 10,
 }
 
 -- Load 3rd party libraries/modules globally.
@@ -38,6 +38,7 @@ Inspect   = require 'modules.inspect'
 Push      = require 'modules.push'
 Loader    = require 'modules.love-loader'
 Log       = require 'modules.log'
+Clipper   = require 'modules.clipper'
 Bump      = require 'modules.bump'
 HC        = require 'modules.HC'
 STI       = require 'modules.sti'
@@ -88,6 +89,7 @@ require 'gamestates.play'
 require 'gamestates.paused'
 require 'gamestates.transitions'
 require 'gamestates.win'
+require 'gamestates.gameover'
 require 'gamestates.credits'
 
 local Game = require 'common.game'
@@ -95,6 +97,13 @@ local Game = require 'common.game'
 -- Entities states
 if conf.build == 'debug' then
   require 'gamestates.debug'
+end
+
+-- Add table.pack
+if not table.pack then
+  table.pack = function(...)
+    return { n=select('#',...), ...}
+  end
 end
 
 -- The global game instance
@@ -111,6 +120,7 @@ function love.load()
   -- TODO get info about lua/luajit version
   Log.info(_VERSION)
   Log.debug('bit',bit ~= nil)
+  Log.info("Love version",love.getVersion())
 
   setupMultiResolution()
 
