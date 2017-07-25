@@ -12,7 +12,7 @@ local Segment = require 'entities.segment'
 
 local Polygon = Class('Polygon',Entity)
 
-local scale = 1000
+local scale = 100
 
 local function newPath(...)
   local p = Clipper.Path()
@@ -35,9 +35,10 @@ local function pathToPoints(p)
 end
 
 function Polygon:initialize(world,opt,...)
-  self._poly = PolygonShape(...)
+  Log.debug('Create polygon',...)
+  self.shape = PolygonShape(...)
 
-  local ax,ay,bx,by = self._poly:bbox()
+  local ax,ay,bx,by = self.shape:bbox()
   Entity.initialize(self,world,ax,ay,bx-ax,by-ay)
 
   -- Create the polygon vertical and horizontal edges
@@ -63,7 +64,7 @@ function Polygon:initialize(world,opt,...)
     Beholder.observe('leaved',self,function(bx,by)
       paths:add(newPath(ax,ay,bx,by))
       local w = game.visible:pointToPixel(conf.pathOffset/2) * scale
-      cl:addPath(newPath(self._poly:unpack()),'subject')
+      cl:addPath(newPath(self.shape:unpack()),'subject')
       cl:addPaths(co:offsetPaths(paths,w,'miter','openSquare'),'clip')
       local out = cl:execute('difference')
       for i=1,out:size() do
@@ -82,7 +83,7 @@ function Polygon:addEdge(ax,ay,bx,by)
 end
 
 function Polygon:contains(x,y)
-  return self._poly:contains(x,y)
+  return self.shape:contains(x,y)
 end
 
 function Polygon:getCenter()
@@ -100,7 +101,7 @@ end
 
 function Polygon:draw(debugDraw)
   g.setColor(255,0,0,255)
-  g.polygon('line',self._poly:unpack())
+  g.polygon('line',self.shape:unpack())
 end
 
 return Polygon
