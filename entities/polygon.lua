@@ -34,17 +34,26 @@ local function pathToPoints(p)
   return points
 end
 
+-- Create a new Polygon Entity
+-- opt: table with entity options (optional)
+-- ...: can be a array of vertices (e.g. 100,100,200,200,...) or a PolygonShape object (aka HC.polygon)
 function Polygon:initialize(world,opt,...)
-  Log.debug('Create polygon',...)
-  self.shape = PolygonShape(...)
+  local p,pts,len = select(1,...)
+  if type(p) == 'table' then
+    self.shape = p
+    pts = { p:unpack() }
+    len = #pts
+  else
+    self.shape = PolygonShape(...)
+    pts = table.pack(...)
+    len = #pts
+  end
 
   local ax,ay,bx,by = self.shape:bbox()
   Entity.initialize(self,world,ax,ay,bx-ax,by-ay)
 
   -- Create the polygon vertical and horizontal edges
   self.edges = {}
-  local pts = {...}
-  local len = #pts
   for i=1,len-2,2 do
     self:addEdge(pts[i],pts[i+1],pts[i+2],pts[i+3])
   end
@@ -63,15 +72,38 @@ function Polygon:initialize(world,opt,...)
     end)
     Beholder.observe('leaved',self,function(bx,by)
       paths:add(newPath(ax,ay,bx,by))
+      -- Offet the path
       local w = game.visible:pointToPixel(conf.pathOffset/2) * scale
       cl:addPath(newPath(self.shape:unpack()),'subject')
       cl:addPaths(co:offsetPaths(paths,w,'miter','openSquare'),'clip')
-      local out = cl:execute('difference')
-      for i=1,out:size() do
-        Polygon:new(self.world,nil,unpack(pathToPoints(out:get(i))))
-      end
+      self:split(cl:execute('difference'))
       self:destroy()
     end)
+  end)
+end
+
+function Polygon:split(paths)
+  local t,maxArea,biggest = {},0
+  -- Look for the biggest polygon area and for polygons with enemies
+  for i=1,paths:size() do
+    local shape = PolygonShape(unpack(pathToPoints(paths:get(i))))
+    local enemies,len = self:getEnemiesInRect(shape:bbox())
+    if len > 0 then
+      table.insert(t,shape)
+      maxArea = math.max(maxArea,shape.area)
+    elseif shape.area > maxArea then
+      biggest = shape
+    end
+  end
+
+  for i=1,#t do
+    Polygon:new(self.world,nil,t[i])
+  end
+end
+
+function Polygon:getEnemiesInRect(l,t,r,b)
+  return self.world:queryRect(l,t,r-l,b-t,function(item)
+    return item.class.name == 'Enemy'
   end)
 end
 
