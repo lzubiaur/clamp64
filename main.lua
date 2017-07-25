@@ -89,6 +89,7 @@ require 'gamestates.play'
 require 'gamestates.paused'
 require 'gamestates.transitions'
 require 'gamestates.win'
+require 'gamestates.gameover'
 require 'gamestates.credits'
 
 local Game = require 'common.game'
@@ -96,6 +97,13 @@ local Game = require 'common.game'
 -- Entities states
 if conf.build == 'debug' then
   require 'gamestates.debug'
+end
+
+-- Add table.pack
+if not table.pack then
+  table.pack = function(...)
+    return { n=select('#',...), ...}
+  end
 end
 
 -- The global game instance
