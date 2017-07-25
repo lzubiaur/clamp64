@@ -3,14 +3,15 @@ local Entity = require 'entities.base.entity'
 local Play = require 'gamestates.play'
 local Button = require 'entities.ui.button'
 
-local Gameover = Game:addState('Gameover')
+local GameOver = Game:addState('GameOver')
 
-function Gameover:enteredState()
-  Log.debug('Entered state Gameover')
+function GameOver:enteredState()
+  Log.debug('Entered state GameOver')
   self.swallowTouch = true
-  Entity:new(self.world,0,0,conf.width,conf.height,{zOrder=1})
+  local w,h = select(3,self.visible:screen())
+  Entity:new(self.world,0,0,w,h,{zOrder=1})
 
-  Button:new(self.world,conf.width/2-45,250,90,40,{
+  Button:new(self.world,w/2-45,250,90,40,{
     text = 'Play again',
     onSelected = function()
       self:gotoState('Play')
@@ -18,21 +19,18 @@ function Gameover:enteredState()
   })
 end
 
-function Gameover:drawAfterCamera()
-  g.setColor(30,30,30,180)
-  g.rectangle('fill',0,conf.height/2-30,conf.width,60)
+function GameOver:drawAfterCamera()
   g.setColor(255,255,255,255)
-  g.printf('Game over!',0,-50+conf.height/2-self.fontHeight/2,conf.width,'center')
-  g.printf('Meilleur score: '..self.state.highscore,0,conf.height/2-self.fontHeight/2,conf.width,'center')
+  g.printf('Game over!',0,-50+conf.sh/2-self.fontHeight/2,conf.sw,'center')
 end
 
-function Gameover:update(dt)
+function GameOver:update(dt)
 end
 
-function Gameover:keypressed(key, scancode, isrepeat)
+function GameOver:keypressed(key, scancode, isrepeat)
   if key == 'space' or key == 'escape' then
     self:gotoState('Play')
   end
 end
 
-return Gameover
+return GameOver
