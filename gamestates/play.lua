@@ -4,6 +4,7 @@ local Game   = require 'common.game'
 local Player = require 'entities.player'
 local Enemy = require 'entities.enemy'
 local Polygon = require 'entities.polygon'
+local Tail = require 'entities.tail'
 local HUD = require 'common.hud'
 
 local Play = Game:addState('Play')
@@ -26,21 +27,24 @@ function Play:enteredState()
   -- self.parallax:setTranslation(px,py)
 
   self:createCamera()
-  self:createBasicHandlers()
+  self:createEventHandlers()
 
   self.hud = HUD:new()
 
   Polygon:new(self.world,{},200,200,300,200,300,300,200,300)
-  Player:new(self.world,100,100)
+  self.player = Player:new(self.world,100,100)
   Enemy:new(self.world,250,250)
 end
 
-function Play:createBasicHandlers()
+function Play:createEventHandlers()
   Beholder.group(self,function()
     Beholder.observe('GameOver',function() self:onGameOver() end)
     Beholder.observe('ResetLevel',function() self:onResetLevel() end)
     Beholder.observe('GotoMainMenu',function() self:onGotoMainMenu() end)
     Beholder.observe('WinLevel',function() self:onWinLevel() end)
+    Beholder.observe('entered',function(polygon,x,y)
+      Tail:new(self.world,x,y)
+    end)
     -- Observe all events (for debug purpose)
     if conf.build == 'debug' then
       -- Beholder.observe(function(...) Log.debug('Event triggered > ',...) end)
