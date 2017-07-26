@@ -26,14 +26,13 @@ function Play:enteredState()
   self.parallax:addLayer('layer2',1,{ relativeScale = 0.8 })
   -- self.parallax:setTranslation(px,py)
 
-  self:createCamera()
+  local w,h = self:loadWorldMap()
+
+  self:createCamera(w,h)
   self:createEventHandlers()
 
   self.hud = HUD:new()
 
-  Polygon:new(self.world,{},200,200,300,200,300,300,200,300)
-  self.player = Player:new(self.world,100,100)
-  Enemy:new(self.world,250,250)
 end
 
 function Play:createEventHandlers()
@@ -80,7 +79,7 @@ end
 -- end
 --
 -- Must return the world size (w,h)
-function Play:loadWorld()
+function Play:loadWorldMap()
   local filename = string.format('resources/maps/map%02d.lua',self.state.csi)
   Log.info('Loading map',filename)
 
@@ -89,16 +88,36 @@ function Play:loadWorld()
   -- custom loader
   local map = STI(filename)
 
-  -- Add your custom loading tasks or use the Bump plugin
-  -- ...
+  local polygonToPoints = function(p)
+    local t = {}
+    for i=1,#p do
+      table.insert(t,p[i].x)
+      table.insert(t,p[i].y)
+    end
+    return t
+  end
+
+  local layer = map['objects']
+  for _,obj in pairs(layer) do
+    print(obj,obj.type)
+    if obj.type == 'polygon' then
+      Polygon:new(self.world,nil,unpack(polygonToPoints(obj.polygon)))
+    elseif obj.type == 'player' then
+      self.player = Player:new(self.world,obj.x,obj.y)
+      self.follow = self.player
+    elseif obj.type == 'enemy' then
+      Enemy:new(self.world,obj.x,obj.y)
+    end
+  end
 
   -- Get player's position from the map
-  local x = map.properties.px and map.properties.px or 0
-  local y = map.properties.py and map.properties.py or 0
-  x,y = map:convertTileToPixel(x,y)
-
-  -- Create the player entity
-  self.player = Player:new(self.world, x,y)
+  -- local x = map.properties.px and map.properties.px or 0
+  -- local y = map.properties.py and map.properties.py or 0
+  -- x,y = map:convertTileToPixel(x,y)
+  --
+  -- -- Create the player entity
+  -- self.player = Player:new(self.world, x,y)
+  -- self.follow = self.player
 
   -- Get world map size
   return map.tilewidth * map.width, map.tileheight * map.height
