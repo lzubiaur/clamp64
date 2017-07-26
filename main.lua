@@ -6,6 +6,7 @@ local platform = love.system.getOS()
 conf = {
   version = require 'common.version',
   build = require 'common.build', -- release/debug build
+  tests = true, -- run tests
   profiling = false, -- enable/disable code profiling report
   -- The game design resolution. Use a 16:9 aspect ratio
   width = 640, height = 360,
@@ -38,7 +39,7 @@ Inspect   = require 'modules.inspect'
 Push      = require 'modules.push'
 Loader    = require 'modules.love-loader'
 Log       = require 'modules.log'
-Clipper   = require 'modules.clipper'
+-- Clipper   = require 'modules.clipper'
 Bump      = require 'modules.bump'
 HC        = require 'modules.HC'
 STI       = require 'modules.sti'
@@ -81,7 +82,7 @@ Log.usecolor = true
 
 require 'common.palette'
 
-require 'common.game'
+local Game = require 'common.game'
 -- Game states must be loaded after the Game class is created
 require 'gamestates.loading'
 require 'gamestates.start'
@@ -91,10 +92,9 @@ require 'gamestates.transitions'
 require 'gamestates.win'
 require 'gamestates.gameover'
 require 'gamestates.credits'
-
-local Game = require 'common.game'
-
--- Entities states
+if conf.tests then
+  require 'gamestates.tests'
+end
 if conf.build == 'debug' then
   require 'gamestates.debug'
 end
@@ -128,7 +128,11 @@ function love.load()
   game = Game:new()
   -- must call gotoState "outside" Game:initialize or the global 'game'
   -- instance will not be available inside the 'start' state yet
-  game:gotoState('Start')
+  if conf.tests then
+    game:gotoState('Tests')
+  else
+    game:gotoState('Start')
+  end
 end
 
 function setupMultiResolution()
