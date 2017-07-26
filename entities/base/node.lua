@@ -26,6 +26,9 @@ function Node:initialize(x,y,w,h,opt)
     id = opt.id,
     children = {},
   })
+  if opt.visible ~= nil then 
+    self:setVisible(opt.visible)
+  end
 end
 
 function Node:destroy()
@@ -136,12 +139,12 @@ end
 function Node:draw()
   self:drawBoundingBox(self.color)
   table.sort(self.children,Node.sortByZOrderAsc)
+  g.push()
+  self:transform()
   for _,child in ipairs(self.children) do
-    g.push()
-    self:transform()
     child:draw()
-    g.pop()
   end
+  g.pop()
 end
 
 return Node
