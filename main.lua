@@ -129,7 +129,7 @@ function love.load()
   -- must call gotoState "outside" Game:initialize or the global 'game'
   -- instance will not be available inside the 'start' state yet
   if conf.tests then
-    game:gotoState('Tests')
+    game:gotoState('TestState')
   else
     game:gotoState('Start')
   end
