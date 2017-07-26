@@ -1,1 +1,0 @@
-git checkout tests -- conf.lua main.lua entities common README.md modules resources gamestates scripts 
