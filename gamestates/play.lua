@@ -2,7 +2,6 @@
 
 local Game   = require 'common.game'
 local Player = require 'entities.player'
-local HUD = require 'common.hud'
 
 local Play = Game:addState('Play')
 
@@ -25,8 +24,6 @@ function Play:enteredState()
 
   self:createCamera()
   self:createBasicHandlers()
-
-  self.hud = HUD:new()
 end
 
 function Play:createBasicHandlers()
@@ -101,10 +98,6 @@ function Play:drawParallax()
   self.parallax:push('layer2')
     -- Draw parallax layer2
   self.parallax:pop()
-end
-
-function Play:drawAfterCamera()
-  self.hud:draw()
 end
 
 -- Event handlers

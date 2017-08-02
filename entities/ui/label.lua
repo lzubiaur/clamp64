@@ -18,6 +18,7 @@ function Label:initialize(world, x,y, text, opt)
 end
 
 function Label:draw()
+  -- self:drawBoundingBox()
   g.setColor(unpack(self.color))
   g.printf(self.text,self.x,self.y-self.h/2,self.limit,'center')
 end

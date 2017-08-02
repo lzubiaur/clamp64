@@ -1,6 +1,7 @@
 -- game.lua
 local Entity = require 'entities.base.entity'
 local Visible = require 'common.visible'
+local HUD = require 'common.hud'
 
 local Game = Class('Game'):include(Stateful)
 
@@ -67,6 +68,10 @@ function Game:writeGameState()
   end
 end
 
+function Game:createHUD()
+  self.hud = HUD:new()
+end
+
 function Game:loadGameState()
   local fs = love.filesystem
   if fs.exists(self.state.path) then
@@ -108,7 +113,7 @@ function Game:drawBeforeCamera(l,t,w,h)
 end
 
 function Game:drawAfterCamera(l,t,w,h)
-  if self.hud then self.hud:draw() end
+  if self.hud then self.hud:draw(l,t,w,h) end
 end
 
 function Game:draw()
@@ -128,6 +133,7 @@ function Game:updateEntities(dt)
   local l,t,w,h = self.camera:getVisible()
   local items,len = self.world:queryRect(l,t,w,h)
   Lume.each(items,'update',dt)
+  if self.hud then self.hud:update(dt) end
 end
 
 function Game:updateCamera(dt)
@@ -159,6 +165,18 @@ end
 -- 'Pressed' event
 -- event args: entity,world x,y
 function Game:pressed(x, y)
+  -- Query HUD entities first. Pressed events on HUD entities are always swallowed.
+  if self.hud then
+    local x,y = self:screenToDesign(x,y)
+    local items, len = self.hud.world:queryPoint(x,y)
+    table.sort(items,Entity.sortByZOrderDesc)
+    if len > 0 then
+      Beholder.trigger('Pressed',items[1],x,y)
+      table.insert(self.entities,items[1])
+      return
+    end
+  end
+  -- Query game entities world
   x,y = self:screenToWorld(x,y)
   local items, len = self.world:queryPoint(x,y,function(item) return self:touchFilter(item) end)
   table.sort(items,Entity.sortByZOrderDesc)
@@ -251,29 +269,28 @@ function Game:createCamera(w,h,mx,my,ox,oy,gs)
   Log.debug('Camera window',self.camera:getWindow())
 
   -- Create the grid
-  self.grid = EditGrid.grid(self.camera,{
-    size = gs or 32,
-    subdivisions = 10,
-    color = {128, 140, 250},
-    drawScale = false,
-    xColor = {255, 255, 0},
-    yColor = {0, 255, 255},
-    fadeFactor = 0.3,
-    textFadeFactor = 0.5,
-    hideOrigin = false,
-    -- interval = 200
-  })
-end
-
--- Convert from design/game coords to world (aka camera) coords
-function Game:toWorld(x,y)
-  if self.camera then
-    x,y = self.camera:toWorld(x and x or 0,y and y or 0)
+  if conf.build == 'debug' then
+    self.grid = EditGrid.grid(self.camera,{
+      size = gs or 32,
+      subdivisions = 10,
+      color = {128, 140, 250},
+      drawScale = false,
+      xColor = {255, 255, 0},
+      yColor = {0, 255, 255},
+      fadeFactor = 0.3,
+      textFadeFactor = 0.5,
+      hideOrigin = false,
+      -- interval = 200
+    })
   end
-  return x,y
 end
 
--- Convert from real/screen coords to world coords
+-- Convert from real screen coords to game design resolution
+function Game:screenToDesign(x,y)
+  return Push:toGame(x,y or 0)
+end
+
+-- Convert from real screen coords to world coords
 function Game:screenToWorld(x,y)
   -- Push:toGame might return nil
   x,y = Push:toGame(x,y or 0)

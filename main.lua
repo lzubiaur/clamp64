@@ -92,11 +92,11 @@ require 'gamestates.transitions'
 require 'gamestates.win'
 require 'gamestates.gameover'
 require 'gamestates.credits'
-if conf.tests then
-  require 'gamestates.tests'
-end
 if conf.build == 'debug' then
   require 'gamestates.debug'
+  if conf.tests then
+    require 'gamestates.tests'
+  end
 end
 
 -- Add table.pack
@@ -128,14 +128,14 @@ function love.load()
   game = Game:new()
   -- must call gotoState "outside" Game:initialize or the global 'game'
   -- instance will not be available inside the 'start' state yet
-  if conf.tests then
+  if conf.build == 'debug' and conf.tests then
     game:gotoState('TestState')
   else
     game:gotoState('Start')
   end
 end
 
-function setupMultiResolution()
+function setScaledResolution(w,h)
   -- https://developer.android.com/guide/practices/screens_support.html
   -- https://stackoverflow.com/questions/6272384/most-popular-screen-sizes-resolutions-on-android-phones
   -- http://www.cocos2d-x.org/wiki/Multi_resolution_support
@@ -146,8 +146,6 @@ function setupMultiResolution()
     large  = { x=1200, y=768  },
     xlarge = { x=2560, y=1600 }
   }
-  -- Gets the width and height of the window
-  local w,h = love.graphics.getDimensions()
   -- Scaled resolution
   local sw,sh = 0,0
 
@@ -165,14 +163,6 @@ function setupMultiResolution()
     conf.resolution = 'xlarge'
   end
 
-  Push:setupScreen(sw,sh, w,h, {
-    fullscreen = conf.mobile,
-    resizable = not conf.mobile,
-    highdpi = true,
-    canvas = true,  -- Canvas is required to scale the camera properly
-    stretched = true, -- Keep aspect ratio or strech to borders
-    pixelperfect = false,
-  })
   conf.sw,conf.sh = sw,sh
   conf.scaleX, conf.scaleY = sw / conf.width, sh / conf.height
   Log.info('Screen size',w,h)
@@ -180,6 +170,21 @@ function setupMultiResolution()
   Log.info('Scaled size',conf.sw,conf.sh)
   Log.info('Resolution type',conf.resolution)
   Log.info('Resolution scale',conf.scaleX,conf.scaleY)
+end
+
+function setupMultiResolution()
+  -- local w,h = g.getDimensions()
+  local w,h,flags = love.window.getMode()
+  setScaledResolution(w,h)
+  -- Push:resetSettings()
+  Push:setupScreen(conf.sw,conf.sh, w,h, {
+    fullscreen = conf.mobile,
+    resizable = not conf.mobile,
+    highdpi = flags.highdpi,
+    canvas = true,  -- Canvas is required to scale the camera properly
+    stretched = true, -- Keep aspect ratio or strech to borders
+    pixelperfect = false,
+  })
 end
 
 function love.draw()
@@ -201,10 +206,10 @@ if conf.build == 'debug' and conf.profiling then
   end
 end
 
--- Must call puse:resize when window resizes.
--- Also call on mobile at app launch because fullscreen is enable.
-function love.resize(w, h)
-  Push:resize(w, h)
+-- Must call push:resize when window resizes.
+-- Also called on mobile at app launch because fullscreen is enabled.
+function love.resize(w,h)
+  Push:resize(w,h)
 end
 
 local touchId = nil

@@ -52,10 +52,15 @@ function Entity:teleport(x,y)
   end
 end
 
--- XXX move children
 function Entity:move(x,y,filter)
-  local cols,len
+  local cols,len,dx,dy = nil,0,self.x-x,self.y-y
   self.x,self.y,cols,len = self.world:move(self,x,y,filter)
+  for _,child in ipairs(self.children) do
+    child:move(child.x-dx,child.y-dy,filter)
+  end
+  if self.spritesNode then
+    self.spritesNode:setPosition(x,y)
+  end
   return cols,len
 end
 

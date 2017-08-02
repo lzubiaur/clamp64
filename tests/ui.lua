@@ -13,12 +13,7 @@ function TestUI:initialize(world)
 
   local visible = game.visible
 
-  self:setResolution(1200,768)
-
-  local fontSize = visible:pointToPixel(18)
-  local font = love.graphics.newFont('resources/fonts/Oswald-Medium.ttf',fontSize)
-  self.fontHeight = font:getHeight()
-  love.graphics.setFont(font)
+  -- self:setResolution(1200,768)
 
   local x,y = visible:pointAt(.5,.5)
   local w,h = visible:pointToPixel(90,20)

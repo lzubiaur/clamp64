@@ -15,25 +15,24 @@ function TestCamera:initialize(world)
 
   love.keyboard.setKeyRepeat(true)
 
-  local visible = game.visible
+  self:setResolution(960,540,conf.width+500,conf.height+500)
 
-  love.window.setMode(1024,768)
-  setupMultiResolution()
-  local w,h = visible:pointToPixel(conf.width + 200,conf.height + 200)
-  game:createCamera(w,h)
+  local visible = game.visible
+  local w,h = visible:pointToPixel(conf.width+500,conf.height+500)
 
   local rand = love.math.random
-  for i=1,200 do
+  for i=1,50 do
     local x,y,w,h = game.visible:rectCenter(rand(w),rand(h),rand(20,40),rand(20,40))
     Entity:new(world,x,y,w,h)
   end
 
   game.follow = Entity:new(world,visible:rect(100,100,20,20))
   game.follow.color = { 0,255,0,255 }
-
 end
 
-function TestCamera:draw()
+function TestCamera:destroy()
+  game.follow = nil
+  love.keyboard.setKeyRepeat(false)
 end
 
 function TestCamera:keypressed(key, scancode, isrepeat)

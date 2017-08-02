@@ -4,7 +4,7 @@ function createPalette()
   return {
     main = Hue.new('#4d78cc'),
     -- fg   = Hue.new('#de5a4c'),
-    bg   = Hue.new('#282c34'),
+    bg   = Hue.new('#000000'),
     -- line = c:desaturate_by(.5),
     -- fill = c:desaturate_by(.2),
     text = Hue.new('#fffff6'),
