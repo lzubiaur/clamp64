@@ -17,12 +17,16 @@ function Play:enteredState()
   -- Create the physics world
   self:createWorld()
 
-  self.parallax = Parallax(conf.width,conf.height, {offsetX = 0, offsetY = 0})
+  local ww,wh = self.visible:pointToPixel(200,200)
+
+  self.parallax = Parallax(ww,wh, {offsetX = 0, offsetY = 0})
   self.parallax:addLayer('layer1',1,{ relativeScale = 0.4 })
   self.parallax:addLayer('layer2',1,{ relativeScale = 0.8 })
   -- self.parallax:setTranslation(px,py)
+  self.stars = self:createStars(ww,wh)
+  self.stars2 = self:createStars(ww,wh)
 
-  self:createCamera()
+  self:createCamera(ww,wh)
   self:createBasicHandlers()
 end
 
@@ -37,6 +41,16 @@ function Play:createBasicHandlers()
       -- Beholder.observe(function(...) Log.debug('Event triggered > ',...) end)
     end
   end)
+end
+
+function Play:createStars(w,h)
+  local t = {}
+  local rand = love.math.random
+  for i=1,100 do
+    table.insert(t,rand(w))
+    table.insert(t,rand(h))
+  end
+  return t
 end
 
 function Play:exitedState()
@@ -91,12 +105,18 @@ function Play:loadWorld()
   return map.tilewidth * map.width, map.tileheight * map.height
 end
 
+function Play:drawBeforeCamera()
+  self:drawParallax()
+end
+
 function Play:drawParallax()
   self.parallax:push('layer1')
-    -- Draw parallax layer1
+    g.setColor(0,255,255,60)
+    g.points(self.stars)
   self.parallax:pop()
   self.parallax:push('layer2')
-    -- Draw parallax layer2
+    g.setColor(0,255,255,128)
+    g.points(self.stars2)
   self.parallax:pop()
 end
 
