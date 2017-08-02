@@ -6,17 +6,17 @@ local platform = love.system.getOS()
 conf = {
   version = require 'common.version',
   build = require 'common.build', -- release/debug build
-  tests = true, -- run tests
+  tests = false, -- run tests
   profiling = false, -- enable/disable code profiling report
   -- The game design resolution. Use a 16:9 aspect ratio
-  width = 640, height = 360,
+  width = 64, height = 64,
   -- Bump world cell size. Should be a multiple of the map's tile size.
   cellSize = 64,
   -- Run on a mobile platform?
   mobile = platform == 'Android' or platform == 'iOS',
   -- grafics
-  lineWidth = 2,
-  pointSize = 5,
+  lineWidth = 1,
+  pointSize = 1,
   -- TODO add camera parameters (camera borders, smooth/lerp)
   camOffsetX = 150, -- offset from the player
   camMarginX = 150, -- horizontal outer space allowed to the camera to move outside the map/world
@@ -111,7 +111,7 @@ game = nil
 
 function love.load()
   -- Avoid anti-alising/blur when scaling. Useful for pixel art.
-  -- love.graphics.setDefaultFilter('nearest', 'nearest', 0)
+  love.graphics.setDefaultFilter('nearest', 'nearest', 0)
 
   -- setBackgroundColor doesnt work with push
   -- love.graphics.setBackgroundColor(0,0,0)
@@ -173,17 +173,17 @@ function setScaledResolution(w,h)
 end
 
 function setupMultiResolution()
-  -- local w,h = g.getDimensions()
   local w,h,flags = love.window.getMode()
-  setScaledResolution(w,h)
-  -- Push:resetSettings()
+  -- setScaledResolution(w,h)
+  conf.sw,conf.sh = conf.width,conf.height
+  conf.scaleX,conf.scaleY = 1,1
   Push:setupScreen(conf.sw,conf.sh, w,h, {
     fullscreen = conf.mobile,
     resizable = not conf.mobile,
     highdpi = flags.highdpi,
     canvas = true,  -- Canvas is required to scale the camera properly
-    stretched = true, -- Keep aspect ratio or strech to borders
-    pixelperfect = false,
+    stretched = false, -- Keep aspect ratio or strech to borders
+    pixelperfect = true,
   })
 end
 
