@@ -2,6 +2,10 @@
 
 local Game   = require 'common.game'
 local Player = require 'entities.player'
+local Enemy = require 'entities.enemy'
+local Polygon = require 'entities.polygon'
+local Tail = require 'entities.tail'
+local HUD = require 'common.hud'
 
 local Play = Game:addState('Play')
 
@@ -26,16 +30,24 @@ function Play:enteredState()
   self.stars = self:createStars(ww,wh)
   self.stars2 = self:createStars(ww,wh)
 
-  self:createCamera(ww,wh)
-  self:createBasicHandlers()
+  local w,h = self:loadWorldMap()
+
+  self:createCamera(w,h)
+  self:createEventHandlers()
+
+  self.hud = HUD:new()
+
 end
 
-function Play:createBasicHandlers()
+function Play:createEventHandlers()
   Beholder.group(self,function()
     Beholder.observe('GameOver',function() self:onGameOver() end)
     Beholder.observe('ResetLevel',function() self:onResetLevel() end)
     Beholder.observe('GotoMainMenu',function() self:onGotoMainMenu() end)
     Beholder.observe('WinLevel',function() self:onWinLevel() end)
+    Beholder.observe('entered',function(polygon,x,y)
+      Tail:new(self.world,x,y)
+    end)
     -- Observe all events (for debug purpose)
     if conf.build == 'debug' then
       -- Beholder.observe(function(...) Log.debug('Event triggered > ',...) end)
@@ -81,7 +93,7 @@ end
 -- end
 --
 -- Must return the world size (w,h)
-function Play:loadWorld()
+function Play:loadWorldMap()
   local filename = string.format('resources/maps/map%02d.lua',self.state.csi)
   Log.info('Loading map',filename)
 
@@ -90,16 +102,36 @@ function Play:loadWorld()
   -- custom loader
   local map = STI(filename)
 
-  -- Add your custom loading tasks or use the Bump plugin
-  -- ...
+  local polygonToPoints = function(p)
+    local t = {}
+    for i=1,#p do
+      table.insert(t,p[i].x)
+      table.insert(t,p[i].y)
+    end
+    return t
+  end
+
+  local layer = map['objects']
+  for _,obj in pairs(layer) do
+    print(obj,obj.type)
+    if obj.type == 'polygon' then
+      Polygon:new(self.world,nil,unpack(polygonToPoints(obj.polygon)))
+    elseif obj.type == 'player' then
+      self.player = Player:new(self.world,obj.x,obj.y)
+      self.follow = self.player
+    elseif obj.type == 'enemy' then
+      Enemy:new(self.world,obj.x,obj.y)
+    end
+  end
 
   -- Get player's position from the map
-  local x = map.properties.px and map.properties.px or 0
-  local y = map.properties.py and map.properties.py or 0
-  x,y = map:convertTileToPixel(x,y)
-
-  -- Create the player entity
-  self.player = Player:new(self.world, x,y)
+  -- local x = map.properties.px and map.properties.px or 0
+  -- local y = map.properties.py and map.properties.py or 0
+  -- x,y = map:convertTileToPixel(x,y)
+  --
+  -- -- Create the player entity
+  -- self.player = Player:new(self.world, x,y)
+  -- self.follow = self.player
 
   -- Get world map size
   return map.tilewidth * map.width, map.tileheight * map.height
@@ -131,11 +163,36 @@ function Play:onResetLevel()
 end
 
 function Play:onGameOver()
-  self:pushState('GameplayOut')
+  self:pushState('GameOver')
 end
 
 function Play:onWinLevel()
   self:pushState('Win')
+end
+
+function Play:pressed(x,y)
+  self._p = Vector(x,y)
+  Game.pressed(self,x,y)
+end
+
+function Play:moved(x,y,dx,dy)
+  Game.moved(self,x,y,dx,dy)
+end
+
+function Play:released(x,y)
+  local p = self._p
+  p = (Vector(x,y) - p):normalized()
+  local ax,ay = math.abs(p.x),math.abs(p.y)
+  if p.x > 0 and ax > ay then
+    Beholder.trigger('right')
+  elseif p.x < 0 and ax > ay then
+    Beholder.trigger('left')
+  elseif p.y > 0 and ay > ax then
+    Beholder.trigger('down')
+  else
+    Beholder.trigger('up')
+  end
+  Game.released(self,x,y)
 end
 
 function Play:keypressed(key, scancode, isrepeat)
@@ -145,8 +202,14 @@ function Play:keypressed(key, scancode, isrepeat)
     Beholder.trigger('ResetGame')
   elseif key == 'p' then
     self:pushState('Paused')
-  elseif key == 's' then
-    -- enable/disable volume...
+  elseif key == 'right' then
+    Beholder.trigger('right')
+  elseif key == 'left' then
+    Beholder.trigger('left')
+  elseif key == 'up' then
+    Beholder.trigger('up')
+  elseif key == 'down' then
+    Beholder.trigger('down')
   end
   if conf.build == 'debug' then
     if key == 'd' then

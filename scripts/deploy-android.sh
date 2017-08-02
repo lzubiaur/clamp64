@@ -5,10 +5,10 @@
 LOVE_ANDROID=../love-android-sdl2
 
 # debug/release
-BUILD=release
+BUILD=debug
 
 # e.g. com.mycompany.myproject
-PACKAGE=com.mycompany.myproject
+PACKAGE=com.voodoocactus.games.clamp
 
 FILES="common
 entities
@@ -28,8 +28,8 @@ if [ "$1" == "app" ]; then
   rm build/game.love
   zip -r build/game.love $FILES -x *.DS_Store
   # Unlock the screen
-  adb shell input keyevent 82
-  adb shell input swipe 100 100 800 200
+  # adb shell input keyevent 82
+  # adb shell input swipe 100 100 800 200
 
   adb shell am force-stop "$PACKAGE"
 
@@ -70,6 +70,6 @@ else
 fi
 # Start the app
 adb shell am start -n "$PACKAGE/.GameActivity" && \
-adb logcat "SDL/APP":D *:S
+adb logcat "SDL/APP:D" "*:S"
 
 popd

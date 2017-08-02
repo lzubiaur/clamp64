@@ -39,7 +39,7 @@ Inspect   = require 'modules.inspect'
 Push      = require 'modules.push'
 Loader    = require 'modules.love-loader'
 Log       = require 'modules.log'
--- Clipper   = require 'modules.clipper'
+Clipper   = require 'modules.clipper'
 Bump      = require 'modules.bump'
 HC        = require 'modules.HC'
 STI       = require 'modules.sti'
@@ -96,6 +96,13 @@ if conf.build == 'debug' then
   require 'gamestates.debug'
   if conf.tests then
     require 'gamestates.tests'
+  end
+end
+
+-- Add table.pack
+if not table.pack then
+  table.pack = function(...)
+    return { n=select('#',...), ...}
   end
 end
 
