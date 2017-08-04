@@ -26,7 +26,7 @@ function Node:initialize(x,y,w,h,opt)
     id = opt.id,
     children = {},
   })
-  if opt.visible ~= nil then 
+  if opt.visible ~= nil then
     self:setVisible(opt.visible)
   end
 end
@@ -108,7 +108,7 @@ function Node:setAnchor(x,y)
 end
 
 function Node:transform()
-  g.translate(self.x + self.w * self.ax,self.y + self.h * self.ay)
+  g.translate(self.x,self.y)
   g.rotate(self.angle)
 end
 
@@ -136,13 +136,21 @@ function Node:drawBoundingBox(color)
   end
 end
 
+function Node:update(dt)
+  for _,child in ipairs(self.children) do
+    child:update(dt)
+  end
+end
+
 function Node:draw()
   self:drawBoundingBox(self.color)
   table.sort(self.children,Node.sortByZOrderAsc)
   g.push()
   self:transform()
   for _,child in ipairs(self.children) do
-    child:draw()
+    if not child.hidden then
+      child:draw()
+    end
   end
   g.pop()
 end

@@ -1,40 +1,56 @@
 -- player.lua
 
 local Body = require 'entities.base.body'
+local Quad = require 'entities.base.quad'
 local Ground = require 'entities.ground'
+local Animated = require 'entities.base.animated'
 
 local Player = Class('Player', Body)
 
 function Player:initialize(world, x,y)
   Lume.extend(self, {
-    velocity = 150,
+    velocity = 50,
     moved = false,
     polygons = {},
   })
-  local w,h = game.visible:pointToPixel(10,10)
+  local w,h = game.visible:pointToPixel(8,6)
   Body.initialize(self, world, x,y, w,h, { vx = 0, vy = 0} )
+
+
+  local s = Assets.img.tilesheet
+
+  local quad = g.newQuad(0,0,8,8,s:getDimensions())
+  ship = Quad:new(s,quad,4,4,{ax=0.5,ay=0.5})
+  self.ship = self:addSprite(ship)
 
   Beholder.group(self,function()
     Beholder.observe('ResetGame',function()
       self:onResetGame()
     end)
     Beholder.observe('right',function()
-      if self.vx > -1 then self.vx,self.vy,self.moved = self.velocity,0,true end
+      if self.vx > -1 then self.vx,self.vy,self.moved,ship.angle = self.velocity,0,true,math.rad(90) end
     end)
     Beholder.observe('left',function()
-      if self.vx < 1 then self.vx,self.vy,self.moved = -self.velocity,0,true end
+      if self.vx < 1 then self.vx,self.vy,self.moved,ship.angle = -self.velocity,0,true,math.rad(270) end
     end)
     Beholder.observe('up',function()
-      if self.vy < 1 then self.vx,self.vy,self.moved = 0,-self.velocity,true end
+      if self.vy < 1 then self.vx,self.vy,self.moved,ship.angle = 0,-self.velocity,true,0 end
     end)
     Beholder.observe('down',function()
-      if self.vy > -1 then self.vx,self.vy,self.moved = 0,self.velocity,true end
+      if self.vy > -1 then self.vx,self.vy,self.moved,ship.angle = 0,self.velocity,true,math.rad(180) end
+    end)
+    self:observeOnce('GameOver',function()
+      self.vx,self.vy = 0,0
+      Beholder.stopObserving(self)
+      self.collisionsFilter = function() return nil end
+      self:addExplosion()
+      love.audio.play(Assets.sounds.explosion)
     end)
   end)
 end
 
 function Player:onResetGame()
-  Log.info('Reset Player')
+  -- Log.info('Reset Player')
 end
 
 function Player:update(dt)
@@ -43,6 +59,7 @@ function Player:update(dt)
   self:resetCollisionFlags()
   self:handleCollisions(cx,cy)
   self:handleEndCollisions(cx,cy)
+  Body.update(self,dt)
 end
 
 function Player:collisionsFilter(other)
@@ -90,6 +107,20 @@ function Player:resetCollisionFlags()
   for _,t in pairs(self.polygons) do
     t.collide = -1
   end
+end
+
+function Player:addExplosion()
+  local s = Assets.img.tilesheet
+  local anim = Animated:new(s,0,0,10,10)
+  local grid = Anim8.newGrid(10,10,s:getWidth(),s:getHeight())
+  anim:setAnimation(grid('4-6',1),.1,function()
+    -- anim.animation:pause()
+    anim:setVisible(false)
+    game:pushState('GameOver')
+    self:destroy()
+  end)
+  self.ship:setVisible(false)
+  self:addSprite(anim)
 end
 
 return Player

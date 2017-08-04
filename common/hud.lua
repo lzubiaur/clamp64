@@ -10,17 +10,17 @@ function HUD:initialize(opt)
   self.world = Bump.newWorld(conf.cellSize)
 
   -- Quit gameplay (goto main menu)
-  self.back = ImageButton:new(self.world,0,0,{
-    path = 'resources/img/arrow-left.png',
-    onSelected = function()
-      Beholder.trigger('GotoMainMenu')
-    end
-  })
-  Beholder.group(self,function()
-    Beholder.observe('Win',function()
-      self.back.hidden = true
-    end)
-  end)
+  -- self.back = ImageButton:new(self.world,0,0,{
+  --   path = 'resources/img/arrow-left.png',
+  --   onSelected = function()
+  --     Beholder.trigger('GotoMainMenu')
+  --   end
+  -- })
+  -- Beholder.group(self,function()
+  --   Beholder.observe('Win',function()
+  --     self.back.hidden = true
+  --   end)
+  -- end)
 end
 
 function HUD:createSwallowTouchLayer()

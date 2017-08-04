@@ -18,9 +18,9 @@ conf = {
   lineWidth = 1,
   pointSize = 1,
   -- TODO add camera parameters (camera borders, smooth/lerp)
-  camOffsetX = 150, -- offset from the player
-  camMarginX = 150, -- horizontal outer space allowed to the camera to move outside the map/world
-  camMarginY = 150, -- veritcal margin must be big enough so the player is still updated when outside the map.
+  camOffsetX = 0, -- offset from the player
+  camMarginX = 10, -- horizontal outer space allowed to the camera to move outside the map/world
+  camMarginY = 10, -- veritcal margin must be big enough so the player is still updated when outside the map.
   -- Player config
   gravity = 0, -- vertical gravity (default 1000)
   playerVelocity = 0, -- Player horizontal velocity in pixel/second. Default 500.
@@ -28,7 +28,7 @@ conf = {
   playerImpulse2 = -1000, -- jump 2 impulse
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
-  pathOffset = 10,
+  pathOffset = 1,
 }
 
 -- Load 3rd party libraries/modules globally.
@@ -57,6 +57,8 @@ Parallax  = require 'modules.parallax'
 Binser    = require 'modules.binser'
 Matrix    = require 'modules.matrix'
 EditGrid  = require 'modules.editgrid'
+Anim8     = require 'modules.anim8'
+Assets    = require 'modules.cargo'.init 'resources'
 
 if conf.build == 'debug' then
   ProFi = require 'modules.profi'
@@ -138,7 +140,7 @@ function love.load()
   if conf.build == 'debug' and conf.tests then
     game:gotoState('TestState')
   else
-    game:gotoState('Start')
+    game:gotoState('Play')
   end
 end
 

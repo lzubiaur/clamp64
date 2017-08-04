@@ -14,7 +14,8 @@ function Start:enteredState()
 
   self:createWorld()
   self:createCamera()
-  -- self:setFont('resources/fonts/Oswald-Medium.ttf',self.visible:pointToPixel(18))
+  -- self:setFont('resources/fonts/pzim3x5.ttf',self.visible:pointToPixel(16))
+  self:setFont('resources/fonts/pzim3x5.fnt','resources/fonts/pzim3x5.png')
 
   local x,y,w,h = self.visible:rectCenter(320,180,70,40)
   Button:new(self.world,x,y,w,h, {
@@ -39,10 +40,13 @@ function Start:keypressed(key, scancode, isRepeat)
 end
 
 function Start:drawAfterCamera()
+  g.setLineWidth(1)
+  g.setLineStyle('rough')
   g.setColor(255,255,255,255)
   g.rectangle('line',game.visible:screen())
   g.circle('line',24,24,10)
   g.points(10,10)
+  g.line(20,10,40,10)
 end
 
 return Start

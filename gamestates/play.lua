@@ -5,7 +5,6 @@ local Player = require 'entities.player'
 local Enemy = require 'entities.enemy'
 local Polygon = require 'entities.polygon'
 local Tail = require 'entities.tail'
-local HUD = require 'common.hud'
 
 local Play = Game:addState('Play')
 
@@ -18,30 +17,32 @@ function Play:enteredState()
   -- state might still be running
   Timer.clear()
 
+  if not self.music then
+    self.music = love.audio.newSource('resources/music/dream_candy.xm','stream')
+    love.audio.play(self.music)
+  end
+
+  self:createHUD()
   -- Create the physics world
   self:createWorld()
 
-  local ww,wh = self.visible:pointToPixel(200,200)
+  local map,w,h = self:loadWorldMap()
+  self.map = map
 
-  self.parallax = Parallax(ww,wh, {offsetX = 0, offsetY = 0})
-  self.parallax:addLayer('layer1',1,{ relativeScale = 0.4 })
-  self.parallax:addLayer('layer2',1,{ relativeScale = 0.8 })
+  self.parallax = Parallax(w,w, {offsetX = 0, offsetY = 0})
+  self.parallax:addLayer('layer1',1,{ relativeScale = .4 })
+  self.parallax:addLayer('layer2',1,{ relativeScale = .6 })
   -- self.parallax:setTranslation(px,py)
-  self.stars = self:createStars(ww,wh)
-  self.stars2 = self:createStars(ww,wh)
-
-  local w,h = self:loadWorldMap()
+  self.stars = self:createStars(w,h)
+  self.stars2 = self:createStars(w,h)
 
   self:createCamera(w,h)
   self:createEventHandlers()
-
-  self.hud = HUD:new()
-
 end
 
 function Play:createEventHandlers()
   Beholder.group(self,function()
-    Beholder.observe('GameOver',function() self:onGameOver() end)
+    -- Beholder.observe('GameOver',function() self:onGameOver() end)
     Beholder.observe('ResetLevel',function() self:onResetLevel() end)
     Beholder.observe('GotoMainMenu',function() self:onGotoMainMenu() end)
     Beholder.observe('WinLevel',function() self:onWinLevel() end)
@@ -58,7 +59,7 @@ end
 function Play:createStars(w,h)
   local t = {}
   local rand = love.math.random
-  for i=1,100 do
+  for i=1,(w*h)/100 do
     table.insert(t,rand(w))
     table.insert(t,rand(h))
   end
@@ -113,7 +114,7 @@ function Play:loadWorldMap()
 
   local layer = map['objects']
   for _,obj in pairs(layer) do
-    print(obj,obj.type)
+    Log.debug(obj.type)
     if obj.type == 'polygon' then
       Polygon:new(self.world,nil,unpack(polygonToPoints(obj.polygon)))
     elseif obj.type == 'player' then
@@ -133,12 +134,34 @@ function Play:loadWorldMap()
   -- self.player = Player:new(self.world, x,y)
   -- self.follow = self.player
 
-  -- Get world map size
-  return map.tilewidth * map.width, map.tileheight * map.height
+  return map,map.tilewidth * map.width, map.tileheight * map.height
 end
 
 function Play:drawBeforeCamera()
   self:drawParallax()
+end
+
+function Play:stencil(l,t,w,h)
+  local items,len = self.world:queryRect(l,t,w,h,function(item)
+    return item.class.name == 'Polygon'
+  end)
+  for i=1,len do
+    local tri = love.math.triangulate(items[i].shape:unpack())
+    for i=1,#tri do
+      g.polygon('fill',tri[i])
+    end
+  end
+end
+
+function Play:drawEntities(l,t,w,h)
+  g.stencil(function() self:stencil(l,t,w,h) end,'replace',1)
+  g.setStencilTest('greater',0)
+  -- self.map:draw()
+  -- self.map:drawTileLayer('tiles')
+  g.setColor(255,255,255,255)
+  self.map.layers.tiles:draw()
+  g.setStencilTest()
+  Game.drawEntities(self,l,t,w,h)
 end
 
 function Play:drawParallax()

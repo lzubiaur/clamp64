@@ -17,6 +17,9 @@ function Tail:initialize(world,x,y)
     Beholder.observe('leaved',function(polygon,x,y)
       self:destroy()
     end)
+    Beholder.observe('GameOver',function()
+      self:destroy()
+    end)
   end)
 end
 
@@ -55,6 +58,7 @@ end
 
 function Tail:draw()
   local t = Lume.concat(self.points,{game.player:getCenter()})
+  g.setColor(0,255,255,255)
   g.line(unpack(t))
 end
 

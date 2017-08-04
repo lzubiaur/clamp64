@@ -132,7 +132,9 @@ function Polygon:destroy()
 end
 
 function Polygon:draw(debugDraw)
-  g.setColor(255,0,0,255)
+  g.setColor(255,0,77,200) -- red
+  -- g.setColor(255,163,0,255) -- yellow
+  -- g.setColor(69,69,69,255) -- black
   g.polygon('line',self.shape:unpack())
 end
 
