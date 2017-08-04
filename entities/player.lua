@@ -14,8 +14,7 @@ function Player:initialize(world, x,y)
     polygons = {},
   })
   local w,h = game.visible:pointToPixel(8,6)
-  Body.initialize(self, world, x,y, w,h, { vx = 0, vy = 0} )
-
+  Body.initialize(self, world, x,y, w,h, { vx = 0, vy = 0, zOrder = 3} )
 
   local s = Assets.img.tilesheet
 

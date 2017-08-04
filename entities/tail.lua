@@ -8,7 +8,7 @@ function Tail:initialize(world,x,y)
   self.points = {}
   self:addPoint(x,y)
   -- XXX update size when adding new segments?
-  Entity.initialize(self,world,x,y,1,1)
+  Entity.initialize(self,world,x,y,1,1,{zOrder = 2})
 
   Beholder.group(self,function()
     Beholder.observe('moved',function(polygon,x,y)
