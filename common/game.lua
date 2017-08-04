@@ -317,6 +317,7 @@ function Game:getCurrentLevelState()
   local state,i = self.state,self.state.cli
   if not state.levels[i] then
     state.levels[i] = {
+      lives = 3,
       score = 0,
       entities = {}
     }

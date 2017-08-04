@@ -1,6 +1,8 @@
 local Entity = require 'entities.base.entity'
 local Button = require 'entities.ui.button'
 local ImageButton = require 'entities.ui.imagebutton'
+local Quad = require 'entities.base.quad'
+local Node = require 'entities.base.node'
 
 local HUD = Class('HUD')
 
@@ -21,6 +23,16 @@ function HUD:initialize(opt)
   --     self.back.hidden = true
   --   end)
   -- end)
+
+  self.node = Node:new(game.visible:screen())
+
+  local s = Assets.img.tilesheet
+  for i=0,2 do
+    local quad = g.newQuad(0,20,10,10,s:getDimensions())
+    local live = Quad:new(s,quad,3+(6*i),4)
+    self.node:addChild(live)
+  end
+
 end
 
 function HUD:createSwallowTouchLayer()
@@ -42,6 +54,7 @@ function HUD:draw(l,t,w,h)
   end
   -- g.setColor(to_rgb(palette.text))
   -- g.printf('Level '..self.currentLevel,0,0,conf.width,'center')
+  self.node:draw()
 end
 
 function HUD:update(dt)
