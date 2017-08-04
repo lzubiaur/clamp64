@@ -24,6 +24,7 @@ function Entity:addSprite(sprite)
     self.spritesNode = Node:new(self.x,self.y,0,0)
   end
   self.spritesNode:addChild(sprite)
+  return sprite
 end
 
 function Entity:removeSprite(sprite)
@@ -48,7 +49,7 @@ function Entity:teleport(x,y)
     child:teleport(child.x-dx,child.y-dy)
   end
   if self.spritesNode then
-    self.spritesNode:setPosition(x,y)
+    self.spritesNode:setPosition(self.x,self.y)
   end
 end
 
@@ -59,17 +60,21 @@ function Entity:move(x,y,filter)
     child:move(child.x-dx,child.y-dy,filter)
   end
   if self.spritesNode then
-    self.spritesNode:setPosition(x,y)
+    self.spritesNode:setPosition(self.x,self.y)
   end
   return cols,len
 end
 
 function Entity:update(dt)
-  -- nothing to do
+  if self.spritesNode then
+    self.spritesNode:update(dt)
+  end
 end
 
 function Entity:draw()
-  if self.spritesNode then self.spritesNode:draw() end
+  if self.spritesNode then
+    self.spritesNode:draw()
+  end
   self:drawBoundingBox(self.color)
 end
 

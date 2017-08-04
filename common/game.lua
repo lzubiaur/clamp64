@@ -32,9 +32,10 @@ function Game:initialize()
   -- Push:setShader(shader1)
 
   -- default graphics params
-  love.graphics.setLineWidth(conf.lineWidth)
-  -- love.graphics.setLineJoin('bevel')
-  love.graphics.setPointSize(conf.pointSize)
+  g.setLineWidth(conf.lineWidth)
+  g.setLineJoin('miter') -- none/miter/bevel
+  g.setLineStyle('rough') -- rough/smooth
+  g.setPointSize(conf.pointSize)
 
   i18n.loadFile('resources/i18n.lua')
 
@@ -143,9 +144,10 @@ function Game:updateCamera(dt)
   if self.follow then
     local x,y = self.camera:getPosition()
     local px, py = self.follow:getCenter()
-    self.camera:setPosition(Lume.lerp(x,px + conf.camOffsetX,.05), Lume.lerp(y,py,.05))
+    -- self.camera:setPosition(Lume.lerp(x,px + conf.camOffsetX,.05), Lume.lerp(y,py,.05))
+    self.camera:setPosition(px,py)
     if self.parallax then
-      self.parallax:setTranslation(px,py)
+      self.parallax:setTranslation(self.camera:getPosition())
     end
   end
   -- self.parallax:update(dt) -- not required
