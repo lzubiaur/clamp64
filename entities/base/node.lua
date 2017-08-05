@@ -57,6 +57,10 @@ function Node:addChild(child)
   table.insert(self.children,child)
 end
 
+function Node:getChild(i)
+  return self.children[i]
+end
+
 function Node:removeChild(child)
   Lume.remove(self.children,child)
   child.parent = nil
@@ -129,7 +133,7 @@ function Node:observeOnce(...)
 end
 
 function Node:drawBoundingBox(color)
-  if conf.build == 'debug' then
+  if conf.build == 'debug' and conf.drawBBox then
     color = color or {0,255,255,255}
     g.setColor(unpack(color))
     g.rectangle('line',self.x,self.y,self.w,self.h)
