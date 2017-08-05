@@ -15,8 +15,11 @@ function Enemy:initialize(world,x,y)
   self.quad2 = Quad:new(s,g.newQuad(21,1,8,8,s:getDimensions()),4,4,{ax=.5,ay=.5})
   self:addSprite(self.quad2)
   Beholder.group(self,function()
-    Beholder.observe('GameOver',function()
-      self.gameover = true
+    Beholder.observe('killed',function()
+      self.killed = true
+    end)
+    Beholder.observe('start',function()
+      self.killed= false
     end)
   end)
 end
@@ -24,7 +27,7 @@ end
 function Enemy:filter(other)
   if other.class.name == 'Segment' then
     return 'bounce'
-  elseif not self.gameover and other.class.name == 'Player' then
+  elseif not self.killed and other.class.name == 'Player' then
     return 'touch'
   end
   return nil
@@ -41,7 +44,7 @@ function Enemy:update(dt)
       local n = cols[i].normal
       self:applyCollisionNormal(self.x*n.x,self.y*n.y,1)
     elseif other.class.name == 'Player' then
-      Beholder.trigger('GameOver',self)
+      Beholder.trigger('killed',self)
     end
   end
 end

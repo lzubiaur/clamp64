@@ -38,18 +38,25 @@ function Player:initialize(world, x,y)
     Beholder.observe('down',function()
       if self.vy > -1 then self.vx,self.vy,self.moved,ship.angle = 0,self.velocity,true,math.rad(180) end
     end)
-    self:observeOnce('GameOver',function()
-      self.vx,self.vy = 0,0
-      Beholder.stopObserving(self)
-      self.collisionsFilter = function() return nil end
-      self:addExplosion()
-      love.audio.play(Assets.sounds.explosion)
+    self:observeOnce('killed',function()
+      self:onKilled()
+    end)
+    Beholder.observe('checkpoint',function(t)
+      Lume.push(t,self:getPosition())
     end)
   end)
 end
 
 function Player:onResetGame()
   -- Log.info('Reset Player')
+end
+
+function Player:onKilled()
+  self.vx,self.vy = 0,0
+  Beholder.stopObserving(self)
+  self.collisionsFilter = function() return nil end
+  self:addExplosion()
+  love.audio.play(Assets.sounds.explosion)
 end
 
 function Player:update(dt)
@@ -115,7 +122,7 @@ function Player:addExplosion()
   anim:setAnimation(grid('4-6',1),.1,function()
     -- anim.animation:pause()
     anim:setVisible(false)
-    game:pushState('GameOver')
+    Beholder.trigger('lose')
     self:destroy()
   end)
   self.ship:setVisible(false)

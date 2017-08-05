@@ -5,12 +5,14 @@ local Player = require 'entities.player'
 local Enemy = require 'entities.enemy'
 local Polygon = require 'entities.polygon'
 local Tail = require 'entities.tail'
+local Checkpoint = require 'common.checkpoint'
 
 local Play = Game:addState('Play')
 
 function Play:enteredState()
   Log.info('Entered state Play')
 
+  self.state.lives = 3
   self.swallowTouch = false
 
   -- Must clear the timer on entering the scene or old timer from previous
@@ -38,16 +40,30 @@ function Play:enteredState()
 
   self:createCamera(w,h)
   self:createEventHandlers()
+
+  self.checkpoint = Checkpoint:new(self.world)
 end
 
 function Play:createEventHandlers()
   Beholder.group(self,function()
-    -- Beholder.observe('GameOver',function() self:onGameOver() end)
+    Beholder.observe('GameOver',function() self:onGameOver() end)
     Beholder.observe('ResetLevel',function() self:onResetLevel() end)
     Beholder.observe('GotoMainMenu',function() self:onGotoMainMenu() end)
     Beholder.observe('WinLevel',function() self:onWinLevel() end)
     Beholder.observe('entered',function(polygon,x,y)
       Tail:new(self.world,x,y)
+    end)
+    Beholder.observe('lose',function()
+      Log.debug('Lives',self.state.lives)
+      self.state.lives = self.state.lives - 1
+      if self.state.lives < 1 then
+        print 'debug'
+        Beholder.trigger('GameOver')
+        return
+      end
+      local x,y = self.checkpoint:getLastPosition()
+      self:createPlayer(x,y)
+      Beholder.trigger('start')
     end)
     -- Observe all events (for debug purpose)
     if conf.build == 'debug' then
@@ -93,6 +109,12 @@ end
 --   Log.info('Popped state "Play"')
 -- end
 --
+
+function Play:createPlayer(x,y)
+  self.player = Player:new(self.world,x,y)
+  self.follow = self.player
+end
+
 -- Must return the world size (w,h)
 function Play:loadWorldMap()
   local filename = string.format('resources/maps/map%02d.lua',self.state.csi)
@@ -118,8 +140,7 @@ function Play:loadWorldMap()
     if obj.type == 'polygon' then
       Polygon:new(self.world,nil,unpack(polygonToPoints(obj.polygon)))
     elseif obj.type == 'player' then
-      self.player = Player:new(self.world,obj.x,obj.y)
-      self.follow = self.player
+      self:createPlayer(obj.x,obj.y)
     elseif obj.type == 'enemy' then
       Enemy:new(self.world,obj.x,obj.y)
     end

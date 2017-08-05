@@ -27,12 +27,22 @@ function HUD:initialize(opt)
   self.node = Node:new(game.visible:screen())
 
   local s = Assets.img.tilesheet
-  for i=0,2 do
+  for i=0,game.state.lives-1 do
     local quad = g.newQuad(0,20,10,10,s:getDimensions())
     local live = Quad:new(s,quad,3+(6*i),4)
     self.node:addChild(live)
   end
 
+  Beholder.group(self,function()
+    Beholder.observe('killed',function()
+      self.node:getChild(game.state.lives):setVisible(false)
+    end)
+  end)
+
+end
+
+function HUD:destroy()
+  Beholder.stopObserving(self)
 end
 
 function HUD:createSwallowTouchLayer()

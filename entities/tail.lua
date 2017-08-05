@@ -17,7 +17,13 @@ function Tail:initialize(world,x,y)
     Beholder.observe('leaved',function(polygon,x,y)
       self:destroy()
     end)
+    Beholder.observe('lose',function()
+      self:destroy()
+    end)
     Beholder.observe('GameOver',function()
+      self:destroy()
+    end)
+    Beholder.observe('killed',function()
       self:destroy()
     end)
   end)
@@ -31,7 +37,7 @@ end
 function Tail:querySegment(ax,ay,bx,by)
   local items,len = self.world:querySegment(ax,ay,bx,by,filter)
   if len > 0 then
-    Beholder.trigger('GameOver')
+    Beholder.trigger('killed')
   end
 end
 
@@ -45,8 +51,7 @@ end
 
 -- Extend this Tail with a new segment
 function Tail:addPoint(x,y)
-  table.insert(self.points,x)
-  table.insert(self.points,y)
+  Lume.push(self.points,x,y)
 end
 
 -- Change the current/last segment end point
