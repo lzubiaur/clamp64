@@ -26,6 +26,9 @@ function Tail:initialize(world,x,y)
     Beholder.observe('killed',function()
       self:destroy()
     end)
+    Beholder.observe('beatable',function()
+      self.isInvincible = false
+    end)
   end)
 end
 
@@ -35,6 +38,7 @@ local function filter(other)
 end
 
 function Tail:querySegment(ax,ay,bx,by)
+  if self.isInvincible then return end
   local items,len = self.world:querySegment(ax,ay,bx,by,filter)
   if len > 0 then
     Beholder.trigger('killed')

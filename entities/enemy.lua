@@ -27,7 +27,8 @@ end
 function Enemy:filter(other)
   if other.class.name == 'Segment' then
     return 'bounce'
-  elseif not self.killed and other.class.name == 'Player' then
+  elseif other.class.name == 'Player' then
+    if self.killed or other.isInvincible then return nil end
     return 'touch'
   end
   return nil
