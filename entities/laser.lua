@@ -1,6 +1,6 @@
 -- laser.lua
 
-local Body = require 'entities.base.Body'
+local Body = require 'entities.base.body'
 local Quad = require 'entities.base.quad'
 
 local Laser = Class('Laser',Body)
