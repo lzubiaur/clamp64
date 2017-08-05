@@ -7,6 +7,7 @@ conf = {
   version = require 'common.version',
   build = require 'common.build', -- release/debug build
   tests = true, -- run tests
+  drawBBox = true, -- Draw debug bounding box
   profiling = false, -- enable/disable code profiling report
   -- The game design resolution. Use a 16:9 aspect ratio
   width = 640, height = 360,
