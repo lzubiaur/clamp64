@@ -19,9 +19,9 @@ function Player:initialize(world, x,y)
 
   -- Create an empty node so sprites/animations added later
   --  can be "zOrdered" (e.g. blink)
-  self.ship = self:addSprite(Node:new(4,4,10,10))
+  self.ship = self:addSprite(Node:new(4,4,12,12))
 
-  local quad = g.newQuad(0,0,10,10,Assets.img.tilesheet:getDimensions())
+  local quad = g.newQuad(0,0,12,12,Assets.img.tilesheet:getDimensions())
   self.ship:addChild(Quad:new(Assets.img.tilesheet,quad,0,0))
   self:createEventHandlers()
 end
@@ -123,7 +123,7 @@ function Player:resetCollisionFlags()
 end
 
 function Player:addExplosion()
-  local anim = Animated:new(Assets.img.tilesheet,5,5,10,10)
+  local anim = Animated:new(Assets.img.tilesheet,4,4,12,12)
   anim:setAnimation(game.tilesheetGrid('4-6',1),.1,function()
     -- anim.animation:pause()
     anim:setVisible(false)

@@ -9,11 +9,11 @@ function Laser:initialize(world,x,y)
   local w,h = game.visible:pointToPixel(8,8)
   Body.initialize(self,world,x,y,w,h)
 
-  local quad = g.newQuad(20,20,10,10,Assets.img.tilesheet:getDimensions())
-  self:addSprite(Quad:new(Assets.img.tilesheet,quad,5,5))
+  local quad = g.newQuad(24,24,12,12,Assets.img.tilesheet:getDimensions())
+  self:addSprite(Quad:new(Assets.img.tilesheet,quad,4,4))
 
-  local quad = g.newQuad(50,10,10,10,Assets.img.tilesheet:getDimensions())
-  self.red = Quad:new(Assets.img.tilesheet,quad,5,5)
+  local quad = g.newQuad(60,12,12,12,Assets.img.tilesheet:getDimensions())
+  self.red = Quad:new(Assets.img.tilesheet,quad,4,4)
   self.red:setVisible(false)
   self:addSprite(self.red)
 end

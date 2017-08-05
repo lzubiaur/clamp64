@@ -28,13 +28,13 @@ function HUD:initialize(opt)
 
   local s = Assets.img.tilesheet
   for i=0,game.state.lives-1 do
-    local quad = g.newQuad(0,20,10,10,s:getDimensions())
+    local quad = g.newQuad(0,24,12,12,s:getDimensions())
     local live = Quad:new(s,quad,3+(6*i),4)
     self.node:addChild(live)
   end
 
-  local quad = g.newQuad(30,20,20,10,s:getDimensions())
-  self.node:addChild(Quad:new(s,quad,conf.sw-10,4))
+  local quad = g.newQuad(36,24,24,12,s:getDimensions())
+  self.node:addChild(Quad:new(s,quad,conf.sw-12,4))
 
   self.progress = 0
   Beholder.group(self,function()

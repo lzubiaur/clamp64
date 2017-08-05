@@ -30,7 +30,7 @@ function Play:enteredState()
   -- Create the physics world
   self:createWorld()
 
-  self.tilesheetGrid = Anim8.newGrid(10,10,Assets.img.tilesheet:getDimensions())
+  self.tilesheetGrid = Anim8.newGrid(12,12,Assets.img.tilesheet:getDimensions())
 
   local map,w,h = self:loadWorldMap()
   self.map = map

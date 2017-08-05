@@ -8,7 +8,7 @@ local Blink = Player:addState('Blink')
 
 function Blink:enteredState()
   self.isInvincible = true
-  local anim = Animated:new(Assets.img.tilesheet,0,0,10,10)
+  local anim = Animated:new(Assets.img.tilesheet,0,0,12,12)
   anim:setAnimation(game.tilesheetGrid(1,1,2,3),.08)
   self.ship:addChild(anim)
   Timer.after(3,function()

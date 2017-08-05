@@ -9,10 +9,10 @@ function Enemy:initialize(world,x,y)
   local w,h = game.visible:pointToPixel(8,8)
   Body.initialize(self,world,x,y,w,h,{ vx=50,vy=50, zOrder = -1 })
   local s = Assets.img.tilesheet
-  local quad = g.newQuad(11,1,8,8,s:getDimensions())
-  self:addSprite(Quad:new(s,quad,4,4))
+  local quad = g.newQuad(12,0,12,12,s:getDimensions())
+  self:addSprite(Quad:new(s,quad,6,6))
 
-  self.quad2 = Quad:new(s,g.newQuad(21,1,8,8,s:getDimensions()),4,4,{ax=.5,ay=.5})
+  self.quad2 = Quad:new(s,g.newQuad(24,0,12,12,s:getDimensions()),6,6,{ax=.5,ay=.5})
   self:addSprite(self.quad2)
   Beholder.group(self,function()
     Beholder.observe('killed',function()
