@@ -84,25 +84,22 @@ function Polygon:initialize(world,opt,...)
 end
 
 function Polygon:split(paths)
-  local t,maxArea,biggest = {},0
+  local target = nil
   -- Look for the biggest polygon area and for polygons with enemies
   for i=1,paths:size() do
-    local shape = PolygonShape(unpack(pathToPoints(paths:get(i))))
-    local enemies,len = self:getEnemiesInRect(shape:bbox())
+    local p = PolygonShape(unpack(pathToPoints(paths:get(i))))
+    local enemies,len = self:getEnemiesInRect(p:bbox())
     if len > 0 then
-      table.insert(t,shape)
-      maxArea = math.max(maxArea,shape.area)
-    elseif shape.area > maxArea then
-      biggest = shape
+      target = p
+      break
+    elseif not target or p.area > target.area then
+      target = p
     end
   end
-
-  local area = 0
-  for i=1,#t do
-    local p = Polygon:new(self.world,nil,t[i])
-    area = area + p.shape.area
+  if target and target.area > 100 then
+    local p = Polygon:new(self.world,nil,target)
+    Beholder.trigger('area',self.shape.area - target.area)
   end
-  Beholder.trigger('area',self.shape.area - area)
 end
 
 function Polygon:getEnemiesInRect(l,t,r,b)
