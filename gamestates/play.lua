@@ -6,6 +6,7 @@ local Enemy = require 'entities.enemy'
 local Polygon = require 'entities.polygon'
 local Tail = require 'entities.tail'
 local Checkpoint = require 'common.checkpoint'
+local Segment = require 'entities.segment'
 
 local Play = Game:addState('Play')
 
@@ -129,10 +130,7 @@ function Play:loadWorldMap()
 
   local polygonToPoints = function(p)
     local t = {}
-    for i=1,#p do
-      table.insert(t,p[i].x)
-      table.insert(t,p[i].y)
-    end
+    for i=1,#p do Lume.push(t,p[i].x,p[i].y) end
     return t
   end
 
@@ -148,16 +146,21 @@ function Play:loadWorldMap()
     end
   end
 
-  -- Get player's position from the map
-  -- local x = map.properties.px and map.properties.px or 0
-  -- local y = map.properties.py and map.properties.py or 0
-  -- x,y = map:convertTileToPixel(x,y)
-  --
-  -- -- Create the player entity
-  -- self.player = Player:new(self.world, x,y)
-  -- self.follow = self.player
+  local w,h = map.tilewidth * map.width, map.tileheight * map.height
 
-  return map,map.tilewidth * map.width, map.tileheight * map.height
+  local edge = Segment:new(self.world,0,0,w,0,.1)
+  edge.isBoundEdge = true
+
+  edge = Segment:new(self.world,w,0,w,h,.1)
+  edge.isBoundEdge = true
+
+  edge = Segment:new(self.world,w,h,0,h,.1)
+  edge.isBoundEdge = true
+
+  edge = Segment:new(self.world,0,h,0,0,.1)
+  edge.isBoundEdge = true
+
+  return map,w,h
 end
 
 function Play:drawBeforeCamera()

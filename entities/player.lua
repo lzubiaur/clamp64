@@ -71,14 +71,16 @@ end
 
 function Player:collisionsFilter(other)
   if other.class.name == 'Segment' then
-    return 'cross'
+    return other.isPolygonEdge and 'cross' or 'touch'
   end
+  return nil
 end
 
 function Player:handleCollisions(cx,cy)
   local cols,len = self:move(self.x,self.y,self.collisionsFilter)
   for _,col in ipairs(cols) do
     local other = col.other
+    if other.isBoundEdge then return end
     local poly,polygons = other.polygon,self.polygons
     -- Check if it's the first time the player collide with
     -- any edges of this polygon
