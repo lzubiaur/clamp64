@@ -58,6 +58,7 @@ Parallax  = require 'modules.parallax'
 Binser    = require 'modules.binser'
 Matrix    = require 'modules.matrix'
 EditGrid  = require 'modules.editgrid'
+Anim8     = require 'modules.anim8'
 
 if conf.build == 'debug' then
   ProFi = require 'modules.profi'
