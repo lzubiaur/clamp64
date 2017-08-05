@@ -80,6 +80,7 @@ function Polygon:initialize(world,opt,...)
       self:destroy()
     end)
   end)
+
 end
 
 function Polygon:split(paths)
@@ -96,9 +97,12 @@ function Polygon:split(paths)
     end
   end
 
+  local area = 0
   for i=1,#t do
-    Polygon:new(self.world,nil,t[i])
+    local p = Polygon:new(self.world,nil,t[i])
+    area = area + p.shape.area
   end
+  Beholder.trigger('area',self.shape.area - area)
 end
 
 function Polygon:getEnemiesInRect(l,t,r,b)

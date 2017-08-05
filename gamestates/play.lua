@@ -70,10 +70,17 @@ function Play:createEventHandlers()
       self.player:gotoState('Blink')
       Beholder.trigger('start')
     end)
-    -- Observe all events (for debug purpose)
-    if conf.build == 'debug' then
-      -- Beholder.observe(function(...) Log.debug('Event triggered > ',...) end)
-    end
+    self.completed = 0
+    local area = 0
+    Beholder.observe('area',function(value)
+      area = area - value
+      self.completed = math.abs(area / game.totalArea) / .4
+      Beholder.trigger('progress',self.completed)
+      Log.info('Progress',self.completed)
+      if self.completed >= 1 then
+        self:pushState('Win')
+      end
+    end)
   end)
 end
 
@@ -136,11 +143,13 @@ function Play:loadWorldMap()
     return t
   end
 
+  self.totalArea = 0
   local layer = map['objects']
   for _,obj in pairs(layer) do
     Log.debug(obj.type)
     if obj.type == 'polygon' then
-      Polygon:new(self.world,nil,unpack(polygonToPoints(obj.polygon)))
+      local p = Polygon:new(self.world,nil,unpack(polygonToPoints(obj.polygon)))
+      self.totalArea = self.totalArea + p.shape.area
     elseif obj.type == 'player' then
       self:createPlayer(obj.x,obj.y)
     elseif obj.type == 'enemy' then
@@ -149,6 +158,7 @@ function Play:loadWorldMap()
       Laser:new(self.world,obj.x,obj.y)
     end
   end
+  Log.info('Total area',self.totalArea)
 
   local w,h = map.tilewidth * map.width, map.tileheight * map.height
 

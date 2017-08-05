@@ -33,9 +33,18 @@ function HUD:initialize(opt)
     self.node:addChild(live)
   end
 
+  local quad = g.newQuad(30,20,20,10,s:getDimensions())
+  self.node:addChild(Quad:new(s,quad,conf.sw-10,4))
+
+  self.progress = 0
   Beholder.group(self,function()
+    Beholder.observe('progress',function(value)
+      self.progress = Lume.clamp(value,0,1)
+    end)
     Beholder.observe('killed',function()
-      self.node:getChild(game.state.lives):setVisible(false)
+      if game.state.lives > 0 then
+        self.node:getChild(game.state.lives):setVisible(false)
+      end
     end)
   end)
 
@@ -62,8 +71,10 @@ function HUD:draw(l,t,w,h)
       items[i]:draw()
     end
   end
-  -- g.setColor(to_rgb(palette.text))
-  -- g.printf('Level '..self.currentLevel,0,0,conf.width,'center')
+  g.setColor(0,226,50,255)
+  g.line(46,4,46+16*self.progress,4)
+  g.setColor(0,255,56,255)
+  g.line(46,3,46+16*self.progress,3)
   self.node:draw()
 end
 
