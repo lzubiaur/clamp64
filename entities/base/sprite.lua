@@ -13,8 +13,7 @@ end
 function Sprite:draw()
   Node.draw(self)
   g.setColor(self.color)
-  g.draw(self.img,self.x,self.y,self.angle)
-  self:drawBoundingBox({0,255,0,255})
+  g.draw(self.img,self.x,self.y,self.angle,self.sx,self.sy,self.w*self.ax,self.h*self.ay)
 end
 
 return Sprite

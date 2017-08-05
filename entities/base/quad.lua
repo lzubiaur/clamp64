@@ -1,4 +1,4 @@
--- sprite.lua
+-- quad.lua
 local Node = require 'entities.base.node'
 
 local Quad = Class('Quad',Node)
@@ -14,8 +14,7 @@ end
 function Quad:draw()
   Node.draw(self)
   g.setColor(self.color)
-  g.draw(self.image,self.quad,self.x,self.y,self.angle,1,1,self.w*self.ax,self.h*self.ay)
-  self:drawBoundingBox({0,255,0,255})
+  g.draw(self.image,self.quad,self.x,self.y,self.angle,self.sx,self.sy,self.w*self.ax,self.h*self.ay)
 end
 
 return Quad
