@@ -7,6 +7,7 @@ local Polygon = require 'entities.polygon'
 local Tail = require 'entities.tail'
 local Checkpoint = require 'common.checkpoint'
 local Segment = require 'entities.segment'
+local Laser = require 'entities.laser'
 
 local Play = Game:addState('Play')
 
@@ -144,20 +145,20 @@ function Play:loadWorldMap()
       self:createPlayer(obj.x,obj.y)
     elseif obj.type == 'enemy' then
       Enemy:new(self.world,obj.x,obj.y)
+    elseif obj.type == 'laser' then
+      Laser:new(self.world,obj.x,obj.y)
     end
   end
 
   local w,h = map.tilewidth * map.width, map.tileheight * map.height
 
+  -- Create the world's bounds
   local edge = Segment:new(self.world,0,0,w,0,.1)
   edge.isBoundEdge = true
-
   edge = Segment:new(self.world,w,0,w,h,.1)
   edge.isBoundEdge = true
-
   edge = Segment:new(self.world,w,h,0,h,.1)
   edge.isBoundEdge = true
-
   edge = Segment:new(self.world,0,h,0,0,.1)
   edge.isBoundEdge = true
 
