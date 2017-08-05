@@ -72,9 +72,9 @@ function HUD:draw(l,t,w,h)
     end
   end
   g.setColor(0,226,50,255)
-  g.line(46,4,46+16*self.progress,4)
+  g.line(44,4,44+16*self.progress,4)
   g.setColor(0,255,56,255)
-  g.line(46,3,46+16*self.progress,3)
+  g.line(44,3,44+16*self.progress,3)
   self.node:draw()
 end
 
