@@ -170,6 +170,7 @@ function Game:pressed(x, y)
   -- Query HUD entities first. Pressed events on HUD entities are always swallowed.
   if self.hud then
     local x,y = self:screenToDesign(x,y)
+    if x == nil or y == nil then return end
     local items, len = self.hud.world:queryPoint(x,y)
     table.sort(items,Entity.sortByZOrderDesc)
     if len > 0 then
