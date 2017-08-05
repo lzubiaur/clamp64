@@ -1,4 +1,4 @@
--- sprite.lua
+-- animated.lua
 local Node = require 'entities.base.node'
 
 local Animated = Class('Animated',Node)
@@ -21,7 +21,7 @@ end
 function Animated:draw()
   Node.draw(self)
   g.setColor(self.color)
-  self.animation:draw(self.image,self.x,self.y,self.angle)
+  self.animation:draw(self.image,self.x,self.y,self.angle,self.sx,self.sy,self.w*self.ax,self.h*self.ay)
 end
 
 return Animated

@@ -5,6 +5,7 @@
 -- x,y
 -- w,h
 -- angle
+-- sx,sy scale size
 -- zOrder
 -- ax,ay anchor point (default .5,.5)
 -- hidden entities are not drawn and do not participate in touch events
@@ -20,6 +21,8 @@ function Node:initialize(x,y,w,h,opt)
     w = w, h = h,
     ax = opt.ax or .5,
     ay = opt.ay or .5,
+    sx = opt.sx or 1,
+    sy = opt.sy or 1,
     angle = opt.angle or 0,
     -- Options
     zOrder = opt.zOrder or 0, -- draw and touch order
