@@ -102,6 +102,8 @@ if conf.build == 'debug' then
   end
 end
 
+require 'entities.blink' -- player blink state
+
 -- Add table.pack
 if not table.pack then
   table.pack = function(...)

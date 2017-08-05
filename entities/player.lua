@@ -5,7 +5,7 @@ local Quad = require 'entities.base.quad'
 local Ground = require 'entities.ground'
 local Animated = require 'entities.base.animated'
 
-local Player = Class('Player', Body)
+local Player = Class('Player', Body):include(Stateful)
 
 function Player:initialize(world, x,y)
   Lume.extend(self, {
@@ -16,12 +16,13 @@ function Player:initialize(world, x,y)
   local w,h = game.visible:pointToPixel(8,6)
   Body.initialize(self, world, x,y, w,h, { vx = 0, vy = 0, zOrder = 3} )
 
-  local s = Assets.img.tilesheet
-
-  local quad = g.newQuad(0,0,8,8,s:getDimensions())
-  ship = Quad:new(s,quad,4,4,{ax=0.5,ay=0.5})
+  local quad = g.newQuad(0,0,8,8,Assets.img.tilesheet:getDimensions())
+  ship = Quad:new(Assets.img.tilesheet,quad,4,4,{ax=0.5,ay=0.5})
   self.ship = self:addSprite(ship)
+  self:createEventHandlers()
+end
 
+function Player:createEventHandlers()
   Beholder.group(self,function()
     Beholder.observe('ResetGame',function()
       self:onResetGame()
@@ -116,10 +117,8 @@ function Player:resetCollisionFlags()
 end
 
 function Player:addExplosion()
-  local s = Assets.img.tilesheet
-  local anim = Animated:new(s,0,0,10,10)
-  local grid = Anim8.newGrid(10,10,s:getWidth(),s:getHeight())
-  anim:setAnimation(grid('4-6',1),.1,function()
+  local anim = Animated:new(Assets.img.tilesheet,0,0,10,10)
+  anim:setAnimation(game.tilesheetGrid('4-6',1),.1,function()
     -- anim.animation:pause()
     anim:setVisible(false)
     Beholder.trigger('lose')

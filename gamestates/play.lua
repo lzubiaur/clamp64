@@ -28,6 +28,8 @@ function Play:enteredState()
   -- Create the physics world
   self:createWorld()
 
+  self.tilesheetGrid = Anim8.newGrid(10,10,Assets.img.tilesheet:getDimensions())
+
   local map,w,h = self:loadWorldMap()
   self.map = map
 
@@ -57,12 +59,12 @@ function Play:createEventHandlers()
       Log.debug('Lives',self.state.lives)
       self.state.lives = self.state.lives - 1
       if self.state.lives < 1 then
-        print 'debug'
         Beholder.trigger('GameOver')
         return
       end
       local x,y = self.checkpoint:getLastPosition()
       self:createPlayer(x,y)
+      self.player:gotoState('Blink')
       Beholder.trigger('start')
     end)
     -- Observe all events (for debug purpose)
