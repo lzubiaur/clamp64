@@ -8,7 +8,7 @@ LOVE_ANDROID=../love-android-sdl2
 BUILD=release
 
 # e.g. com.mycompany.myproject
-PACKAGE=com.mycompany.myproject
+PACKAGE=com.voodoocactus.games.clamp
 
 FILES="common
 entities
