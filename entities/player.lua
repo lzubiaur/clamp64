@@ -42,7 +42,7 @@ function Player:initialize(world, x,y)
       self:onKilled()
     end)
     Beholder.observe('checkpoint',function(t)
-      Lume.push(t,self:getPosition())
+      Lume.push(t,self.x,self.y,self.w,self.h)
     end)
   end)
 end

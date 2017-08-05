@@ -18,16 +18,16 @@ function Checkpoint:trigger()
   if #self.pos > 10 then
     table.remove(self.pos,1)
   end
-  Log.debug('Checkpoint',t[1],t[2])
+  Log.debug('Checkpoint',unpack(t))
 end
 
 function Checkpoint:getLastPosition()
   local p = self.pos
   for i=#p,1,-1 do
-    local x,y = p[i][1],p[i][2]
-    local item,len = self.world:queryPoint(x,y)
-    if len == 0 then return x,y end
+    local item,len = self.world:queryRect(unpack(p[i]))
+    if len == 0 then return unpack(p[i]) end
   end
+  return 0,0
 end
 
 return Checkpoint
