@@ -4,6 +4,7 @@ local Body = require 'entities.base.body'
 local Quad = require 'entities.base.quad'
 local Ground = require 'entities.ground'
 local Animated = require 'entities.base.animated'
+local Node = require 'entities.base.node'
 
 local Player = Class('Player', Body):include(Stateful)
 
@@ -16,9 +17,12 @@ function Player:initialize(world, x,y)
   local w,h = game.visible:pointToPixel(8,6)
   Body.initialize(self, world, x,y, w,h, { vx = 0, vy = 0, zOrder = 3} )
 
-  local quad = g.newQuad(0,0,8,8,Assets.img.tilesheet:getDimensions())
-  ship = Quad:new(Assets.img.tilesheet,quad,4,4,{ax=0.5,ay=0.5})
-  self.ship = self:addSprite(ship)
+  -- Create an empty node so sprites/animations added later
+  --  can be "zOrdered" (e.g. blink)
+  self.ship = self:addSprite(Node:new(4,4,10,10))
+
+  local quad = g.newQuad(0,0,10,10,Assets.img.tilesheet:getDimensions())
+  self.ship:addChild(Quad:new(Assets.img.tilesheet,quad,0,0))
   self:createEventHandlers()
 end
 
@@ -28,16 +32,16 @@ function Player:createEventHandlers()
       self:onResetGame()
     end)
     Beholder.observe('right',function()
-      if self.vx > -1 then self.vx,self.vy,self.moved,ship.angle = self.velocity,0,true,math.rad(90) end
+      if self.vx > -1 then self.vx,self.vy,self.moved,self.ship.angle = self.velocity,0,true,math.rad(90) end
     end)
     Beholder.observe('left',function()
-      if self.vx < 1 then self.vx,self.vy,self.moved,ship.angle = -self.velocity,0,true,math.rad(270) end
+      if self.vx < 1 then self.vx,self.vy,self.moved,self.ship.angle = -self.velocity,0,true,math.rad(270) end
     end)
     Beholder.observe('up',function()
-      if self.vy < 1 then self.vx,self.vy,self.moved,ship.angle = 0,-self.velocity,true,0 end
+      if self.vy < 1 then self.vx,self.vy,self.moved,self.ship.angle = 0,-self.velocity,true,0 end
     end)
     Beholder.observe('down',function()
-      if self.vy > -1 then self.vx,self.vy,self.moved,ship.angle = 0,self.velocity,true,math.rad(180) end
+      if self.vy > -1 then self.vx,self.vy,self.moved,self.ship.angle = 0,self.velocity,true,math.rad(180) end
     end)
     self:observeOnce('killed',function()
       self:onKilled()
@@ -119,7 +123,7 @@ function Player:resetCollisionFlags()
 end
 
 function Player:addExplosion()
-  local anim = Animated:new(Assets.img.tilesheet,0,0,10,10)
+  local anim = Animated:new(Assets.img.tilesheet,5,5,10,10)
   anim:setAnimation(game.tilesheetGrid('4-6',1),.1,function()
     -- anim.animation:pause()
     anim:setVisible(false)
