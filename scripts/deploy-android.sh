@@ -17,6 +17,7 @@ modules
 resources
 conf.lua
 main.lua
+hud
 tests
 "
 
