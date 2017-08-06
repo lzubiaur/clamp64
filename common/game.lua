@@ -1,7 +1,7 @@
 -- game.lua
 local Entity = require 'entities.base.entity'
 local Visible = require 'common.visible'
-local HUD = require 'common.hud'
+local HUD = require 'hud.base'
 
 local Game = Class('Game'):include(Stateful)
 
@@ -195,9 +195,14 @@ end
 
 -- 'Moved' event
 -- event args: entity,world x,y, delta x,y
-function Game:moved(x, y, dx, dy)
-  dx,dy = self:screenToWorld(x-dx,y-dy)
-  x,y = self:screenToWorld(x,y)
+function Game:moved(x,y,dx,dy)
+  if self.hud then
+    dx,dy = self:screenToDesign(x-dx,y-dy)
+    x,y = self:screenToDesign(x,y)
+  else
+    dx,dy = self:screenToWorld(x-dx,y-dy)
+    x,y = self:screenToWorld(x,y)
+  end
   for i=1,#self.entities do
     Beholder.trigger('Moved',self.entities[i],x,y,x-dx,y-dy)
   end
@@ -205,8 +210,12 @@ end
 
 -- 'Released' event
 -- event args: entity,world x,y
-function Game:released(x, y)
-  x,y = self:screenToWorld(x,y)
+function Game:released(x,y)
+  if self.hud then
+    x,y = self:screenToDesign(x,y)
+  else
+    x,y = self:screenToWorld(x,y)
+  end
   for i=1,#self.entities do
     Beholder.trigger('Released',self.entities[i],x,y)
   end
