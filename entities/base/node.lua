@@ -27,6 +27,7 @@ function Node:initialize(x,y,w,h,opt)
     -- Options
     zOrder = opt.zOrder or 0, -- draw and touch order
     id = opt.id,
+    tag = opt.tag,
     children = {},
   })
   if opt.visible ~= nil then
@@ -55,13 +56,19 @@ function Node:sortByZOrderDesc(other)
   return self.zOrder > other.zOrder
 end
 
-function Node:addChild(child)
+function Node:addChild(child,zOrder,tag)
   child.parent = self
   table.insert(self.children,child)
+  if zOrder then child.zOrder = zOrder end
+  if tag then child.tag = tag end
+  table.sort(self.children,Node.sortByZOrderAsc)
 end
 
-function Node:getChild(i)
-  return self.children[i]
+-- Returns all children with the same tag
+function Node:getChildByTag(tag)
+  return unpack(Lume.filter(self.children,function(child)
+    return child.tag == tag
+  end))
 end
 
 function Node:removeChild(child)
@@ -151,7 +158,6 @@ end
 
 function Node:draw()
   self:drawBoundingBox(self.color)
-  table.sort(self.children,Node.sortByZOrderAsc)
   g.push()
   self:transform()
   for _,child in ipairs(self.children) do

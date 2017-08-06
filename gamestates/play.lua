@@ -14,8 +14,9 @@ local Play = Game:addState('Play')
 function Play:enteredState()
   Log.info('Entered state Play')
 
-  self.state.lives = 3
   self.swallowTouch = false
+
+  game.state.lives = 3
 
   -- Must clear the timer on entering the scene or old timer from previous
   -- state might still be running
@@ -59,7 +60,6 @@ function Play:createEventHandlers()
       tail.isInvincible = self.player.isInvincible
     end)
     Beholder.observe('lose',function()
-      Log.debug('Lives',self.state.lives)
       self.state.lives = self.state.lives - 1
       if self.state.lives < 1 then
         Beholder.trigger('GameOver')

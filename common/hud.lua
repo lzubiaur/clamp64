@@ -27,24 +27,25 @@ function HUD:initialize(opt)
   self.node = Node:new(game.visible:screen())
 
   local s = Assets.img.tilesheet
-  for i=0,game.state.lives-1 do
+  local countLives = game.state.lives
+  for i=0,countLives-1 do
     local quad = g.newQuad(0,24,12,12,s:getDimensions())
-    local live = Quad:new(s,quad,3+(6*i),4)
-    self.node:addChild(live)
+    local sprite = Quad:new(s,quad,3+(6*i),4)
+    self.node:addChild(sprite,0,i+1)
   end
 
+  -- Progress bar sprite
   local quad = g.newQuad(36,24,24,12,s:getDimensions())
   self.node:addChild(Quad:new(s,quad,conf.sw-12,4))
 
   self.progress = 0
   Beholder.group(self,function()
     Beholder.observe('progress',function(value)
-      self.progress = Lume.clamp(value,0,1)
+      self.progress = math.ceil(Lume.clamp(value,0,1)*100)/100
     end)
-    Beholder.observe('killed',function()
-      if game.state.lives > 0 then
-        self.node:getChild(game.state.lives):setVisible(false)
-      end
+    Beholder.observe('lose',function()
+      local child = self.node:getChildByTag(countLives):setVisible(false)
+      countLives = countLives - 1
     end)
   end)
 
