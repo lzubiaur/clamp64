@@ -23,12 +23,12 @@ function Start:enteredState()
   self:setFont('resources/fonts/pzim3x5.ttf',self.visible:pointToPixel(10))
   -- self:setFont('resources/fonts/pzim3x5.fnt','resources/fonts/pzim3x5.png')
 
-  -- local ent = Entity:new(self.world,self.visible:screen())
-  -- Beholder.group(self,function()
-  --   Beholder.observe('Released',ent,function(x,y)
-  --     self:gotoState('Play')
-  --   end)
-  -- end)
+  local ent = Entity:new(self.world,self.visible:screen())
+  Beholder.group(self,function()
+    Beholder.observe('Released',ent,function(x,y)
+      self:gotoState('Play')
+    end)
+  end)
 
   -- local x,y,w,h = self.visible:rectCenter(320,180,70,40)
   -- Button:new(self.world,x,y,w,h, {
@@ -37,6 +37,10 @@ function Start:enteredState()
   --   end,
   --   text='Play!',
   -- })
+end
+
+function Start:exitedState()
+  Beholder.stopObserving(self)
 end
 
 -- function Start:poppedState()
