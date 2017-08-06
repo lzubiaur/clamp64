@@ -6,22 +6,22 @@ local platform = love.system.getOS()
 conf = {
   version = require 'common.version',
   build = require 'common.build', -- release/debug build
-  tests = true, -- run tests
-  drawBBox = true, -- Draw debug bounding box
+  tests = false, -- run tests
+  drawBBox = false,
   profiling = false, -- enable/disable code profiling report
   -- The game design resolution. Use a 16:9 aspect ratio
-  width = 640, height = 360,
+  width = 64, height = 64,
   -- Bump world cell size. Should be a multiple of the map's tile size.
   cellSize = 64,
   -- Run on a mobile platform?
   mobile = platform == 'Android' or platform == 'iOS',
   -- grafics
-  lineWidth = 2,
-  pointSize = 5,
+  lineWidth = 1,
+  pointSize = 1,
   -- TODO add camera parameters (camera borders, smooth/lerp)
-  camOffsetX = 150, -- offset from the player
-  camMarginX = 150, -- horizontal outer space allowed to the camera to move outside the map/world
-  camMarginY = 150, -- veritcal margin must be big enough so the player is still updated when outside the map.
+  camOffsetX = 0, -- offset from the player
+  camMarginX = 10, -- horizontal outer space allowed to the camera to move outside the map/world
+  camMarginY = 10, -- veritcal margin must be big enough so the player is still updated when outside the map.
   -- Player config
   gravity = 0, -- vertical gravity (default 1000)
   playerVelocity = 0, -- Player horizontal velocity in pixel/second. Default 500.
@@ -29,7 +29,7 @@ conf = {
   playerImpulse2 = -1000, -- jump 2 impulse
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
-  pathOffset = 10,
+  pathOffset = 1,
 }
 
 -- Load 3rd party libraries/modules globally.
@@ -40,7 +40,7 @@ Inspect   = require 'modules.inspect'
 Push      = require 'modules.push'
 Loader    = require 'modules.love-loader'
 Log       = require 'modules.log'
--- Clipper   = require 'modules.clipper'
+Clipper   = require 'modules.clipper'
 Bump      = require 'modules.bump'
 HC        = require 'modules.HC'
 STI       = require 'modules.sti'
@@ -59,6 +59,7 @@ Binser    = require 'modules.binser'
 Matrix    = require 'modules.matrix'
 EditGrid  = require 'modules.editgrid'
 Anim8     = require 'modules.anim8'
+Assets    = require 'modules.cargo'.init 'resources'
 
 if conf.build == 'debug' then
   ProFi = require 'modules.profi'
@@ -101,6 +102,21 @@ if conf.build == 'debug' then
   end
 end
 
+require 'entities.blink' -- player blink state
+
+-- HUD states
+require 'hud.base'
+require 'hud.gameover'
+require 'hud.win'
+require 'hud.gameplay'
+
+-- Add table.pack
+if not table.pack then
+  table.pack = function(...)
+    return { n=select('#',...), ...}
+  end
+end
+
 -- Add table.pack
 if not table.pack then
   table.pack = function(...)
@@ -113,7 +129,7 @@ game = nil
 
 function love.load()
   -- Avoid anti-alising/blur when scaling. Useful for pixel art.
-  -- love.graphics.setDefaultFilter('nearest', 'nearest', 0)
+  love.graphics.setDefaultFilter('nearest', 'nearest', 0)
 
   -- setBackgroundColor doesnt work with push
   -- love.graphics.setBackgroundColor(0,0,0)
@@ -175,17 +191,17 @@ function setScaledResolution(w,h)
 end
 
 function setupMultiResolution()
-  -- local w,h = g.getDimensions()
   local w,h,flags = love.window.getMode()
-  setScaledResolution(w,h)
-  -- Push:resetSettings()
+  -- setScaledResolution(w,h)
+  conf.sw,conf.sh = conf.width,conf.height
+  conf.scaleX,conf.scaleY = 1,1
   Push:setupScreen(conf.sw,conf.sh, w,h, {
     fullscreen = conf.mobile,
     resizable = not conf.mobile,
     highdpi = flags.highdpi,
     canvas = true,  -- Canvas is required to scale the camera properly
-    stretched = true, -- Keep aspect ratio or strech to borders
-    pixelperfect = false,
+    stretched = false, -- Keep aspect ratio or strech to borders
+    pixelperfect = true,
   })
 end
 

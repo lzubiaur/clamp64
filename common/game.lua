@@ -1,7 +1,7 @@
 -- game.lua
 local Entity = require 'entities.base.entity'
 local Visible = require 'common.visible'
-local HUD = require 'common.hud'
+local HUD = require 'hud.base'
 
 local Game = Class('Game'):include(Stateful)
 
@@ -15,6 +15,7 @@ function Game:initialize()
     path = 'db.data', -- this database filename
     cli = 1, -- current level id
     csi = 1, -- current season id
+    lives = 4,
     levels = {} -- Array with all levels states.
   }
 
@@ -170,6 +171,7 @@ function Game:pressed(x, y)
   -- Query HUD entities first. Pressed events on HUD entities are always swallowed.
   if self.hud then
     local x,y = self:screenToDesign(x,y)
+    if x == nil or y == nil then return end
     local items, len = self.hud.world:queryPoint(x,y)
     table.sort(items,Entity.sortByZOrderDesc)
     if len > 0 then
@@ -193,9 +195,14 @@ end
 
 -- 'Moved' event
 -- event args: entity,world x,y, delta x,y
-function Game:moved(x, y, dx, dy)
-  dx,dy = self:screenToWorld(x-dx,y-dy)
-  x,y = self:screenToWorld(x,y)
+function Game:moved(x,y,dx,dy)
+  if self.hud then
+    dx,dy = self:screenToDesign(x-dx,y-dy)
+    x,y = self:screenToDesign(x,y)
+  else
+    dx,dy = self:screenToWorld(x-dx,y-dy)
+    x,y = self:screenToWorld(x,y)
+  end
   for i=1,#self.entities do
     Beholder.trigger('Moved',self.entities[i],x,y,x-dx,y-dy)
   end
@@ -203,8 +210,12 @@ end
 
 -- 'Released' event
 -- event args: entity,world x,y
-function Game:released(x, y)
-  x,y = self:screenToWorld(x,y)
+function Game:released(x,y)
+  if self.hud then
+    x,y = self:screenToDesign(x,y)
+  else
+    x,y = self:screenToWorld(x,y)
+  end
   for i=1,#self.entities do
     Beholder.trigger('Released',self.entities[i],x,y)
   end
@@ -322,6 +333,14 @@ function Game:getCurrentLevelState()
     }
   end
   return state.levels[i]
+end
+
+function Game:getGrandScore()
+  local score = 0
+  for i=1,#self.state.levels do
+    score = score + self.state.levels[i].score
+  end
+  return score
 end
 
 return Game
