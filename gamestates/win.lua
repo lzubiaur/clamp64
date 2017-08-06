@@ -17,7 +17,7 @@ end
 function Win:update(dt)
 end
 
--- Disable touch controls (e.g. moving player) but still call 
+-- Disable touch controls (e.g. moving player) but still call
 -- normal touches (e.g. HUD)
 function Play:pressed(x,y)
   Game.pressed(self,x,y)
@@ -32,7 +32,7 @@ function Win:drawAfterCamera(l,t,w,h)
   g.rectangle('fill',0,0,conf.sw,conf.sh)
   g.setColor(0,30,63,100)
   g.draw(self.img,self.quad,self.visible:leftTop())
-  g.setColor(255,255,255,255)
+  g.setColor(193,191,189,255)
   g.printf(
     'Level '..self.state.cli..'\nCleared!\nScore:'..self:getGrandScore(),
     0,conf.sh/2-self.fontHeight/2,conf.sw,'center')
