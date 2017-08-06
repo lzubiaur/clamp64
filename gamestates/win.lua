@@ -11,12 +11,13 @@ function Win:enteredState(a,b)
   self.img:setWrap('repeat','repeat')
   local x,y,w,h = self.visible:screen()
   self.quad = g.newQuad(x,y,w,h,self.img:getDimensions())
+  self.hud:gotoState('Win')
 end
 
 function Win:update(dt)
 end
 
-function Win:drawAfterCamera()
+function Win:drawAfterCamera(l,t,w,h)
   g.setColor(0,30,63,120)
   g.rectangle('fill',0,0,conf.sw,conf.sh)
   g.setColor(0,30,63,100)
@@ -25,6 +26,7 @@ function Win:drawAfterCamera()
   g.printf(
     'Level '..self.state.cli..'\nCleared!\nScore:'..self:getGrandScore(),
     0,conf.sh/2-self.fontHeight/2,conf.sw,'center')
+  self.hud:draw(l,t,w,h)
 end
 
 function Win:keypressed(key, scancode, isrepeat)

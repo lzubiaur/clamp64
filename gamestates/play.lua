@@ -26,6 +26,7 @@ function Play:enteredState()
   end
 
   self:createHUD()
+  self.hud:pushState('GamePlay')
   -- Create the physics world
   self:createWorld()
 

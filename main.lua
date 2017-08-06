@@ -104,6 +104,12 @@ end
 
 require 'entities.blink' -- player blink state
 
+-- HUD states
+require 'hud.base'
+require 'hud.gameover'
+require 'hud.win'
+require 'hud.gameplay'
+
 -- Add table.pack
 if not table.pack then
   table.pack = function(...)
