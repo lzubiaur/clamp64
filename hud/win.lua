@@ -13,7 +13,8 @@ function Win:enteredState()
     image = Assets.img.menu,
     onSelected = function()
       Beholder.trigger('GotoMainMenu')
-    end
+    end,
+    color = {255,255,255,255}
   })
 end
 
