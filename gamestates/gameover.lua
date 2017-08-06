@@ -22,7 +22,7 @@ function GameOver:drawAfterCamera()
   g.printf('Gameover',0,conf.sh/2-self.fontHeight/2,conf.sw,'center')
 end
 
-function GameOver:pressed()
+function GameOver:released()
   self:gotoState('Play')
 end
 
