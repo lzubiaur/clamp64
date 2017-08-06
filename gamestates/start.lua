@@ -12,10 +12,23 @@ function Start:enteredState()
 
   Timer.clear()
 
+  if not self.music then
+    self.music = love.audio.newSource('resources/music/dream_candy.xm','stream')
+    self.music:setLooping(true)
+    love.audio.play(self.music)
+  end
+
   self:createWorld()
   self:createCamera()
   self:setFont('resources/fonts/pzim3x5.ttf',self.visible:pointToPixel(10))
   -- self:setFont('resources/fonts/pzim3x5.fnt','resources/fonts/pzim3x5.png')
+
+  -- local ent = Entity:new(self.world,self.visible:screen())
+  -- Beholder.group(self,function()
+  --   Beholder.observe('Released',ent,function(x,y)
+  --     self:gotoState('Play')
+  --   end)
+  -- end)
 
   -- local x,y,w,h = self.visible:rectCenter(320,180,70,40)
   -- Button:new(self.world,x,y,w,h, {
@@ -26,9 +39,9 @@ function Start:enteredState()
   -- })
 end
 
-function Start:poppedState()
-  self.swallowTouch = false
-end
+-- function Start:poppedState()
+--   self.swallowTouch = false
+-- end
 
 function Start:keypressed(key, scancode, isRepeat)
   if key == 'space' then

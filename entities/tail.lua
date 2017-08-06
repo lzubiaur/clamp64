@@ -72,10 +72,10 @@ function Tail:updateEndPoint(x,y)
 end
 
 function Tail:draw()
+  -- XXX how to draw only visible lines/edges?
   local t = Lume.concat(self.points,{game.player:getCenter()})
   g.setColor(0,255,255,255)
   g.line(unpack(t))
-  self:drawBoundingBox()
 end
 
 return Tail

@@ -20,11 +20,6 @@ function Play:enteredState()
   -- state might still be running
   Timer.clear()
 
-  if not self.music then
-    self.music = love.audio.newSource('resources/music/dream_candy.xm','stream')
-    love.audio.play(self.music)
-  end
-
   self:createHUD()
   self.hud:pushState('GamePlay')
   -- Create the physics world
