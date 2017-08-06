@@ -18,7 +18,7 @@ function GameOver:enteredState()
 end
 
 function GameOver:drawAfterCamera()
-  g.setColor(193,191,189,255)
+  g.setColor(255,241,232,255)
   g.printf('Gameover',0,conf.sh/2-self.fontHeight/2,conf.sw,'center')
 end
 
