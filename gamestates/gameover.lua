@@ -28,6 +28,10 @@ function GameOver:drawAfterCamera()
   g.draw(img,x-img:getWidth()/2,y)
 end
 
+function GameOver:pressed()
+  self:gotoState('Play')
+end
+
 -- function GameOver:update(dt)
 -- end
 
