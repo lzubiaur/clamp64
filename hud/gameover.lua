@@ -14,15 +14,10 @@ function Gameover:enteredState()
       Beholder.trigger('GotoMainMenu')
     end
   })
-  self.back:setVisible(false)
-  Beholder.group(self,function()
-    Beholder.observe('Win',function()
-      self.back.hidden = true
-    end)
-  end)
 end
 
 function Gameover:exitedState()
+  self.back:destroy()
 end
 
 return Gameover

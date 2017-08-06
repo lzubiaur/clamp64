@@ -240,10 +240,6 @@ function Play:pressed(x,y)
   Game.pressed(self,x,y)
 end
 
-function Play:moved(x,y,dx,dy)
-  Game.moved(self,x,y,dx,dy)
-end
-
 function Play:released(x,y)
   local p = self._p
   p = (Vector(x,y) - p):normalized()

@@ -17,6 +17,16 @@ end
 function Win:update(dt)
 end
 
+-- Disable touch controls (e.g. moving player) but still call 
+-- normal touches (e.g. HUD)
+function Play:pressed(x,y)
+  Game.pressed(self,x,y)
+end
+
+function Play:released(x,y)
+  Game.released(self,x,y)
+end
+
 function Win:drawAfterCamera(l,t,w,h)
   g.setColor(0,30,63,120)
   g.rectangle('fill',0,0,conf.sw,conf.sh)

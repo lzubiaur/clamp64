@@ -17,12 +17,7 @@ end
 function HUD:createSwallowTouchLayer()
   self.swallowTouch = true
   local x,y,w,h = game.visible:screen()
-  self.swallowLayer = Entity:new(self.world,x,y,w,h,{zOrder=11})
-  -- Debug draw
-  -- self.swallowLayer.draw = function()
-  --   g.setColor(30,30,30,200)
-  --   g.rectangle('fill',30,0,conf.width-60,conf.height)
-  -- end
+  self.swallowLayer = Entity:new(self.world,x,y,w,h)
 end
 
 function HUD:removeSwallowTouchLayer()

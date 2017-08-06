@@ -31,6 +31,7 @@ function GamePlay:enteredState()
 end
 
 function GamePlay:exitedState()
+  self.node:setVisible(false)
 end
 
 function GamePlay:draw(l,t,w,h)
