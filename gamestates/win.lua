@@ -19,11 +19,11 @@ end
 
 -- Disable touch controls (e.g. moving player) but still call
 -- normal touches (e.g. HUD)
-function Play:pressed(x,y)
+function Win:pressed(x,y)
   Game.pressed(self,x,y)
 end
 
-function Play:released(x,y)
+function Win:released(x,y)
   Game.released(self,x,y)
 end
 
