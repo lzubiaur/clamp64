@@ -6,9 +6,13 @@ local Tail = Class('Tail',Entity)
 
 function Tail:initialize(world,x,y)
   self.points = {}
-  self.ax,self.ay,self.bx,self.by = 0,0,0,0 -- bbox left top, right bottom
-  Entity.initialize(self,world,x,y,1,1,{zOrder = 2})
-  -- addPoint must call addPoint after Entity:initialize
+
+  -- HACK
+  -- Set the size of the entity to the world so it's always drawn
+  local l,t,w,h = game.camera:getWorld()
+  Entity.initialize(self,world,l,t,w,h,{zOrder = 2})
+
+  -- Add the first point (must call addPoint after Entity:initialize)
   self:addPoint(x,y)
 
   Beholder.group(self,function()
@@ -56,11 +60,6 @@ end
 
 -- Extend this Tail with a new segment
 function Tail:addPoint(x,y)
-  self.ax = math.min(self.ax,x)
-  self.ay = math.min(self.ay,y)
-  self.bx = math.max(self.bx,x)
-  self.by = math.max(self.by,y)
-  self:resize(self.ax,self.ay,self.bx-self.ax,self.by-self.ay)
   Lume.push(self.points,x,y)
 end
 
