@@ -32,7 +32,8 @@ function Entity:removeSprite(sprite)
   self.spritesNode:removeChild(sprite)
 end
 
-function Entity:resize(w,h)
+function Entity:resize(x,y,w,h)
+  self:teleport(x,y)
   self.w,self.h = w,h
   self.world:update(self,self.x,self.y,self.w,self.h)
 end
