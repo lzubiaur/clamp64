@@ -6,9 +6,10 @@ local Tail = Class('Tail',Entity)
 
 function Tail:initialize(world,x,y)
   self.points = {}
-  self:addPoint(x,y)
-  -- XXX update size when adding new segments?
+  self.ax,self.ay,self.bx,self.by = 0,0,0,0 -- bbox left top, right bottom
   Entity.initialize(self,world,x,y,1,1,{zOrder = 2})
+  -- addPoint must call addPoint after Entity:initialize
+  self:addPoint(x,y)
 
   Beholder.group(self,function()
     Beholder.observe('moved',function(polygon,x,y)
@@ -55,6 +56,11 @@ end
 
 -- Extend this Tail with a new segment
 function Tail:addPoint(x,y)
+  self.ax = math.min(self.ax,x)
+  self.ay = math.min(self.ay,y)
+  self.bx = math.max(self.bx,x)
+  self.by = math.max(self.by,y)
+  self:resize(self.ax,self.ay,self.bx-self.ax,self.by-self.ay)
   Lume.push(self.points,x,y)
 end
 
@@ -69,6 +75,7 @@ function Tail:draw()
   local t = Lume.concat(self.points,{game.player:getCenter()})
   g.setColor(0,255,255,255)
   g.line(unpack(t))
+  self:drawBoundingBox()
 end
 
 return Tail
