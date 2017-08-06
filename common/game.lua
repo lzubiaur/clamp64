@@ -15,7 +15,7 @@ function Game:initialize()
     path = 'db.data', -- this database filename
     cli = 1, -- current level id
     csi = 1, -- current season id
-    lives = 4,
+    lives = conf.defaultLivesCount,
     levels = {} -- Array with all levels states.
   }
 

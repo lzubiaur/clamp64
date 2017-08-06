@@ -223,6 +223,7 @@ end
 
 function Play:onGameOver()
   self:pushState('GameOver')
+  self.state.lives = conf.defaultLivesCount
 end
 
 function Play:onNextLevel()
