@@ -17,13 +17,13 @@ function Start:enteredState()
   self:setFont('resources/fonts/pzim3x5.ttf',self.visible:pointToPixel(10))
   -- self:setFont('resources/fonts/pzim3x5.fnt','resources/fonts/pzim3x5.png')
 
-  local x,y,w,h = self.visible:rectCenter(320,180,70,40)
-  Button:new(self.world,x,y,w,h, {
-    onSelected = function()
-      self:gotoState('Play')
-    end,
-    text='Play!',
-  })
+  -- local x,y,w,h = self.visible:rectCenter(320,180,70,40)
+  -- Button:new(self.world,x,y,w,h, {
+  --   onSelected = function()
+  --     self:gotoState('Play')
+  --   end,
+  --   text='Play!',
+  -- })
 end
 
 function Start:poppedState()
@@ -40,13 +40,7 @@ function Start:keypressed(key, scancode, isRepeat)
 end
 
 function Start:drawAfterCamera()
-  g.setLineWidth(1)
-  g.setLineStyle('rough')
-  g.setColor(255,255,255,255)
-  g.rectangle('line',game.visible:screen())
-  g.circle('line',24,24,10)
-  g.points(10,10)
-  g.line(20,10,40,10)
+  g.draw(Assets.img.mainmenu,0,0)
 end
 
 return Start
