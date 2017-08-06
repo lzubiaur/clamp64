@@ -143,7 +143,7 @@ function love.load()
   if conf.build == 'debug' and conf.tests then
     game:gotoState('TestState')
   else
-    game:gotoState('Play')
+    game:gotoState('Start')
   end
 end
 

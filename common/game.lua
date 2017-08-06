@@ -15,6 +15,7 @@ function Game:initialize()
     path = 'db.data', -- this database filename
     cli = 1, -- current level id
     csi = 1, -- current season id
+    lives = 4,
     levels = {} -- Array with all levels states.
   }
 
@@ -323,6 +324,14 @@ function Game:getCurrentLevelState()
     }
   end
   return state.levels[i]
+end
+
+function Game:getGrandScore()
+  local score = 0
+  for i=1,#self.state.levels do
+    score = score + self.state.levels[i].score
+  end
+  return score
 end
 
 return Game

@@ -7,10 +7,6 @@ local GameOver = Game:addState('GameOver')
 
 function GameOver:enteredState()
   Log.debug('Entered state GameOver')
-  self.swallowTouch = true
-  local w,h = select(3,self.visible:screen())
-  Entity:new(self.world,0,0,w,h,{zOrder=1})
-
   -- local cx,cy = self.visible:center()
   -- w,h = self.visible:pointToPixel(30,16)
   -- Button:new(self.hud.world,cx,cy,w,h,{
@@ -23,9 +19,7 @@ end
 
 function GameOver:drawAfterCamera()
   g.setColor(255,255,255,255)
-  local x,y = self.visible:center()
-  local img = Assets.img.gameover
-  g.draw(img,x-img:getWidth()/2,y)
+  g.printf('Gameover',0,conf.sh/2-self.fontHeight/2,conf.sw,'center')
 end
 
 function GameOver:pressed()

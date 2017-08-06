@@ -14,8 +14,8 @@ function Start:enteredState()
 
   self:createWorld()
   self:createCamera()
-  -- self:setFont('resources/fonts/pzim3x5.ttf',self.visible:pointToPixel(16))
-  self:setFont('resources/fonts/pzim3x5.fnt','resources/fonts/pzim3x5.png')
+  self:setFont('resources/fonts/pzim3x5.ttf',self.visible:pointToPixel(10))
+  -- self:setFont('resources/fonts/pzim3x5.fnt','resources/fonts/pzim3x5.png')
 
   local x,y,w,h = self.visible:rectCenter(320,180,70,40)
   Button:new(self.world,x,y,w,h, {

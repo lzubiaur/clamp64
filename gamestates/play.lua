@@ -13,10 +13,8 @@ local Play = Game:addState('Play')
 
 function Play:enteredState()
   Log.info('Entered state Play')
-
   self.swallowTouch = false
-
-  game.state.lives = 3
+  self.targetPercentArea = .01
 
   -- Must clear the timer on entering the scene or old timer from previous
   -- state might still be running
@@ -54,7 +52,7 @@ function Play:createEventHandlers()
     Beholder.observe('GameOver',function() self:onGameOver() end)
     Beholder.observe('ResetLevel',function() self:onResetLevel() end)
     Beholder.observe('GotoMainMenu',function() self:onGotoMainMenu() end)
-    Beholder.observe('WinLevel',function() self:onWinLevel() end)
+    Beholder.observe('NextLevel',function() self:onNextLevel() end)
     Beholder.observe('entered',function(polygon,x,y)
       local tail = Tail:new(self.world,x,y)
       tail.isInvincible = self.player.isInvincible
@@ -73,11 +71,15 @@ function Play:createEventHandlers()
     self.completed = 0
     local area = 0
     Beholder.observe('area',function(value)
-      area = area - value
-      self.completed = math.abs(area / game.totalArea) / .4
+      area = area + value
+      self.completed = (area / game.totalArea) / self.targetPercentArea
       Beholder.trigger('progress',self.completed)
-      Log.info('Progress',self.completed)
       if self.completed >= 1 then
+        local level = self:getCurrentLevelState()
+        area = math.ceil(area)
+        if level.score < area then
+          level.score = area
+        end
         self:pushState('Win')
       end
     end)
@@ -129,7 +131,7 @@ end
 
 -- Must return the world size (w,h)
 function Play:loadWorldMap()
-  local filename = string.format('resources/maps/map%02d.lua',self.state.csi)
+  local filename = string.format('resources/maps/map%02d.lua',self.state.cli)
   Log.info('Loading map',filename)
 
   -- Load a map exported to Lua from Tiled.
@@ -227,8 +229,9 @@ function Play:onGameOver()
   self:pushState('GameOver')
 end
 
-function Play:onWinLevel()
-  self:pushState('Win')
+function Play:onNextLevel()
+  self.state.cli = self.state.cli + 1
+  self:gotoState('Play')
 end
 
 function Play:pressed(x,y)
