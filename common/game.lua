@@ -228,7 +228,6 @@ function Game:touchpressed(id, x, y, dx, dy, pressure)
 end
 
 function Game:touchmoved(id, x, y, dx, dy, pressure)
-  print(x,y)
   self:moved(x,y,dx,dy)
 end
 
