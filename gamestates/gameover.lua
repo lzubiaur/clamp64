@@ -23,7 +23,7 @@ function GameOver:drawAfterCamera()
 end
 
 function GameOver:released()
-  self:gotoState('Play')
+  self:gotoState('Start')
 end
 
 -- function GameOver:update(dt)
@@ -31,7 +31,7 @@ end
 
 function GameOver:keypressed(key, scancode, isrepeat)
   if key == 'space' or key == 'escape' then
-    self:gotoState('Play')
+    self:gotoState('Start')
   end
 end
 

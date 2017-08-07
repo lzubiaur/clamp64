@@ -26,7 +26,7 @@ function Start:enteredState()
   local ent = Entity:new(self.world,self.visible:screen())
   Beholder.group(self,function()
     Beholder.observe('Released',ent,function(x,y)
-      self:gotoState('Play')
+      self:startGame()
     end)
   end)
 
@@ -47,9 +47,15 @@ end
 --   self.swallowTouch = false
 -- end
 
+function Start:startGame()
+  self.state.lives = conf.defaultLivesCount
+  self.state.cli = 1
+  self:gotoState('Play')
+end
+
 function Start:keypressed(key, scancode, isRepeat)
   if key == 'space' then
-    self:gotoState('Play')
+    self:startGame()
   -- On Android the back button is mapped to the 'escape' key
   elseif key == 'escape' then
     love.event.push('quit')

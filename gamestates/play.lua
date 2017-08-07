@@ -55,7 +55,7 @@ function Play:createEventHandlers()
     end)
     Beholder.observe('xup',function()
       if self.state.lives < conf.maxLives then
-        self.state.lives = self.state.lives + 1 
+        self.state.lives = self.state.lives + 1
       end
     end)
     Beholder.observe('lose',function()
@@ -235,7 +235,6 @@ end
 
 function Play:onGameOver()
   self:pushState('GameOver')
-  self.state.lives = conf.defaultLivesCount
 end
 
 function Play:onNextLevel()

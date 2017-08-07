@@ -29,8 +29,10 @@ function GamePlay:enteredState()
     end)
     local countLives = game.state.lives
     Beholder.observe('lose',function()
-      self.node:getChildByTag(countLives):setVisible(false)
-      countLives = countLives - 1
+      if countLives > 1 then
+        self.node:getChildByTag(countLives):setVisible(false)
+        countLives = countLives - 1
+      end
     end)
     Beholder.observe('xup',function()
       if countLives < conf.maxLives then
