@@ -29,9 +29,6 @@ conf = {
   playerImpulse2 = -1000, -- jump 2 impulse
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
-  pathOffset = 1,
-  defaultLivesCount = 4,
-  targetPercentArea = .75
 }
 
 -- Load 3rd party libraries/modules globally.
