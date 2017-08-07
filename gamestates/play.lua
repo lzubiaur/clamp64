@@ -14,7 +14,6 @@ local Play = Game:addState('Play')
 function Play:enteredState()
   Log.info('Entered state Play')
   self.swallowTouch = false
-  self.targetPercentArea = .01
 
   -- Must clear the timer on entering the scene or old timer from previous
   -- state might still be running
@@ -68,7 +67,7 @@ function Play:createEventHandlers()
     local area = 0
     Beholder.observe('area',function(value)
       area = area + value
-      self.completed = (area / game.totalArea) / self.targetPercentArea
+      self.completed = (area / game.totalArea) / conf.targetPercentArea
       Beholder.trigger('progress',self.completed)
       if self.completed >= 1 then
         local level = self:getCurrentLevelState()
@@ -187,6 +186,11 @@ function Play:stencil(l,t,w,h)
       g.polygon('fill',tri[i])
     end
   end
+end
+
+function Play:update(dt)
+  Game.update(self,dt)
+  self.map:update(dt)
 end
 
 function Play:drawEntities(l,t,w,h)
