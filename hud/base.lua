@@ -11,13 +11,19 @@ function HUD:initialize()
 end
 
 function HUD:destroy()
-  Beholder.stopObserving(self)
+  -- no need to call stopObserving(swallowLayer) because Entity:destroy
+  -- do it automatically
 end
 
-function HUD:createSwallowTouchLayer()
+function HUD:createSwallowTouchLayer(f)
   self.swallowTouch = true
   local x,y,w,h = game.visible:screen()
   self.swallowLayer = Entity:new(self.world,x,y,w,h)
+  if f then
+    Beholder.group(self.swallowLayer,function()
+      Beholder.observe('Released',self.swallowLayer,f)
+    end)
+  end
 end
 
 function HUD:removeSwallowTouchLayer()

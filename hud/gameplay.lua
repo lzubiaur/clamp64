@@ -45,6 +45,7 @@ end
 
 function GamePlay:exitedState()
   self.node:setVisible(false)
+  Beholder.stopObserving(self)
 end
 
 function GamePlay:draw(l,t,w,h)

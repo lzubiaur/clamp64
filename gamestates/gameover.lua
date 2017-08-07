@@ -15,6 +15,7 @@ function GameOver:enteredState()
   --     self:gotoState('Play')
   --   end
   -- })
+  self.hud:gotoState('Gameover')
 end
 
 function GameOver:drawAfterCamera()
@@ -22,9 +23,9 @@ function GameOver:drawAfterCamera()
   g.printf('Gameover',0,conf.sh/2-self.fontHeight/2,conf.sw,'center')
 end
 
-function GameOver:released()
-  self:gotoState('Start')
-end
+-- function GameOver:released()
+--   self:gotoState('Start')
+-- end
 
 -- function GameOver:update(dt)
 -- end

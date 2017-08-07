@@ -9,5 +9,6 @@
 ## TODO
 
 * sound effects: 1-up, enemy activate
+* space background
 
 ## Game states

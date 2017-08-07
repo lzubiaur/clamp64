@@ -36,7 +36,7 @@ function Win:drawAfterCamera(l,t,w,h)
   g.printf(
     {{255,241,232,255},'Level '..self.state.cli..' cleared!\n',
      {255,163,0,255},'Score:'..self:getGrandScore()},
-    0,conf.sh/2-self.fontHeight/2,conf.sw,'center')
+    0,conf.sh/2-self.fontHeight/2-20,conf.sw,'center')
   self.hud:draw(l,t,w,h)
 end
 
