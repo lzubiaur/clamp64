@@ -175,6 +175,7 @@ function Game:pressed(x, y)
     local items, len = self.hud.world:queryPoint(x,y)
     table.sort(items,Entity.sortByZOrderDesc)
     if len > 0 then
+      self.touchOnHUD = true
       Beholder.trigger('Pressed',items[1],x,y)
       table.insert(self.entities,items[1])
       return
@@ -196,7 +197,7 @@ end
 -- 'Moved' event
 -- event args: entity,world x,y, delta x,y
 function Game:moved(x,y,dx,dy)
-  if self.hud then
+  if self.touchOnHUD then
     dx,dy = self:screenToDesign(x-dx,y-dy)
     x,y = self:screenToDesign(x,y)
   else
@@ -211,7 +212,7 @@ end
 -- 'Released' event
 -- event args: entity,world x,y
 function Game:released(x,y)
-  if self.hud then
+  if self.touchOnHUD then
     x,y = self:screenToDesign(x,y)
   else
     x,y = self:screenToWorld(x,y)
@@ -219,7 +220,7 @@ function Game:released(x,y)
   for i=1,#self.entities do
     Beholder.trigger('Released',self.entities[i],x,y)
   end
-  self.entities = {}
+  self.entities,self.touchOnHUD = {},false
 end
 
 function Game:touchpressed(id, x, y, dx, dy, pressure)
@@ -227,6 +228,7 @@ function Game:touchpressed(id, x, y, dx, dy, pressure)
 end
 
 function Game:touchmoved(id, x, y, dx, dy, pressure)
+  print(x,y)
   self:moved(x,y,dx,dy)
 end
 
@@ -300,7 +302,9 @@ end
 
 -- Convert from real screen coords to game design resolution
 function Game:screenToDesign(x,y)
-  return Push:toGame(x,y or 0)
+  -- Push:toGame might return nil
+  x,y = Push:toGame(x,y or 0)
+  return x and x or 0, y and y or 0
 end
 
 -- Convert from real screen coords to world coords
