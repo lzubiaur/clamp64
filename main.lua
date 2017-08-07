@@ -289,7 +289,5 @@ end
 
 function love.lowmemory()
   Log.warn('System is low on memory. Running garbage collector...')
-  Log.debug('Before gc (MB)',collectgarbage('count')/1024)
-  collectgarbage('collect')
-  Log.debug('After gc (MB)',collectgarbage('count')/1024)
+  game:collectGarbage()
 end

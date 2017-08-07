@@ -346,4 +346,10 @@ function Game:getGrandScore()
   return score
 end
 
+function Game:collectGarbage()
+  local before = collectgarbage('count')/1024
+  collectgarbage('collect')
+  Log.info('GC: before ['..before..'] after [',collectgarbage('count')/1024..']')
+end
+
 return Game
