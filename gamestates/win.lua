@@ -14,6 +14,10 @@ function Win:enteredState(a,b)
   self.hud:gotoState('Win')
 end
 
+function Win:exitedState()
+  self:collectGarbage()
+end
+
 function Win:update(dt)
 end
 

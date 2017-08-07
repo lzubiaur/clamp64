@@ -20,6 +20,7 @@ end
 
 function GameOver:exitedState()
   self.hud:popState()
+  self:collectGarbage()
 end
 
 function GameOver:drawAfterCamera()
