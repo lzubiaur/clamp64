@@ -76,6 +76,8 @@ end
 function Player:collisionsFilter(other)
   if other.class.name == 'Segment' then
     return other.isPolygonEdge and 'cross' or 'touch'
+  elseif other.class.name == 'Xup' then
+    return 'cross'
   end
   return nil
 end
@@ -84,7 +86,13 @@ function Player:handleCollisions(cx,cy)
   local cols,len = self:move(self.x,self.y,self.collisionsFilter)
   for _,col in ipairs(cols) do
     local other = col.other
-    if other.isBoundEdge then return end
+    if other.isBoundEdge then
+      return
+    elseif other.class.name == 'Xup' then
+      Beholder.trigger('xup')
+      other:destroy()
+      return
+    end
     local poly,polygons = other.polygon,self.polygons
     -- Check if it's the first time the player collide with
     -- any edges of this polygon

@@ -7,11 +7,15 @@ local GamePlay = HUD:addState('GamePlay')
 
 function GamePlay:enteredState()
   local s = Assets.img.tilesheet
-  local countLives = game.state.lives
-  for i=0,countLives-1 do
+
+  -- Lives
+  for i=1,conf.maxLives do
     local quad = g.newQuad(0,24,12,12,s:getDimensions())
-    local sprite = Quad:new(s,quad,3+(6*i),4)
-    self.node:addChild(sprite,0,i+1)
+    local sprite = Quad:new(s,quad,3+6*(i-1),4)
+    self.node:addChild(sprite,0,i)
+    if game.state.lives < i then
+      sprite:setVisible(false)
+    end
   end
 
   -- Progress bar sprite
@@ -23,9 +27,16 @@ function GamePlay:enteredState()
     Beholder.observe('progress',function(value)
       self.progress = math.ceil(Lume.clamp(value,0,1)*100)/100
     end)
+    local countLives = game.state.lives
     Beholder.observe('lose',function()
-      local child = self.node:getChildByTag(countLives):setVisible(false)
+      self.node:getChildByTag(countLives):setVisible(false)
       countLives = countLives - 1
+    end)
+    Beholder.observe('xup',function()
+      if countLives < conf.maxLives then
+        countLives = countLives + 1
+        self.node:getChildByTag(countLives):setVisible(true)
+      end
     end)
   end)
 end

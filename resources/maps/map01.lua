@@ -368,7 +368,7 @@ return {
         {
           id = 23,
           name = "",
-          type = "live",
+          type = "xup",
           shape = "rectangle",
           x = 112,
           y = 80,

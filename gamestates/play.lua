@@ -8,6 +8,7 @@ local Tail = require 'entities.tail'
 local Checkpoint = require 'common.checkpoint'
 local Segment = require 'entities.segment'
 local Laser = require 'entities.laser'
+local Xup = require 'entities.xup'
 
 local Play = Game:addState('Play')
 
@@ -51,6 +52,11 @@ function Play:createEventHandlers()
     Beholder.observe('entered',function(polygon,x,y)
       local tail = Tail:new(self.world,x,y)
       tail.isInvincible = self.player.isInvincible
+    end)
+    Beholder.observe('xup',function()
+      if self.state.lives < conf.maxLives then
+        self.state.lives = self.state.lives + 1 
+      end
     end)
     Beholder.observe('lose',function()
       self.state.lives = self.state.lives - 1
@@ -153,6 +159,8 @@ function Play:loadWorldMap()
       Enemy:new(self.world,obj.x,obj.y)
     elseif obj.type == 'laser' then
       Laser:new(self.world,obj.x,obj.y)
+    elseif obj.type == 'xup' then
+      Xup:new(self.world,obj.x,obj.y)
     end
   end
   Log.info('Total area',self.totalArea)

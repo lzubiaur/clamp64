@@ -30,8 +30,9 @@ conf = {
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
   pathOffset = 1,
-  defaultLivesCount = 4,
-  targetPercentArea = .75
+  defaultLivesCount = 3,
+  targetPercentArea = .75,
+  maxLives = 5,
 }
 
 -- Load 3rd party libraries/modules globally.
