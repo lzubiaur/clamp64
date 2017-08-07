@@ -30,6 +30,8 @@ conf = {
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
   pathOffset = 1,
+  defaultLivesCount = 4,
+  targetPercentArea = .75
 }
 
 -- Load 3rd party libraries/modules globally.
@@ -254,26 +256,28 @@ end
 
 -- mouse
 
-function love.mousepressed(x, y, button, istouch)
-  game:mousepressed(x,y,button,istouch)
+if not conf.mobile then
+  function love.mousepressed(x, y, button, istouch)
+    game:mousepressed(x,y,button,istouch)
+  end
+
+  function love.mousereleased(x, y, button, istouch)
+    game:mousereleased(x,y,button,istouch)
+  end
+
+  function love.mousemoved(x, y, dx, dy, istouch)
+    game:mousemoved(x,y,dx,dy,istouch)
+  end
+
+  function love.mousefocus(focus)
+    game:mousefocus(focus)
+  end
 end
 
-function love.mousereleased(x, y, button, istouch)
-  game:mousereleased(x,y,button,istouch)
-end
-
-function love.mousemoved(x, y, dx, dy, istouch)
-  game:mousemoved(x,y,dx,dy,istouch)
-end
-
-function love.mousefocus(focus)
-  game:mousefocus(focus)
-end
-
+-- TODO
 -- function love.wheelmoved( x, y )
 -- end
 
--- TODO save/restore session
 -- TODO android app is put on background/foreground
 function love.focus()
 end
@@ -287,6 +291,8 @@ function love.quit()
 end
 
 function love.lowmemory()
-  -- TODO run garbage collector
-  Log.warn('System is out of memory')
+  Log.warn('System is low on memory. Running garbage collector...')
+  Log.debug('Before gc (MB)',collectgarbage('count')/1024)
+  collectgarbage('collect')
+  Log.debug('After gc (MB)',collectgarbage('count')/1024)
 end
