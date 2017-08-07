@@ -33,6 +33,7 @@ conf = {
   defaultLivesCount = 3,
   targetPercentArea = .75,
   maxLives = 5,
+  laserTimeout = 2,
 }
 
 -- Load 3rd party libraries/modules globally.

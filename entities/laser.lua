@@ -40,7 +40,7 @@ function Laser:update(dt)
     if len > 0 then
       self.info = info[1]
       if info[1].item.class.name == 'Player' and not self.timer then
-        self.timer = Timer.after(3,function()
+        self.timer = Timer.after(conf.laserTimeout,function()
           Beholder.trigger('killed')
           self.timer = Timer.cancel(self.timer)
         end)
