@@ -18,6 +18,10 @@ function GameOver:enteredState()
   self.hud:gotoState('Gameover')
 end
 
+function GameOver:exitedState()
+  self.hud:popState()
+end
+
 function GameOver:drawAfterCamera()
   g.setColor(255,241,232,255)
   g.printf('Gameover',0,conf.sh/2-self.fontHeight/2,conf.sw,'center')

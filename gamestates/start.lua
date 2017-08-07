@@ -3,7 +3,6 @@
 local Game = require 'common.game'
 local Entity = require 'entities.base.entity'
 local Button = require 'entities.ui.button'
-local ImageButton = require 'entities.ui.imagebutton'
 
 local Start = Game:addState('Start')
 
@@ -62,7 +61,7 @@ function Start:keypressed(key, scancode, isRepeat)
   end
 end
 
-function Start:drawAfterCamera()
+function Start:drawBeforeCamera()
   g.draw(Assets.img.mainmenu,0,0)
 end
 

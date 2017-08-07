@@ -99,13 +99,11 @@ end
 
 function Play:exitedState()
   Log.info('Exited state Play')
-  -- self.music:stop()
   -- No need to call stopObserving since we reset the event system
   -- Beholder.stopObserving(self)
   Beholder.reset()
   Timer.clear()
-  collectgarbage('collect')
-  Log.debug('Memory usage:',collectgarbage("count")/1024)
+  self.hud = nil
 end
 
 -- function Play:pausedState()

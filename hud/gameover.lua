@@ -12,7 +12,6 @@ function Gameover:enteredState()
 end
 
 function Gameover:exitedState()
-  self.back:destroy()
   self:removeSwallowTouchLayer()
 end
 
