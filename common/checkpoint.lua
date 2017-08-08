@@ -18,7 +18,7 @@ function Checkpoint:trigger()
   if #self.pos > 10 then
     table.remove(self.pos,1)
   end
-  Log.debug('Checkpoint',unpack(t))
+  -- Log.debug('Checkpoint',unpack(t))
 end
 
 function Checkpoint:getLastPosition()
