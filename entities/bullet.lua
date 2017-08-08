@@ -24,6 +24,9 @@ end
 function Bullet:update(dt)
   self:applyVelocity(dt)
   local items,len = self:move(self.x,self.y,Bullet.filter)
+  if self:isOutsideVisibleScreen() then
+    self:destroy()
+  end
   if len > 0 then
     Beholder.trigger('killed')
   end
