@@ -19,7 +19,7 @@ function Cannon:initialize(world,x,y,opt)
   local closing,opening
   opening = function()
     -- Set the next animation
-    anim:setAnimation(grid('1-2',1,'1-2',2),.3,closing)
+    anim:setAnimation(grid('1-3',1,'1-2',2),.3,closing)
   end
 
   closing = function()
