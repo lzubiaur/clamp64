@@ -30,6 +30,7 @@ function Laser:update(dt)
     return item.class.name == 'Player'
   end)
   if len > 0 then
+    love.audio.play(Assets.sounds.sfx_alarm_loop6)
     local px,py = items[1]:getCenter()
     local dir = (Vector(px,py)-Vector(cx,cy)):normalized()
     self.vx,self.vy = dir.x * 25,dir.y * 25
