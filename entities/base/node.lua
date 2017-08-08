@@ -33,6 +33,10 @@ function Node:initialize(x,y,w,h,opt)
   if opt.visible ~= nil then
     self:setVisible(opt.visible)
   end
+  if opt.busy then
+    self.busy = true
+    table.insert(self.world.busy,self)
+  end
 end
 
 function Node:destroy()
