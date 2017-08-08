@@ -9,6 +9,7 @@ local Checkpoint = require 'common.checkpoint'
 local Segment = require 'entities.segment'
 local Laser = require 'entities.laser'
 local Xup = require 'entities.xup'
+local Cannon = require 'entities.cannon'
 
 local Play = Game:addState('Play')
 
@@ -165,6 +166,8 @@ function Play:loadWorldMap()
       Laser:new(self.world,obj.x,obj.y)
     elseif obj.type == 'xup' then
       Xup:new(self.world,obj.x,obj.y)
+    elseif obj.type == 'cannon' then
+      Cannon:new(self.world,obj.x,obj.y)
     end
   end
   Log.info('Total area',self.totalArea)

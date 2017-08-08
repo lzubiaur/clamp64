@@ -19,9 +19,29 @@ function Animated:update(dt)
 end
 
 function Animated:draw()
-  Node.draw(self)
   g.setColor(self.color)
   self.animation:draw(self.image,self.x,self.y,self.angle,self.sx,self.sy,self.w*self.ax,self.h*self.ay)
+  Node.draw(self)
+end
+
+function Animated:pauseAtEnd()
+  self.animation:pauseAtEnd()
+end
+
+function Animated:pauseAtStart()
+  self.animation:pauseAtStart()
+end
+
+function Animated:pause()
+  self.animation:pause()
+end
+
+function Animated:resume()
+  self.animation:resume()
+end
+
+function Animated:gotoFrame(i)
+  self.animation:gotoFrame(i)
 end
 
 return Animated

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="8" tileheight="8" nextobjectid="24">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="8" tileheight="8" nextobjectid="26">
  <tileset firstgid="1" name="tilesheet" tilewidth="8" tileheight="8" spacing="4" margin="2" tilecount="36" columns="6">
   <image source="../img/tilesheet.png" trans="ff00ff" width="72" height="72"/>
   <tile id="8">
@@ -49,9 +49,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,7,9,9,10,9,11,9,19,20,7,9,10,9,9,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,9,9,9,10,9,9,9,21,22,9,9,10,23,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,10,9,9,9,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,10,9,9,9,11,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,8,8,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,7,9,10,9,9,7,9,9,10,9,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,9,9,10,11,9,9,9,11,10,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -91,15 +91,16 @@
   </object>
   <object id="7" type="enemy" x="120" y="24" width="8" height="8"/>
   <object id="9" type="polygon" x="16" y="72">
-   <polygon points="0,0 120,0 120,16 64,16 64,24 24,24 24,16 0,16"/>
+   <polygon points="0,0 120,0 120,16 88,16 88,40 56,40 56,24 24,24 24,16 0,16"/>
   </object>
   <object id="10" type="enemy" x="64" y="80" width="8" height="8"/>
   <object id="15" type="laser" x="48" y="56" width="8" height="8"/>
-  <object id="17" type="laser" x="136" y="56" width="8" height="8"/>
+  <object id="17" type="laser" x="144" y="32" width="8" height="8"/>
   <object id="18" type="polygon" x="40" y="120">
    <polygon points="0,0 88,0 88,24 0,24"/>
   </object>
   <object id="19" type="enemy" x="72" y="128" width="8" height="8"/>
   <object id="23" type="xup" x="112" y="80" width="8" height="8"/>
+  <object id="24" type="cannon" x="120" y="96" width="16" height="16"/>
  </objectgroup>
 </map>
