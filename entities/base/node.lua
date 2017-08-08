@@ -36,6 +36,7 @@ function Node:initialize(x,y,w,h,opt)
 end
 
 function Node:destroy()
+  self.destroyed = true
   for _,child in ipairs(self.children) do
     child:destroy()
   end

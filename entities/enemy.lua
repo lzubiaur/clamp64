@@ -7,7 +7,7 @@ local Enemy = Class('Enemy', Body)
 
 function Enemy:initialize(world,x,y)
   local w,h = game.visible:pointToPixel(8,8)
-  Body.initialize(self,world,x,y,w,h,{ vx=50,vy=50, zOrder = -1 })
+  Body.initialize(self,world,x,y,w,h,{ vx=50,vy=50, zOrder = -1, busy=conf.sleepingEnemies })
   local s = Assets.img.tilesheet
   local quad = g.newQuad(12,0,12,12,s:getDimensions())
   self:addSprite(Quad:new(s,quad,6,6))
