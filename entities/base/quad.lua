@@ -12,9 +12,9 @@ function Quad:initialize(image,quad,x,y,opt)
 end
 
 function Quad:draw()
-  Node.draw(self)
   g.setColor(self.color)
   g.draw(self.image,self.quad,self.x,self.y,self.angle,self.sx,self.sy,self.w*self.ax,self.h*self.ay)
+  Node.draw(self)
 end
 
 return Quad
