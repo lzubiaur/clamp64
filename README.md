@@ -23,11 +23,4 @@
 * sound effects: 1-up, enemy activate
 * use anim8's grid to create quad
 
-To be merge wiht master:
-node
-quad
-sprite
-animated
-
-
 ## Game states
