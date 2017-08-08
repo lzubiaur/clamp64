@@ -17,8 +17,8 @@ local Node = Class('Node')
 function Node:initialize(x,y,w,h,opt)
   opt = opt or {}
   Lume.extend(self,{
-    x = x, y = y,
-    w = w, h = h,
+    x = x or 0, y = y or 0,
+    w = w or 1, h = h or 1,
     ax = opt.ax or .5,
     ay = opt.ay or .5,
     sx = opt.sx or 1,
@@ -62,6 +62,7 @@ function Node:addChild(child,zOrder,tag)
   if zOrder then child.zOrder = zOrder end
   if tag then child.tag = tag end
   table.sort(self.children,Node.sortByZOrderAsc)
+  return child
 end
 
 -- Returns all children with the same tag
@@ -81,6 +82,10 @@ function Node:setVisible(visible)
     child:setVisible(visible)
   end
   self.hidden = not visible
+end
+
+function Node:isVisible()
+  return not self.hidden
 end
 
 function Node:getPosition()

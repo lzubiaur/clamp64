@@ -11,9 +11,9 @@ function Sprite:initialize(image,x,y,opt)
 end
 
 function Sprite:draw()
-  Node.draw(self)
   g.setColor(self.color)
   g.draw(self.img,self.x,self.y,self.angle,self.sx,self.sy,self.w*self.ax,self.h*self.ay)
+  Node.draw(self)
 end
 
 return Sprite
