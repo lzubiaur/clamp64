@@ -34,6 +34,7 @@ conf = {
   targetPercentArea = .75,
   maxLives = 5,
   laserTimeout = 2,
+  sleepingEnemies = false, -- Should enemies always be updated even outside the screen
 }
 
 -- Load 3rd party libraries/modules globally.
