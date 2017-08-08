@@ -12,6 +12,10 @@ function Entity:initialize(world, x,y, w,h, opt)
   self.world = world
   -- add this instance to the physics world
   world:add(self, x,y, w,h)
+  if opt and opt.busy then
+    self.busy = true
+    table.insert(self.world.busy,self)
+  end
 end
 
 function Entity:destroy()
