@@ -45,6 +45,10 @@ function Play:enteredState()
   self.checkpoint = Checkpoint:new(self.world)
 end
 
+function Play:tilesheetFrame(i,j)
+  return self.tilesheetGrid(i,j)[1]
+end
+
 function Play:createEventHandlers()
   Beholder.group(self,function()
     Beholder.observe('GameOver',function() self:onGameOver() end)

@@ -12,9 +12,9 @@ function GamePlay:enteredState()
   -- Lives
   for i=1,conf.maxLives do
     local quad = g.newQuad(0,24,12,12,s:getDimensions())
-    local sprite = Quad:new(s,quad,3+6*(i-1),4)
+    local sprite = Quad:new(s,game:tilesheetFrame(1,3),3+6*(i-1),4)
     self.node:addChild(sprite,0,i)
-    local blink = Quad:new(s,game.tilesheetGrid(6,3)[1])
+    local blink = Quad:new(s,game:tilesheetFrame(6,3))
     sprite:addChild(blink,0,1):setVisible(false)
     if game.state.lives < i then
       sprite:setVisible(false)
@@ -43,6 +43,7 @@ function GamePlay:enteredState()
     end)
     Beholder.observe('xup',function()
       if countLives < conf.maxLives then
+        love.audio.play(Assets.sounds.sfx_sounds_powerup9)
         countLives = countLives + 1
         local sprite = self.node:getChildByTag(countLives)
         sprite:setVisible(true)
