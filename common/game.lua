@@ -51,6 +51,7 @@ end
 
 function Game:createWorld()
   self.world = Bump.newWorld(conf.cellSize)
+  self.world.busy = {}
 end
 
 function Game:destroy()
@@ -131,10 +132,25 @@ end
 
 -- Update visible entities
 function Game:updateEntities(dt)
+  local busy = self.world.busy
+  for i=1,#busy do
+    if not busy[i].destroyed then
+      busy[i]:update(dt)
+    end
+  end
+
   -- TODO add a padding parameter to update outside the visible windows
-  local l,t,w,h = self.camera:getVisible()
-  local items,len = self.world:queryRect(l,t,w,h)
-  Lume.each(items,'update',dt)
+
+  local items,len = self.world:queryRect(self.camera:getVisible())
+  for i=1,len do
+    if not items[i].busy and not items[i].destroyed then
+      items[i]:update(dt)
+    end
+  end
+
+  -- Remove destroyed entities from the busy list
+  self.world.busy = Lume.reject(busy,function(entity) return entity.destroyed end)
+
   if self.hud then self.hud:update(dt) end
 end
 
