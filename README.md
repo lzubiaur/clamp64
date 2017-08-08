@@ -8,6 +8,7 @@
 
 ## TODO
 
+* shake camera on killed
 * space background
 * options menu: musics,sounds,credits,more games,twitter,facebook,review
 * exit game prompt using love.window.showMessageBox
