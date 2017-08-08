@@ -20,12 +20,14 @@ function Play:enteredState()
   -- state might still be running
   Timer.clear()
 
-  self:createHUD()
-  self.hud:pushState('GamePlay')
   -- Create the physics world
   self:createWorld()
 
   self.tilesheetGrid = Anim8.newGrid(12,12,Assets.img.tilesheet:getDimensions())
+
+  -- Hud must be created after the tilesheet grid because it's using it
+  self:createHUD()
+  self.hud:pushState('GamePlay')
 
   local map,w,h = self:loadWorldMap()
   self.map = map

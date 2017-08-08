@@ -14,6 +14,8 @@ function GamePlay:enteredState()
     local quad = g.newQuad(0,24,12,12,s:getDimensions())
     local sprite = Quad:new(s,quad,3+6*(i-1),4)
     self.node:addChild(sprite,0,i)
+    local blink = Quad:new(s,game.tilesheetGrid(6,3)[1])
+    sprite:addChild(blink,0,1):setVisible(false)
     if game.state.lives < i then
       sprite:setVisible(false)
     end
@@ -42,7 +44,12 @@ function GamePlay:enteredState()
     Beholder.observe('xup',function()
       if countLives < conf.maxLives then
         countLives = countLives + 1
-        self.node:getChildByTag(countLives):setVisible(true)
+        local sprite = self.node:getChildByTag(countLives)
+        sprite:setVisible(true)
+        Timer.every(.1,function()
+          local blink = sprite:getChildByTag(1)
+          blink:setVisible(not blink:isVisible())
+        end,11)
       end
     end)
   end)
