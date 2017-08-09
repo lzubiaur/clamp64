@@ -19,12 +19,12 @@ function Cannon:initialize(world,x,y,opt)
   local closing,opening
   opening = function()
     -- Set the next animation
-    anim:setAnimation(grid('1-3',1,'1-2',2),.3,closing)
+    anim:setAnimation(grid('1-3',1,'1-2',2),{.3,.3,.3,.3,.1},closing)
   end
 
   closing = function()
     -- Set the next animation
-    anim:setAnimation(grid('2-1',2,'3-1',1),.3,opening)
+    anim:setAnimation(grid(1,2,'3-1',1),.3,opening)
     -- create bullet
     local cx,cy = self:getCenter()
     local dir = (Vector(game.player:getCenter())-Vector(cx,cy)):normalized()
