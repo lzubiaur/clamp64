@@ -10,6 +10,7 @@ function Game:initialize()
 
   self.entities = {}
   self.swallowTouch = false
+  self.shakeIntensity = 0
 
   self.state = {
     path = 'db.data', -- this database filename
@@ -167,6 +168,7 @@ function Game:updateCamera(dt)
       self.parallax:setTranslation(self.camera:getPosition())
     end
   end
+  self:updateCameraShake(dt)
   -- self.parallax:update(dt) -- not required
 end
 
@@ -312,6 +314,29 @@ function Game:createCamera(w,h,mx,my,ox,oy,gs)
       hideOrigin = false,
       -- interval = 200
     })
+  end
+end
+
+local maxShake = 5
+local atenuationSpeed = 2
+function Game:setShake(intensity)
+  intensity = intensity or 1
+  self.shakeIntensity = math.min(maxShake, self.shakeIntensity + intensity)
+  self.shake = true
+end
+
+function Game:updateCameraShake(dt)
+  if not self.shake then return end
+  self.shakeIntensity = math.max(0 , self.shakeIntensity - atenuationSpeed * dt)
+
+  if self.shakeIntensity > 0 then
+    local x,y = self.camera:getPosition()
+
+    x = x + (100 - 200*math.random(self.shakeIntensity)) * dt
+    y = y + (100 - 200*math.random(self.shakeIntensity)) * dt
+    self.camera:setPosition(x,y)
+  else
+    self.shake = false
   end
 end
 
