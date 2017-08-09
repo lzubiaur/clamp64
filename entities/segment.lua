@@ -21,7 +21,7 @@ function Segment:initialize(world,ax,ay,bx,by,thickness)
     self.x,self.y,self.w,self.h = x,y,w,h
   end
   self:updateEndPoint(bx,by)
-  -- self.isVertical = self.w > self.h
+  self.isVertical = self.w > self.h
 end
 
 function Segment:draw()

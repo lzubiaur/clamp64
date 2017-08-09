@@ -3,11 +3,15 @@
 local HUD = require 'hud.base'
 local Quad = require 'entities.base.quad'
 local ProgressBar = require 'entities.ui.progressbar'
+local Segment = require 'entities.segment'
 
 local GamePlay = HUD:addState('GamePlay')
 
 function GamePlay:enteredState()
   local s = Assets.img.tilesheet
+
+  -- Warnings are disabled
+  -- self:addEnemyWarningSensors()
 
   -- Lives
   for i=1,conf.maxLives do
@@ -30,7 +34,19 @@ function GamePlay:enteredState()
   local progressBar = ProgressBar:new(self.world,44,3,w,h,p,0)
   self.node:addChild(progressBar)
 
+  self.warnings = {}
   Beholder.group(self,function()
+    -- Warnings are disabled
+    -- Beholder.observe('warning',function(cx,cy,t,len)
+    --   cx,cy = game:worldToScreen(cx,cy)
+    --   for i=1,len do
+    --     local x,y = game:worldToScreen(unpack(t[i]))
+    --     local info,len = self.world:querySegmentWithCoords(cx,cy,x,y,function(item) return item.class.name == 'Segment' end)
+    --     if len == 1 then
+    --       Lume.push(self.warnings,info[1].x1,info[1].y1)
+    --     end
+    --   end
+    -- end)
     Beholder.observe('progress',function(value)
       progressBar:setPercent(math.ceil(Lume.clamp(value,0,1)*100)/100)
     end)
@@ -61,12 +77,37 @@ function GamePlay:exitedState()
   Beholder.stopObserving(self)
 end
 
+
+function GamePlay:addEnemyWarningSensors()
+  local draw = function(self)
+    if self.hidden then return end
+    g.setColor(0,255,0,255)
+    g.rectangle('fill',self.x,self.y,self.x+self.w,self.y+self.h)
+    -- if self.isVertical then
+      -- g.line(self.x+self.w/2,self.y,self.x+self.w/2,self.y+self.h)
+    -- else
+    --   g.line(self.x,self.y,self.x+self.w,self.y)
+    -- end
+  end
+  local t = {
+    {0,0,64,1},
+    {64,0,65,64},
+    {0,63,64,64},
+    {0,0,1,64}
+  }
+  for i=1,4 do
+    local segment = Segment:new(self.world,unpack(t[i]))
+    segment:setVisible(false)
+    segment.draw = draw
+  end
+end
+
 function GamePlay:draw(l,t,w,h)
   HUD.draw(self,l,t,w,h)
-  -- g.setColor(0,226,50,255)
-  -- g.line(44,4,44+16*self.progress,4)
-  -- g.setColor(0,255,56,255)
-  -- g.line(44,3,44+16*self.progress,3)
+  -- Warning are disabled
+  -- g.setColor(255,0,0,255)
+  -- g.points(self.warnings)
+  -- self.warnings = {}
 end
 
 return GamePlay

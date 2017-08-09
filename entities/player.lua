@@ -70,6 +70,7 @@ function Player:update(dt)
   self:resetCollisionFlags()
   self:handleCollisions(cx,cy)
   self:handleEndCollisions(cx,cy)
+  -- self:warnForCloseEnemies()
   Body.update(self,dt)
 end
 
@@ -129,6 +130,22 @@ end
 function Player:resetCollisionFlags()
   for _,t in pairs(self.polygons) do
     t.collide = -1
+  end
+end
+
+function Player:warnForCloseEnemies()
+  local items,len = self.world:queryRect(self.x-100,self.y-100,self.x+self.w+100,self.y+self.h+100,function(item) return item.class.name == 'Enemy' end)
+  local warnings,count = {},0
+  for i=1,len do
+    local other,cx,cy = items[i],self:getCenter()
+    if other:isOutsideVisibleScreen() then
+      count = count + 1
+      table.insert(warnings,{other:getCenter()})
+    end
+  end
+  if count > 0 then
+    local cx,cy = self:getCenter()
+    Beholder.trigger('warning',cx,cy,warnings,count)
   end
 end
 

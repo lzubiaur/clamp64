@@ -332,6 +332,13 @@ function Game:screenToWorld(x,y)
   return x,y
 end
 
+function Game:worldToScreen(x,y)
+  if self.camera then
+    x,y = self.camera:toScreen(x and x or 0, y and y or 0)
+  end
+  return x,y
+end
+
 -- function love.wheelmoved( x, y )
 -- end
 
