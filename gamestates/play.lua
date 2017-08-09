@@ -10,6 +10,7 @@ local Segment = require 'entities.segment'
 local Laser = require 'entities.laser'
 local Xup = require 'entities.xup'
 local Cannon = require 'entities.cannon'
+local Barrier = require 'entities.barrier'
 
 local Play = Game:addState('Play')
 
@@ -173,6 +174,8 @@ function Play:loadWorldMap()
       Xup:new(self.world,obj.x,obj.y)
     elseif obj.type == 'cannon' then
       Cannon:new(self.world,obj.x,obj.y)
+    elseif obj.type == 'barrier' then
+      Barrier:new(self.world,obj.x,obj.y,obj.width,obj.height)
     end
   end
   Log.info('Total area',self.totalArea)
@@ -219,8 +222,9 @@ function Play:drawEntities(l,t,w,h)
   -- self.map:draw()
   -- self.map:drawTileLayer('tiles')
   g.setColor(255,255,255,255)
-  self.map.layers.tiles:draw()
+  self.map.layers.clipped:draw()
   g.setStencilTest()
+  self.map.layers.tiles:draw()
   Game.drawEntities(self,l,t,w,h)
 end
 

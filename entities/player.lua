@@ -79,7 +79,7 @@ function Player:collisionsFilter(other)
     return other.isPolygonEdge and 'cross' or 'touch'
   elseif other.class.name == 'Xup' then
     return 'cross'
-  elseif other.class.name == 'Cannon' then
+  elseif other.class.name == 'Cannon' or other.class.name == 'Barrier' then
     return 'touch'
   end
   return nil
@@ -89,7 +89,7 @@ function Player:handleCollisions(cx,cy)
   local cols,len = self:move(self.x,self.y,self.collisionsFilter)
   for _,col in ipairs(cols) do
     local other = col.other
-    if other.isBoundEdge or other.class.name == 'Cannon' then
+    if other.isBoundEdge or other.class.name == 'Cannon' or other.class.name == 'Barrier' then
       return
     elseif other.class.name == 'Xup' then
       Beholder.trigger('xup')
