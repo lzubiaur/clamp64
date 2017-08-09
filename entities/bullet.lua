@@ -7,7 +7,7 @@ local Bullet = Class('Bullet',Body)
 function Bullet:initialize(world,x,y,dx,dy)
   self.dx,self.dy = dx,dy
   Body.initialize(self,world,x,y,1,1,{
-    vx = dx*20, vy = dy*20,
+    vx = dx*conf.bulletVelocity, vy = dy*conf.bulletVelocity,
     busy = true,
   })
   Beholder.group(self,function()

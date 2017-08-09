@@ -35,6 +35,7 @@ conf = {
   maxLives = 5,
   laserTimeout = 2,
   sleepingEnemies = false, -- Should enemies always be updated even outside the screen
+  bulletVelocity = 40,
 }
 
 -- Load 3rd party libraries/modules globally.
