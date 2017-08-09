@@ -92,8 +92,7 @@ function Player:handleCollisions(cx,cy)
     if other.isBoundEdge or other.class.name == 'Cannon' or other.class.name == 'Barrier' then
       return
     elseif other.class.name == 'Xup' then
-      Beholder.trigger('xup')
-      other:destroy()
+      Beholder.trigger('xup',other)
       return
     end
     local poly,polygons = other.polygon,self.polygons
