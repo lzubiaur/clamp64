@@ -65,6 +65,11 @@ function Play:createEventHandlers()
         self.state.lives = self.state.lives + 1
       end
     end)
+    -- local killed = Beholder.observe('killed',function()
+    -- Camera shake doesnt work fine with very low resolution
+    --   self:setShake(.5)
+    --   Beholder.stopObserving(killed)
+    -- end)
     Beholder.observe('lose',function()
       self.state.lives = self.state.lives - 1
       if self.state.lives < 1 then
