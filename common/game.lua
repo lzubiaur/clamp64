@@ -10,6 +10,7 @@ function Game:initialize()
 
   self.entities = {}
   self.swallowTouch = false
+  self.shakeIntensity = 0
 
   self.state = {
     path = 'db.data', -- this database filename
@@ -167,6 +168,7 @@ function Game:updateCamera(dt)
       self.parallax:setTranslation(self.camera:getPosition())
     end
   end
+  self:updateCameraShake(dt)
   -- self.parallax:update(dt) -- not required
 end
 
@@ -315,6 +317,29 @@ function Game:createCamera(w,h,mx,my,ox,oy,gs)
   end
 end
 
+local maxShake = 5
+local atenuationSpeed = 2
+function Game:setShake(intensity)
+  intensity = intensity or 1
+  self.shakeIntensity = math.min(maxShake, self.shakeIntensity + intensity)
+  self.shake = true
+end
+
+function Game:updateCameraShake(dt)
+  if not self.shake then return end
+  self.shakeIntensity = math.max(0 , self.shakeIntensity - atenuationSpeed * dt)
+
+  if self.shakeIntensity > 0 then
+    local x,y = self.camera:getPosition()
+
+    x = x + (100 - 200*math.random(self.shakeIntensity)) * dt
+    y = y + (100 - 200*math.random(self.shakeIntensity)) * dt
+    self.camera:setPosition(x,y)
+  else
+    self.shake = false
+  end
+end
+
 -- Convert from real screen coords to game design resolution
 function Game:screenToDesign(x,y)
   -- Push:toGame might return nil
@@ -328,6 +353,13 @@ function Game:screenToWorld(x,y)
   x,y = Push:toGame(x,y or 0)
   if self.camera then
     x,y = self.camera:toWorld(x and x or 0,y and y or 0)
+  end
+  return x,y
+end
+
+function Game:worldToScreen(x,y)
+  if self.camera then
+    x,y = self.camera:toScreen(x and x or 0, y and y or 0)
   end
   return x,y
 end
