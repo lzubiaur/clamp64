@@ -7,7 +7,8 @@ function Checkpoint:initialize(world)
   Timer.every(1,function()
     self:trigger()
   end)
-  self:trigger()
+  -- save original position if no other checkpoint are valide
+  self.ox,self.oy = self:trigger()
 end
 
 function Checkpoint:trigger()
@@ -19,15 +20,22 @@ function Checkpoint:trigger()
     table.remove(self.pos,1)
   end
   -- Log.debug('Checkpoint',unpack(t))
+  return unpack(t)
+end
+
+-- Don't return checkpoint inside a polygon
+local function filter(item)
+  return item.class.name == 'Polygon'
 end
 
 function Checkpoint:getLastPosition()
   local p = self.pos
   for i=#p,1,-1 do
-    local item,len = self.world:queryRect(unpack(p[i]))
+    local x,y,w,h = unpack(p[i])
+    local item,len = self.world:queryRect(x,y,w,h,filter)
     if len == 0 then return unpack(p[i]) end
   end
-  return 0,0
+  return self.ox,self.oy
 end
 
 return Checkpoint
