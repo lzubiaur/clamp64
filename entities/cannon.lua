@@ -29,6 +29,7 @@ function Cannon:initialize(world,x,y,opt)
     local cx,cy = self:getCenter()
     local dir = (Vector(game.player:getCenter())-Vector(cx,cy)):normalized()
     Bullet:new(world,cx,cy,dir.x,dir.y,{zOrder=1})
+    love.audio.play(Assets.sounds.sfx_wpn_laser7)
   end
   opening()
   anim:pauseAtStart()
