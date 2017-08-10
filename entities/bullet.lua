@@ -21,7 +21,10 @@ function Bullet:initialize(world,x,y,dx,dy)
 end
 
 function Bullet:filter(other)
-  return other.class.name == 'Player' and 'touch' or nil
+  if other.class.name == 'Player' and not other.isInvincible then
+    return 'touch'
+  end
+  return nil
 end
 
 function Bullet:update(dt)
