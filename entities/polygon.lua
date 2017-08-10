@@ -84,28 +84,42 @@ function Polygon:initialize(world,opt,...)
 end
 
 function Polygon:split(paths)
-  local target = nil
+  local enemies,empty = {},nil
   -- Look for the biggest polygon area and for polygons with enemies
   for i=1,paths:size() do
     local p = PolygonShape(unpack(pathToPoints(paths:get(i))))
-    local enemies,len = self:getEnemiesInRect(p:bbox())
-    if len > 0 then
-      target = p
-      break
-    elseif not target or p.area > target.area then
-      target = p
+    if self:getEnemiesInRect(p) then
+      Log.debug('enemy',p.area)
+      table.insert(enemies, { shape = p, enemy = true })
+    elseif not empty or p.area > empty.area then
+      empty = p
+      Log.debug(p.area)
     end
   end
-  if target and target.area > 100 then
-    local p = Polygon:new(self.world,nil,target)
-    Beholder.trigger('area',self.shape.area - target.area)
+  local len = #enemies
+  if len == 0 and empty.area > 1000 then
+    local p = Polygon:new(self.world,nil,t.shape)
+    Beholder.trigger('area',self.shape.area - t.shape.area)
+  end
+  for i=1,#enemies do
+    local t = enemies[i]
+    if t.enemy or t.shape.area > 1000 then
+      local p = Polygon:new(self.world,nil,t.shape)
+      Beholder.trigger('area',self.shape.area - t.shape.area)
+    end
   end
 end
 
-function Polygon:getEnemiesInRect(l,t,r,b)
-  return self.world:queryRect(l,t,r-l,b-t,function(item)
+function Polygon:getEnemiesInRect(shape)
+  local l,t,r,b = shape:bbox()
+  local items,len = self.world:queryRect(l,t,r-l,b-t,function(item)
     return item.class.name == 'Enemy'
   end)
+  for i=1,len do
+    if shape:contains(items[i]:getCenter()) then
+      return true
+    end
+  end
 end
 
 function Polygon:addEdge(ax,ay,bx,by)

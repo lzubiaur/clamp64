@@ -36,7 +36,7 @@ function Laser:update(dt)
     love.audio.play(Assets.sounds.sfx_alarm_loop6)
     local px,py = items[1]:getCenter()
     local dir = (Vector(px,py)-Vector(cx,cy)):normalized()
-    self.vx,self.vy = dir.x * 25,dir.y * 25
+    self.vx,self.vy = dir.x * conf.laserVelocity,dir.y * conf.laserVelocity
     self.red:setVisible(true)
     local info,len = self.world:querySegmentWithCoords(cx,cy,px,py,function(item)
       return item.class.name == 'Player' or item.class.name == 'Segment' or item.class.name == 'Barrier'
