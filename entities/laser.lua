@@ -19,12 +19,15 @@ function Laser:initialize(world,x,y)
 end
 
 function Laser:filter(other)
-  return other.class.name == 'Segment' and 'bounce' or nil
+  if other.class.name == 'Segment' or other.class.name == 'Barrier' then
+    return 'slide'
+  end
+  return nil
 end
 
 function Laser:update(dt)
   self:applyVelocity(dt)
-  self:handleCollisions()
+  self:move(self.x,self.y,Laser.filter)
   local cx,cy = self:getCenter()
   local items,len = self.world:queryRect(cx-20,cy-20,40,40,function(item)
     return item.class.name == 'Player'
@@ -36,38 +39,34 @@ function Laser:update(dt)
     self.vx,self.vy = dir.x * 25,dir.y * 25
     self.red:setVisible(true)
     local info,len = self.world:querySegmentWithCoords(cx,cy,px,py,function(item)
-      return item.class.name == 'Player' or item.class.name == 'Segment'
+      return item.class.name == 'Player' or item.class.name == 'Segment' or item.class.name == 'Barrier'
     end)
     if len > 0 then
-      self.info = info[1]
-      if info[1].item.class.name == 'Player' and not self.timer then
-        self.timer = Timer.after(conf.laserTimeout,function()
-          Beholder.trigger('killed')
-          self.timer = Timer.cancel(self.timer)
-        end)
+      self.info = { info[1].x1,info[1].y1 }
+      if info[1].item.class.name == 'Player' then
+        self.info = { info[1].x2,info[1].y2 }
+        if info[1].item.isInvincible then
+          self:cancelTimer()
+        elseif not self.timer then
+          self.timer = Timer.after(conf.laserTimeout,function()
+            Beholder.trigger('killed')
+            self:cancelTimer()
+          end)
+        end
+      else
+        self:cancelTimer()
       end
     end
   else
-    if self.timer then
-      self.timer = Timer.cancel(self.timer)
-    end
+    self:cancelTimer()
     self.red:setVisible(false)
     self.vx,self.vy = 0,0
   end
   Body.update(self,dt)
 end
 
-function Laser:handleCollisions()
-  local cols,len = self:move(self.x,self.y,Laser.filter)
-  for i=1,len do
-    local other = cols[i].other
-    if other.class.name == 'Segment' then
-      local n = cols[i].normal
-      self:applyCollisionNormal(self.x*n.x,self.y*n.y,1)
-    -- elseif other.class.name == 'Player' then
-    --   Beholder.trigger('killed',self)
-    end
-  end
+function Laser:cancelTimer()
+  if self.timer then self.timer = Timer.cancel(self.timer) end
 end
 
 function Laser:draw()
@@ -75,7 +74,7 @@ function Laser:draw()
   if self.info then
     local cx,cy = self:getCenter()
     g.setColor(255,0,77,255)
-    g.line(cx,cy,self.info.x2,self.info.y2)
+    g.line(cx,cy,unpack(self.info))
     self.info = nil
   end
 end
