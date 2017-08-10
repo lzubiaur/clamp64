@@ -7,7 +7,7 @@ local Enemy = Class('Enemy', Body)
 
 function Enemy:initialize(world,x,y)
   local w,h = game.visible:pointToPixel(8,8)
-  Body.initialize(self,world,x,y,w,h,{ vx=50,vy=50, zOrder = -1, busy=conf.sleepingEnemies })
+  Body.initialize(self,world,x,y,w,h,{ vx=conf.enemyVelocity,vy=conf.enemyVelocity, zOrder = -1, busy=conf.sleepingEnemies })
   local s = Assets.img.tilesheet
   local quad = g.newQuad(12,0,12,12,s:getDimensions())
   self:addSprite(Quad:new(s,quad,6,6))
@@ -41,7 +41,7 @@ function Enemy:update(dt)
   local cols,len = self:move(self.x,self.y,Enemy.filter)
   for i=1,len do
     local other = cols[i].other
-    if other.class.name == 'Segment' then
+    if other.class.name == 'Segment' or other.class.name == 'Barrier' then
       local n = cols[i].normal
       self:applyCollisionNormal(self.x*n.x,self.y*n.y,1)
     elseif other.class.name == 'Player' then
