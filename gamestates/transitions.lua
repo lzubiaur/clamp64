@@ -2,61 +2,47 @@
 
 local Game = require 'common.game'
 
--- GameplayIn
+-- TransitionIn
 
-local GameplayIn = Game:addState('GameplayIn')
+local TransitionIn = Game:addState('TransitionIn')
 
-function GameplayIn:enteredState()
-  Log.info 'Enter state GameplayIn'
-
-  -- Call the garbage collector before starting the level
-  Log.debug('Before gc (MB)',collectgarbage("count")/1024)
-  collectgarbage('collect')
-  Log.debug('After gc (MB)',collectgarbage("count")/1024)
-
-  self.progress.tween:reset()
+function TransitionIn:enteredState(callback)
+  Log.info 'Enter state TransitionIn'
+  self.callback = callback
+  self.transition:reset()
 end
 
-function GameplayIn:exitedState()
-  Log.info 'Exited state GameplayIn'
-end
-
-function GameplayIn:update(dt)
-  if self.progress.tween:update(dt) then
+function TransitionIn:update(dt)
+  if self.transition:update(dt) then
     self:popState()
+    if self.callback then self.callback() end
   end
   -- Do transition effects (music/screen fade in)
+  self:doTransition()
 end
 
-function GameplayIn:keypressed(key, scancode, isRepeat)
+function TransitionIn:keypressed(key, scancode, isRepeat)
   -- touche disabled
 end
 
--- GameplayOut
+-- TransitionOut
 
-local GameplayOut = Game:addState('GameplayOut')
+local TransitionOut = Game:addState('TransitionOut')
 
-function GameplayOut:enteredState()
-  Log.info 'Enter state GameplayOut'
+function TransitionOut:enteredState(callback)
+  Log.info 'Enter state TransitionOut'
   -- running backwards
-  self.progress.tween:set(self.progress.duration)
+  self.transition:set(self.transition.duration)
+  self.callback = callback
 end
 
-function GameplayOut:exitedState()
-  Log.info 'Exited state GameplayOut'
-end
-
-function GameplayOut:update(dt)
-  if self.progress.tween:update(-dt) then
+function TransitionOut:update(dt)
+  if self.transition:update(-dt) then
     self:popState()
-    Beholder.trigger('ResetGame')
+    if self.callback then self.callback() end
   end
 end
 
-function GameplayOut:onGameOver()
-  Log.info('Received gameover. Ignored.')
-end
-
-function GameplayOut:keypressed(key, scancode, isRepeat)
+function TransitionOut:keypressed(key, scancode, isRepeat)
   -- disable touches
 end
