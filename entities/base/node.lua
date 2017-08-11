@@ -93,7 +93,7 @@ function Node:isOutsideVisibleScreen()
   -- TODO no camera
   if game.camera then
     local l,t,w,h = game.camera:getVisible()
-    return self.x < l or self.x > l+w or self.y < t or self.y > t+h
+    return self.x+self.w < l or self.x > l+w or self.y+self.h < t or self.y > t+h
   end
 end
 
