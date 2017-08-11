@@ -402,4 +402,25 @@ function Game:collectGarbage()
   Log.info('GC: before ['..before..'] after ['..(collectgarbage('count')/1024)..']')
 end
 
+-- Custom
+
+function Game:doTransition()
+  self.shader:send('alpha', self.alpha)
+end
+
+function Game:fadeIn(callback)
+  self.shader = love.graphics.newShader("resources/shaders/fade.glsl")
+  Push:setShader(self.shader)
+  self.alpha = 0
+  self.transition = Tween.new(.5,self,{ alpha=1 })
+  self:pushState('TransitionIn',callback)
+end
+
+function Game:fadeOut(callback)
+  self.shader = love.graphics.newShader("resources/shaders/fade.glsl")
+  Push:setShader(self.shader)
+  self.transition = Tween.new(.5,self,{ alpha=0 })
+  self:pushState('TransitionIn',callback)
+end
+
 return Game
