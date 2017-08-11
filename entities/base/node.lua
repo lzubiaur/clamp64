@@ -33,10 +33,6 @@ function Node:initialize(x,y,w,h,opt)
   if opt.visible ~= nil then
     self:setVisible(opt.visible)
   end
-  if opt.busy then
-    self.busy = true
-    table.insert(self.world.busy,self)
-  end
 end
 
 function Node:destroy()
@@ -91,6 +87,14 @@ end
 
 function Node:isVisible()
   return not self.hidden
+end
+
+function Node:isOutsideVisibleScreen()
+  -- TODO no camera
+  if game.camera then
+    local l,t,w,h = game.camera:getVisible()
+    return self.x+self.w < l or self.x > l+w or self.y+self.h < t or self.y > t+h
+  end
 end
 
 function Node:getPosition()

@@ -160,21 +160,24 @@ function Game:updateCamera(dt)
   -- TODO smooth the camera. X doesnt work smoothly
   -- TODO Check Lume.smooth instead of lerp for X (and y?)
   if self.follow then
-    local x,y = self.camera:getPosition()
     local px, py = self.follow:getCenter()
+    -- Smooth camera
+    -- local x,y = self.camera:getPosition()
     -- self.camera:setPosition(Lume.lerp(x,px + conf.camOffsetX,.05), Lume.lerp(y,py,.05))
     self.camera:setPosition(px,py)
     if self.parallax then
       self.parallax:setTranslation(self.camera:getPosition())
     end
   end
-  self:updateCameraShake(dt)
-  -- self.parallax:update(dt) -- not required
+  -- if self.shake then
+  --   self:updateCameraShake(dt)
+  -- end
 end
 
 function Game:update(dt)
   Timer.update(dt)
   -- self:updateShaders(dt)
+  -- self.parallax:update(dt) -- not required
   self:updateEntities(dt)
   self:updateCamera(dt)
 end
@@ -291,11 +294,8 @@ function Game:createCamera(w,h,mx,my,ox,oy,gs)
   -- Camera window must be set to the game resolution and not the
   -- the actual screen resolution
   self.camera:setWindow(0,0,conf.sw,conf.sh)
-
-  if self.follow then
-    local px, py = self.follow:getCenter()
-    self.camera:setPosition(px+ox,py+oy)
-  end
+  -- Set initial position
+  self:updateCamera()
 
   Log.debug('Camera world',self.camera:getWorld())
   Log.debug('Camera window',self.camera:getWindow())
@@ -326,7 +326,6 @@ function Game:setShake(intensity)
 end
 
 function Game:updateCameraShake(dt)
-  if not self.shake then return end
   self.shakeIntensity = math.max(0 , self.shakeIntensity - atenuationSpeed * dt)
 
   if self.shakeIntensity > 0 then
