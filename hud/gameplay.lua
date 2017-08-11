@@ -4,6 +4,7 @@ local HUD = require 'hud.base'
 local Quad = require 'entities.base.quad'
 local ProgressBar = require 'entities.ui.progressbar'
 local Segment = require 'entities.segment'
+local Label = require 'entities.ui.label'
 
 local GamePlay = HUD:addState('GamePlay')
 
@@ -67,6 +68,18 @@ function GamePlay:enteredState()
           local blink = sprite:getChildByTag(1)
           blink:setVisible(not blink:isVisible())
         end,11)
+      end
+    end)
+    local label,timer
+    Beholder.observe('area',function(area)
+      area = math.floor(area/10)
+      if area > 99 then
+        if label then
+          label = label:destroy()
+          timer = Timer.cancel(timer)
+        end
+        label = Label:new(self.world,10,10,'+'..area)
+        timer = Timer.after(1,function() label = label:destroy() end)
       end
     end)
   end)
