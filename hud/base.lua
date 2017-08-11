@@ -8,11 +8,13 @@ local HUD = Class('HUD'):include(Stateful)
 function HUD:initialize()
   self.world = Bump.newWorld(conf.cellSize)
   self.node = Node:new(game.visible:screen())
+  self.timer = Timer.new()
 end
 
 function HUD:destroy()
   -- no need to call stopObserving(swallowLayer) because Entity:destroy
   -- do it automatically
+  self.timer:clear()
 end
 
 function HUD:createSwallowTouchLayer(f)
@@ -45,6 +47,8 @@ function HUD:draw(l,t,w,h)
 end
 
 function HUD:update(dt)
+  self.timer:update(dt)
+  self.node:update(dt)
 end
 
 return HUD
