@@ -35,8 +35,8 @@ conf = {
   maxLives = 5,
   laserTimeout = 2,
   sleepingEnemies = false, -- Should enemies always be updated even outside the screen
-  bulletVelocity = 0,
-  enemyVelocity = 0,
+  bulletVelocity = 40,
+  enemyVelocity = 40,
   laserVelocity = 25,
   minPolygonArea = 1000, -- Minimum polygon area that will be allowed when they are splitted.
 }
