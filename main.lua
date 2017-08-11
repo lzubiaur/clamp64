@@ -33,11 +33,12 @@ conf = {
   defaultLivesCount = 3,
   targetPercentArea = .75,
   maxLives = 5,
-  laserTimeout = 1.5,
+  laserTimeout = 2,
   sleepingEnemies = false, -- Should enemies always be updated even outside the screen
   bulletVelocity = 0,
   enemyVelocity = 0,
   laserVelocity = 25,
+  minPolygonArea = 1000, -- Minimum polygon area that will be allowed when they are splitted.
 }
 
 -- Load 3rd party libraries/modules globally.

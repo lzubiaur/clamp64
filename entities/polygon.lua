@@ -89,25 +89,22 @@ function Polygon:split(paths)
   for i=1,paths:size() do
     local p = PolygonShape(unpack(pathToPoints(paths:get(i))))
     if self:getEnemiesInRect(p) then
-      Log.debug('enemy',p.area)
-      table.insert(enemies, { shape = p, enemy = true })
+      table.insert(enemies,p)
     elseif not empty or p.area > empty.area then
       empty = p
-      Log.debug(p.area)
     end
   end
-  local len = #enemies
-  if len == 0 and empty.area > 1000 then
-    local p = Polygon:new(self.world,nil,t.shape)
-    Beholder.trigger('area',self.shape.area - t.shape.area)
+  local len,area = #enemies,0
+  if len == 0 and empty.area > conf.minPolygonArea then
+    Polygon:new(self.world,nil,empty)
+    area = area + empty.area
   end
-  for i=1,#enemies do
-    local t = enemies[i]
-    if t.enemy or t.shape.area > 1000 then
-      local p = Polygon:new(self.world,nil,t.shape)
-      Beholder.trigger('area',self.shape.area - t.shape.area)
-    end
+  for i=1,len do
+    local shape = enemies[i]
+    Polygon:new(self.world,nil,shape)
+    area = area + shape.area
   end
+  Beholder.trigger('area',self.shape.area - area)
 end
 
 function Polygon:getEnemiesInRect(shape)
