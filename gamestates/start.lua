@@ -29,6 +29,7 @@ function Start:enteredState()
     end)
   end)
 
+  -- Start button
   -- local x,y,w,h = self.visible:rectCenter(320,180,70,40)
   -- Button:new(self.world,x,y,w,h, {
   --   onSelected = function()
@@ -36,20 +37,23 @@ function Start:enteredState()
   --   end,
   --   text='Play!',
   -- })
+
+  self:fadeIn(function()
+    Push:setShader()
+  end)
 end
 
 function Start:exitedState()
   Beholder.stopObserving(self)
 end
 
--- function Start:poppedState()
---   self.swallowTouch = false
--- end
-
 function Start:startGame()
   self.state.lives = conf.defaultLivesCount
   self.state.cli = 1
-  self:gotoState('Play')
+  -- self:fadeOut(function()
+    Push:setShader()
+    self:gotoState('Play')
+  -- end)
 end
 
 function Start:keypressed(key, scancode, isRepeat)

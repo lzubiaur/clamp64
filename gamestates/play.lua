@@ -47,6 +47,9 @@ function Play:enteredState()
   self:createEventHandlers()
 
   self.checkpoint = Checkpoint:new(self.world)
+  self:fadeIn(function()
+    Push:setShader()
+  end)
 end
 
 function Play:tilesheetFrame(i,j)
