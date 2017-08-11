@@ -26,8 +26,7 @@ function Player:initialize(world, x,y)
   -- anim:setAnimation(game.tilesheetGrid('1-3',7),.1)
   -- self.ship:addChild(anim)
 
-  local quad = g.newQuad(0,0,12,12,Assets.img.tilesheet:getDimensions())
-  self.ship:addChild(Quad:new(Assets.img.tilesheet,quad,0,0))
+  self.ship:addChild(Quad:new(Assets.img.tilesheet,game:tilesheetFrame(5,7)))
 
   self:createEventHandlers()
 end
@@ -76,7 +75,7 @@ function Player:update(dt)
   self:resetCollisionFlags()
   self:handleCollisions(cx,cy)
   self:handleEndCollisions(cx,cy)
-  -- self:warnForCloseEnemies()
+  self:warnForCloseEnemies()
   Body.update(self,dt)
 end
 

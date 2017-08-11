@@ -36,9 +36,10 @@ conf = {
   laserTimeout = 2,
   sleepingEnemies = false, -- Should enemies always be updated even outside the screen
   bulletVelocity = 40,
-  enemyVelocity = 40,
+  enemyVelocity = 25,
   laserVelocity = 25,
   minPolygonArea = 1000, -- Minimum polygon area that will be allowed when they are splitted.
+  tellsCount = 5, -- Number of enemies warnings/tells
 }
 
 -- Load 3rd party libraries/modules globally.
