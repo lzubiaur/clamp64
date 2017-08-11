@@ -294,11 +294,8 @@ function Game:createCamera(w,h,mx,my,ox,oy,gs)
   -- Camera window must be set to the game resolution and not the
   -- the actual screen resolution
   self.camera:setWindow(0,0,conf.sw,conf.sh)
-
-  if self.follow then
-    local px, py = self.follow:getCenter()
-    self.camera:setPosition(px+ox,py+oy)
-  end
+  -- Set initial position
+  self:updateCamera()
 
   Log.debug('Camera world',self.camera:getWorld())
   Log.debug('Camera window',self.camera:getWindow())
