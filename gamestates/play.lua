@@ -17,6 +17,8 @@ local Play = Game:addState('Play')
 function Play:enteredState()
   Log.info('Entered state Play')
   self.swallowTouch = false
+  self.shakeIntensity = 0
+  self.shake = false
 
   -- Must clear the timer on entering the scene or old timer from previous
   -- state might still be running
@@ -66,21 +68,21 @@ function Play:createEventHandlers()
         self.state.lives = self.state.lives + 1
       end
     end)
-    -- local killed = Beholder.observe('killed',function()
     -- Camera shake doesnt work fine with very low resolution
-    --   self:setShake(.5)
-    --   Beholder.stopObserving(killed)
+    -- Beholder.observe('killed',function()
+    --   self:setShake(2)
     -- end)
     Beholder.observe('lose',function()
+      -- self.shake = false
       self.state.lives = self.state.lives - 1
       if self.state.lives < 1 then
         Beholder.trigger('GameOver')
-        return
+      else
+        local x,y = self.checkpoint:getLastPosition()
+        self:createPlayer(x,y)
+        self.player:gotoState('Blink')
+        Beholder.trigger('start')
       end
-      local x,y = self.checkpoint:getLastPosition()
-      self:createPlayer(x,y)
-      self.player:gotoState('Blink')
-      Beholder.trigger('start')
     end)
     self.completed = 0
     local area = 0

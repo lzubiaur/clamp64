@@ -8,6 +8,7 @@
 
 ## TODO
 
+* gifts (like bubble in xenon2)
 * transition (using stencil)
 * space background
 * options menu: musics,sounds,credits,more games,twitter,facebook,review
@@ -16,12 +17,12 @@
 * android bug: first touch not triggered: try to put focus on the windows
 * disable laser when player is behind a wall
 * slow-motion item to reduce enemies velocity
-* "pipe" to stop player
 * improve cannon sprite
 * improve enemies visual warnings
 * reduce visiblity when touching a "bad item" (e.g. reduce screen using a circle stencil)
 
 ## Done
+* "pipe" to stop player
 * shake camera on killed
 * cannon
 * 1-up animation

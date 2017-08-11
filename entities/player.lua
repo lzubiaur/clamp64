@@ -21,8 +21,14 @@ function Player:initialize(world, x,y)
   --  can be "zOrdered" (e.g. blink)
   self.ship = self:addSprite(Node:new(4,4,12,12))
 
+  -- engine animation
+  -- local anim = Animated:new(Assets.img.tilesheet,0,0,12,12)
+  -- anim:setAnimation(game.tilesheetGrid('1-3',7),.1)
+  -- self.ship:addChild(anim)
+
   local quad = g.newQuad(0,0,12,12,Assets.img.tilesheet:getDimensions())
   self.ship:addChild(Quad:new(Assets.img.tilesheet,quad,0,0))
+
   self:createEventHandlers()
 end
 
@@ -150,10 +156,10 @@ end
 
 function Player:addExplosion()
   local anim = Animated:new(Assets.img.tilesheet,4,4,12,12)
-  anim:setAnimation(game.tilesheetGrid('4-6',1),.1,function()
+  anim:setAnimation(game.tilesheetGrid('4-6',1,4,6),.1,function()
     -- anim.animation:pause()
     anim:setVisible(false)
-    Beholder.trigger('lose')
+    Timer.after(0.2,function() Beholder.trigger('lose') end)
     self:destroy()
   end)
   self.ship:setVisible(false)
