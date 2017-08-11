@@ -95,7 +95,7 @@ function Play:createEventHandlers()
       Beholder.trigger('progress',self.completed)
       if self.completed >= 1 then
         local level = self:getCurrentLevelState()
-        area = math.ceil(area)
+        area = math.ceil(area/10)
         if level.score < area then
           level.score = area
         end
