@@ -82,7 +82,7 @@ end
 function Player:collisionsFilter(other)
   if other.class.name == 'Segment' then
     return other.isPolygonEdge and 'cross' or 'touch'
-  elseif other.class.name == 'Xup' then
+  elseif other.class.name == 'Xup' or other.class.name == 'Diamond' then
     return 'cross'
   elseif other.class.name == 'Cannon' or other.class.name == 'Barrier' then
     return 'touch'
@@ -98,6 +98,9 @@ function Player:handleCollisions(cx,cy)
       return
     elseif other.class.name == 'Xup' then
       Beholder.trigger('xup',other)
+      return
+    elseif other.class.name == 'Diamond' then
+      Beholder.trigger('diamond',other)
       return
     end
     local poly,polygons = other.polygon,self.polygons
