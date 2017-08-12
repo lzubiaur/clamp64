@@ -30,8 +30,7 @@ function Play:enteredState()
   self.tilesheetGrid = Anim8.newGrid(12,12,Assets.img.tilesheet:getDimensions())
 
   -- Hud must be created after the tilesheet grid because it's using it
-  self:createHUD()
-  self.hud:pushState('GamePlay')
+  self:createHUD('GamePlay')
 
   local map,w,h = self:loadWorldMap()
   self.map = map

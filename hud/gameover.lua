@@ -1,7 +1,6 @@
 -- hud/gameover.lua
 
 local HUD = require 'hud.base'
-local ImageButton = require 'entities.ui.imagebutton'
 
 local Gameover = HUD:addState('Gameover')
 

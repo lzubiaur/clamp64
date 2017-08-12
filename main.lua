@@ -119,6 +119,7 @@ require 'entities.blink' -- player blink state
 
 -- HUD states
 require 'hud.base'
+require 'hud.start'
 require 'hud.gameover'
 require 'hud.win'
 require 'hud.gameplay'

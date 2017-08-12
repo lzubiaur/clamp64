@@ -29,14 +29,7 @@ function Start:enteredState()
     end)
   end)
 
-  -- Start button
-  -- local x,y,w,h = self.visible:rectCenter(320,180,70,40)
-  -- Button:new(self.world,x,y,w,h, {
-  --   onSelected = function()
-  --     self:gotoState('Play')
-  --   end,
-  --   text='Play!',
-  -- })
+  self:createHUD('Start')
 
   self:fadeIn(function()
     Push:setShader()
