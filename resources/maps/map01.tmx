@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="8" tileheight="8" backgroundcolor="#000000" nextobjectid="117">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="8" tileheight="8" backgroundcolor="#000000" nextobjectid="119">
  <tileset firstgid="1" name="tilesheet" tilewidth="8" tileheight="8" spacing="4" margin="2" tilecount="54" columns="6">
   <image source="../img/tilesheet.png" trans="ff00ff" width="72" height="108"/>
   <tile id="8">
@@ -104,7 +104,7 @@
    <polygon points="0,0 8,0 8,-8 136,-8 136,0 144,0 144,104 136,104 136,112 8,112 8,104 0,104"/>
   </object>
   <object id="85" type="xup" x="256" y="112" width="8" height="8"/>
-  <object id="86" type="enemy" x="176" y="104" width="8" height="8"/>
+  <object id="86" type="enemy" x="192" y="136" width="8" height="8"/>
   <object id="87" type="enemy" x="328" y="112" width="8" height="8"/>
   <object id="92" type="barrier" x="248" y="56" width="8" height="120"/>
   <object id="93" type="barrier" x="256" y="168" width="8" height="16"/>
