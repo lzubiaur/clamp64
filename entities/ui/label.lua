@@ -10,7 +10,15 @@ function Label:initialize(world, x,y, text, opt)
   self.text = text or 'label'
   self.color = opt.color or {to_rgb(palette.text)}
 
-  local w = g.getFont():getWidth(self.text)
+  -- XXX width and height can be wrong if new lines are created when text is aligned
+  local w = 0
+  if type(text) == 'table' then
+    for i=2,#self.text,2 do
+      w = w + g.getFont():getWidth(self.text[i])
+    end
+  else
+    w = g.getFont():getWidth(self.text)
+  end
   local h = g.getFont():getHeight()
   self.limit = opt.limit or w
 
