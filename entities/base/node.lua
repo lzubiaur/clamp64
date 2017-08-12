@@ -47,6 +47,7 @@ function Node:destroy()
 end
 
 function Node:setZOrder(zOrder)
+  -- TODO order other children
   self.zOrder = zOrder
 end
 
