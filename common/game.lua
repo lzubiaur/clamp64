@@ -382,11 +382,20 @@ function Game:getCurrentLevelState()
   if not state.levels[i] then
     state.levels[i] = {
       score = 0,
-      entities = {}
+      diamonds = 0,
+      -- entities = {}
     }
   end
   return state.levels[i]
 end
+
+function Game:collectGarbage()
+  local before = collectgarbage('count')/1024
+  collectgarbage('collect')
+  Log.info('GC: before ['..before..'] after ['..(collectgarbage('count')/1024)..']')
+end
+
+-- Custom
 
 function Game:getGrandScore(levelid)
   local score,len = 0,#self.state.levels
@@ -400,14 +409,6 @@ function Game:getGrandScore(levelid)
   end
   return score
 end
-
-function Game:collectGarbage()
-  local before = collectgarbage('count')/1024
-  collectgarbage('collect')
-  Log.info('GC: before ['..before..'] after ['..(collectgarbage('count')/1024)..']')
-end
-
--- Custom
 
 function Game:doTransition()
   self.shader:send('alpha', self.alpha)
