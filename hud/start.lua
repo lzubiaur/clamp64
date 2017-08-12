@@ -13,9 +13,9 @@ function Start:enteredState()
     local arrow = Quad:new(Assets.img.tilesheet,grid(6,7)[1],15,py)
     self.node:addChild(arrow)
     self.tween = Tween.new(.2,arrow,{ x = 18 })
-    Label:new(self.world,0,py,'Play',{limit=64})
+    self.node:addChild(Label:new(self.world,0,py,'Play',{limit=64}))
   else
-    local label = Label:new(self.world,0,py,'Hit space',{limit=64})
+    local label = self.node:addChild(Label:new(self.world,0,py,'Hit space',{limit=64}))
     self.tween = Tween.new(.4,label,{ color = {255,255,255,0} })
   end
 end
