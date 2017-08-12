@@ -388,10 +388,15 @@ function Game:getCurrentLevelState()
   return state.levels[i]
 end
 
-function Game:getGrandScore()
-  local score = 0
-  for i=1,#self.state.levels do
-    score = score + self.state.levels[i].score
+function Game:getGrandScore(levelid)
+  local score,len = 0,#self.state.levels
+  if not levelid or levelid > len then
+    levelid = len
+  end
+  for i=1,levelid do
+    local level = self.state.levels[i]
+    score = score + level.score
+    score = score + level.diamonds * conf.diamondScore
   end
   return score
 end
