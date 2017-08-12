@@ -76,7 +76,7 @@ function GamePlay:enteredState()
           self.label = self.label:destroy()
           after = self.timer:cancel(after)
         end
-        self.label = Label:new(self.world,10,10,'+'..area)
+        self.label = Label:new(self.world,0,10,'+'..area,{limit=64})
         after = self.timer:after(1,function() self.label = self.label:destroy() end)
       end
     end)
