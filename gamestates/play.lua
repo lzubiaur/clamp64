@@ -11,6 +11,7 @@ local Laser = require 'entities.laser'
 local Xup = require 'entities.xup'
 local Cannon = require 'entities.cannon'
 local Barrier = require 'entities.barrier'
+local Diamond = require 'entities.diamond'
 
 local Play = Game:addState('Play')
 
@@ -86,6 +87,10 @@ function Play:createEventHandlers()
         Beholder.trigger('start')
       end
     end)
+    local diamonds = 0
+    Beholder.observe('diamond',function()
+      diamonds = diamonds + 1
+    end)
     self.completed = 0
     local area = 0
     Beholder.observe('area',function(value)
@@ -94,9 +99,10 @@ function Play:createEventHandlers()
       Beholder.trigger('progress',self.completed)
       if self.completed >= 1 then
         local level = self:getCurrentLevelState()
-        area = math.ceil(area/10)
+        area = math.ceil(area/10) + diamonds * conf.diamondScore
         if level.score < area then
           level.score = area
+          level.diamonds = diamonds
         end
         self:pushState('Win')
       end
@@ -147,7 +153,8 @@ end
 
 -- Must return the world size (w,h)
 function Play:loadWorldMap()
-  local filename = string.format('resources/maps/map%02d.lua',self.state.cli)
+  local filename = string.format('resources/maps/map%02d.lua',1)
+  -- local filename = string.format('resources/maps/map%02d.lua',self.state.cli)
   Log.info('Loading map',filename)
 
   -- Load a map exported to Lua from Tiled.
@@ -180,6 +187,8 @@ function Play:loadWorldMap()
       Cannon:new(self.world,obj.x,obj.y)
     elseif obj.type == 'barrier' then
       Barrier:new(self.world,obj.x,obj.y,obj.width,obj.height)
+    elseif obj.type == 'diamond' then
+      Diamond:new(self.world,obj.x,obj.y)
     end
   end
   Log.info('Total area',self.totalArea)
