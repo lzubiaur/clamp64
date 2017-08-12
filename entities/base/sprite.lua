@@ -4,8 +4,6 @@ local Node = require 'entities.base.node'
 local Sprite = Class('Sprite',Node)
 
 function Sprite:initialize(image,x,y,opt)
-  opt = opt or {}
-  self.color = opt.color or {255,255,255,255}
   self.img = assert(g.newImage(filename))
   Node.initialize(self,x,y,self.img:getWidth(),self.img:getHeight(),opt)
 end
