@@ -72,8 +72,11 @@ function Game:writeGameState()
   end
 end
 
-function Game:createHUD()
+function Game:createHUD(state)
   self.hud = HUD:new()
+  if state and type(state) == 'string' then
+    self.hud:gotoState(state)
+  end
 end
 
 function Game:loadGameState()
@@ -385,18 +388,43 @@ function Game:getCurrentLevelState()
   return state.levels[i]
 end
 
-function Game:getGrandScore()
-  local score = 0
-  for i=1,#self.state.levels do
-    score = score + self.state.levels[i].score
-  end
-  return score
-end
-
 function Game:collectGarbage()
   local before = collectgarbage('count')/1024
   collectgarbage('collect')
   Log.info('GC: before ['..before..'] after ['..(collectgarbage('count')/1024)..']')
+end
+
+-- Custom
+
+function Game:getGrandScore(levelid)
+  local score,len = 0,#self.state.levels
+  if not levelid or levelid > len then
+    levelid = len
+  end
+  for i=1,levelid do
+    local level = self.state.levels[i]
+    score = score + level.score
+  end
+  return score
+end
+
+function Game:doTransition()
+  self.shader:send('alpha', self.alpha)
+end
+
+function Game:fadeIn(callback)
+  self.shader = love.graphics.newShader("resources/shaders/fade.glsl")
+  Push:setShader(self.shader)
+  self.alpha = 0
+  self.transition = Tween.new(.5,self,{ alpha=1 })
+  self:pushState('TransitionIn',callback)
+end
+
+function Game:fadeOut(callback)
+  self.shader = love.graphics.newShader("resources/shaders/fade.glsl")
+  Push:setShader(self.shader)
+  self.transition = Tween.new(.5,self,{ alpha=0 })
+  self:pushState('TransitionIn',callback)
 end
 
 return Game
