@@ -37,13 +37,15 @@ function Cannon:initialize(world,x,y,opt)
 end
 
 function Cannon:update(dt)
-  local cx,cy = self:getCenter()
-  local items,len = self.world:queryRect(cx-20,cy-20,40,40,function(item)
-    return item.class.name == 'Player'
-  end)
-  if len > 0 then
-    self.anim:resume()
-  end
+  -- Check if the player is within range
+  -- local cx,cy = self:getCenter()
+  -- local items,len = self.world:queryRect(cx-20,cy-20,40,40,function(item)
+  --   return item.class.name == 'Player'
+  -- end)
+  -- if len > 0 then
+  --   self.anim:resume()
+  -- end
+  self.anim:resume()
   Entity.update(self,dt)
 end
 
