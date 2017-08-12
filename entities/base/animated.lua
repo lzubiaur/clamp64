@@ -4,8 +4,6 @@ local Node = require 'entities.base.node'
 local Animated = Class('Animated',Node)
 
 function Animated:initialize(image,x,y,w,h,opt)
-  opt = opt or {}
-  self.color = opt.color or {255,255,255,255}
   self.image = image
   Node.initialize(self,x,y,w,h,opt)
 end

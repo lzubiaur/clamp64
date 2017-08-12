@@ -18,9 +18,9 @@ function ImageButton:initialize(world,x,y,opt)
 end
 
 function ImageButton:draw()
-  g.setColor(unpack(self.shadowColor))
+  g.setColor(self.shadowColor)
   g.draw(self.image,self.x,self.y+self.os)
-  g.setColor(unpack(self.color))
+  g.setColor(self.color)
   g.draw(self.image,self.x,self.y+self.oy)
 end
 

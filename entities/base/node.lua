@@ -23,12 +23,15 @@ function Node:initialize(x,y,w,h,opt)
     ay = opt.ay or .5,
     sx = opt.sx or 1,
     sy = opt.sy or 1,
+    kx = opt.kx or 0,
+    ky = opt.ky or 0,
     angle = opt.angle or 0,
     -- Options
     zOrder = opt.zOrder or 0, -- draw and touch order
     id = opt.id,
     tag = opt.tag,
     children = {},
+    color = opt.color or {255,255,255,255}
   })
   if opt.visible ~= nil then
     self:setVisible(opt.visible)
@@ -159,7 +162,7 @@ end
 function Node:drawBoundingBox(color)
   if conf.build == 'debug' and conf.drawBBox then
     color = color or {0,255,255,255}
-    g.setColor(unpack(color))
+    g.setColor(color)
     g.rectangle('line',self.x,self.y,self.w,self.h)
   end
 end

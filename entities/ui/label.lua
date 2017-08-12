@@ -19,7 +19,7 @@ end
 
 function Label:draw()
   -- self:drawBoundingBox()
-  g.setColor(unpack(self.color))
+  g.setColor(self.color)
   g.printf(self.text,self.x,self.y-self.h/2,self.limit,'center')
 end
 

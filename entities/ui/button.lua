@@ -38,11 +38,11 @@ function Button:initialize(world, x,y, w,h, opt)
 end
 
 function Button:draw()
-  g.setColor(unpack(self.shadowColor))
+  g.setColor(self.shadowColor)
   g.rectangle('fill',self.x,self.y+self.os,self.w,self.h,self.corner)
-  g.setColor(unpack(self.color))
+  g.setColor(self.color)
   g.rectangle('fill',self.x,self.y+self.oy,self.w,self.h,self.corner)
-  g.setColor(unpack(self.textColor))
+  g.setColor(self.textColor)
   local h = g.getFont():getHeight()/2
   g.printf(self.text,self.x,self.y+self.h/2-h+self.oy,self.w,'center')
 end
