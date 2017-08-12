@@ -4,10 +4,11 @@ local Play = require 'gamestates.play'
 
 local Win = Game:addState('Win')
 
-function Win:enteredState(a,b)
+function Win:enteredState(score)
   Log.debug('Entered state Win')
   -- Beholder.trigger('Win')
-  self.hud:gotoState('Win')
+  Log.info('Score:',score.new,'old:',score.old,'diamonds:',score.diamonds)
+  self.hud:gotoState('Win',score)
 end
 
 function Win:exitedState()

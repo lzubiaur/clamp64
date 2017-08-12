@@ -98,13 +98,18 @@ function Play:createEventHandlers()
       self.completed = (area / game.totalArea) / conf.targetPercentArea
       Beholder.trigger('progress',self.completed)
       if self.completed >= 1 then
+        local oldHighScore = game:getGrandScore()
         local level = self:getCurrentLevelState()
-        area = math.ceil(area/10) + diamonds * conf.diamondScore
-        if level.score < area then
+        area = math.ceil(area/10)
+        if level.score + level.diamonds * conf.diamondScore < area + diamonds * conf.diamondScore then
           level.score = area
           level.diamonds = diamonds
         end
-        self:pushState('Win')
+        self:pushState('Win',{
+          new=game:getGrandScore(),
+          old=oldHighScore,
+          diamonds=diamonds
+        })
       end
     end)
   end)
