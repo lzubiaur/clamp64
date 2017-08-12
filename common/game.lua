@@ -72,8 +72,11 @@ function Game:writeGameState()
   end
 end
 
-function Game:createHUD()
+function Game:createHUD(state)
   self.hud = HUD:new()
+  if state and type(state) == 'string' then
+    self.hud:gotoState(state)
+  end
 end
 
 function Game:loadGameState()
