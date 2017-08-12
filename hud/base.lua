@@ -36,13 +36,13 @@ function HUD:removeSwallowTouchLayer()
 end
 
 function HUD:draw(l,t,w,h)
-  local items,len = self.world:queryRect(l,t,w,h)
-  table.sort(items,Entity.sortByZOrderAsc)
-  for i=1,len do
-    if not items[i].hidden then
-      items[i]:draw()
-    end
-  end
+  -- local items,len = self.world:queryRect(l,t,w,h)
+  -- table.sort(items,Entity.sortByZOrderAsc)
+  -- for i=1,len do
+  --   if not items[i].hidden then
+  --     items[i]:draw()
+  --   end
+  -- end
   self.node:draw()
 end
 
