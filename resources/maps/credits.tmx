@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="8" tileheight="8" backgroundcolor="#000000" nextobjectid="131">
+ <tileset firstgid="1" name="tilesheet" tilewidth="8" tileheight="8" spacing="4" margin="2" tilecount="54" columns="6">
+  <image source="../img/tilesheet.png" trans="ff00ff" width="72" height="108"/>
+  <tile id="8">
+   <objectgroup color="#000000" draworder="index"/>
+  </tile>
+  <tile id="18">
+   <animation>
+    <frame tileid="18" duration="300"/>
+    <frame tileid="24" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="19">
+   <animation>
+    <frame tileid="19" duration="300"/>
+    <frame tileid="25" duration="300"/>
+   </animation>
+  </tile>
+  <tile id="20">
+   <animation>
+    <frame tileid="20" duration="300"/>
+    <frame tileid="26" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="21">
+   <animation>
+    <frame tileid="21" duration="200"/>
+    <frame tileid="27" duration="200"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer name="clipped" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer name="tiles" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="objects">
+  <object id="4" type="player" x="36" y="36" width="8" height="8"/>
+ </objectgroup>
+</map>

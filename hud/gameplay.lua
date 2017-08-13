@@ -35,7 +35,6 @@ function GamePlay:enteredState()
 
   self.warnings = {}
   Beholder.group(self,function()
-    -- Warnings are disabled
     Beholder.observe('warning',function(cx,cy,t,len)
       -- cx,cy = game:worldToScreen(cx,cy)
       for i=1,len do

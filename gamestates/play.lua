@@ -18,10 +18,6 @@ local Play = Game:addState('Play')
 function Play:enteredState()
   Log.info('Entered state Play')
 
-  if game.state.cli > conf.mapsCount then
-    self:gotoState('WinSeason')
-  end
-
   self.swallowTouch = false
   self.shakeIntensity = 0
   self.shake = false
@@ -38,7 +34,12 @@ function Play:enteredState()
   -- Hud must be created after the tilesheet grid because it's using it
   self:createHUD('GamePlay')
 
-  local map,w,h = self:loadWorldMap()
+  local file = self.state.cli
+  if game.state.cli > conf.mapsCount then
+    self:pushState('WinSeason')
+    file = 'credits.lua'
+  end
+  local map,w,h = self:loadWorldMap(file)
   self.map = map
 
   self.parallax = Parallax(w,w, {offsetX = 0, offsetY = 0})
@@ -115,6 +116,7 @@ function Play:createEventHandlers()
           old=oldHighScore,
           diamonds=diamonds
         })
+        return false -- stop propagation
       end
     end)
   end)
@@ -162,8 +164,13 @@ function Play:createPlayer(x,y)
 end
 
 -- Must return the world size (w,h)
-function Play:loadWorldMap()
-  local filename = string.format('resources/maps/map%02d.lua',self.state.cli)
+function Play:loadWorldMap(file)
+  local filename = ''
+  if type(file) == 'number' then
+    filename = string.format('resources/maps/map%02d.lua',file)
+  else
+    filename = 'resources/maps/'..tostring(file)
+  end
   Log.info('Loading map',filename)
 
   -- Load a map exported to Lua from Tiled.

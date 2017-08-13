@@ -31,7 +31,7 @@ conf = {
   -- custom
   pathOffset = 1,
   defaultLivesCount = 3,
-  targetPercentArea = .70,
+  targetPercentArea = .070,
   maxLives = 5,
   laserTimeout = 2,
   sleepingEnemies = false, -- Should enemies always be updated even outside the screen
@@ -41,6 +41,7 @@ conf = {
   minPolygonArea = 1000, -- Minimum polygon area that will be allowed when they are splitted.
   tellsCount = 5, -- Number of enemies warnings/tells
   diamondScore = 1000,
+  mapsCount = 2,
 }
 
 -- Load 3rd party libraries/modules globally.
@@ -109,6 +110,7 @@ require 'gamestates.transitions'
 require 'gamestates.win'
 require 'gamestates.gameover'
 require 'gamestates.credits'
+require 'gamestates.winseason'
 if conf.build == 'debug' then
   require 'gamestates.debug'
   if conf.tests then
@@ -124,6 +126,7 @@ require 'hud.start'
 require 'hud.gameover'
 require 'hud.win'
 require 'hud.gameplay'
+require 'hud.winseason'
 
 -- Add table.pack
 if not table.pack then
