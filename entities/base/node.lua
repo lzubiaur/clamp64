@@ -43,6 +43,7 @@ function Node:destroy()
   for _,child in ipairs(self.children) do
     child:destroy()
   end
+  if self.parent then self.parent:removeChild(self) end
   Beholder.stopObserving(self)
 end
 
