@@ -100,7 +100,11 @@ function Player:handleCollisions(cx,cy)
       Beholder.trigger('xup',other)
       return
     elseif other.class.name == 'Diamond' then
-      Beholder.trigger('diamond',other)
+      if not other.isTouched then
+        -- Diamonds are not destroy immediately so the event might be called more than once
+        other.isTouched = true
+        Beholder.trigger('diamond',other)
+      end
       return
     end
     local poly,polygons = other.polygon,self.polygons
