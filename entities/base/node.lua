@@ -43,6 +43,7 @@ function Node:destroy()
   for _,child in ipairs(self.children) do
     child:destroy()
   end
+  if self.parent then self.parent:removeChild(self) end
   Beholder.stopObserving(self)
 end
 
@@ -175,6 +176,8 @@ function Node:update(dt)
 end
 
 function Node:draw()
+  -- XXX don't draw this node if hidden?
+  -- if self.hidden then return end
   self:drawBoundingBox(self.color)
   g.push()
   self:transform()

@@ -22,11 +22,15 @@ function Label:initialize(world, x,y, text, opt)
   local h = g.getFont():getHeight()
   self.limit = opt.limit or w
 
+  self.shadowColor = {53,58,80,255}
+
   Entity.initialize(self,world, x,y, w,h, opt)
 end
 
 function Label:draw()
   -- self:drawBoundingBox()
+  g.setColor(self.shadowColor)
+  g.printf(self.text,self.x+1,self.y+1-self.h/2,self.limit,'center')
   g.setColor(self.color)
   g.printf(self.text,self.x,self.y-self.h/2,self.limit,'center')
 end

@@ -50,7 +50,9 @@ local function invokeNodeCallbacks(self, params)
   -- copy the hash into an array, for safety (self-erasures)
   local callbacks, count = hash2array(self.callbacks)
   for i=1,#callbacks do
-    callbacks[i](unpack(params))
+    local rc = callbacks[i](unpack(params))
+    -- XXX LZU Stop propagation when handler return false
+    if rc ~= nil and rc == false then break end
   end
   return count
 end
