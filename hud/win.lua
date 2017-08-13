@@ -56,7 +56,7 @@ function Win:createNewHighScore(score)
     for i=1,score.diamonds do
       sl.score = sl.score + conf.diamondScore
       label.text = 'x'..i
-      love.audio.play(Assets.sounds.sfx_coin_cluster3)
+      love.audio.play(Assets.sounds.sfx_coin_cluster3:clone())
       wait(.4)
     end
   end)
