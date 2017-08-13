@@ -5,7 +5,7 @@
 LOVE_ANDROID=../love-android-sdl2
 
 # debug/release
-BUILD=debug
+BUILD=release
 
 # e.g. com.mycompany.myproject
 PACKAGE=com.voodoocactus.games.clamp
