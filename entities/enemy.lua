@@ -29,7 +29,7 @@ function Enemy:filter(other)
     return 'bounce'
   elseif other.class.name == 'Player' then
     if self.killed or other.isInvincible then return nil end
-    return 'touch'
+    return 'cross'
   end
   return nil
 end
