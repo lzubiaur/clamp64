@@ -176,6 +176,8 @@ function Node:update(dt)
 end
 
 function Node:draw()
+  -- XXX don't draw this node if hidden?
+  -- if self.hidden then return end
   self:drawBoundingBox(self.color)
   g.push()
   self:transform()
