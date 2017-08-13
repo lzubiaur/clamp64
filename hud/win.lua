@@ -51,14 +51,16 @@ function Win:createNewHighScore(score)
     wait(.4)
     self.tween = Tween.new(1,sl,{ score = score.new - diamonds })
     wait(1.4)
-    self.node:addChild(Quad:new(Assets.img.tilesheet,game:tilesheetFrame(5,8),28,50),1)
+    self.node:addChild(Quad:new(Assets.img.tilesheet,game:tilesheetFrame(2,8),28,50),1)
     local label = self.node:addChild(Label:new(self.world,34,50,'x0'))
     for i=1,score.diamonds do
       sl.score = sl.score + conf.diamondScore
       label.text = 'x'..i
+      love.audio.play(Assets.sounds.sfx_coin_cluster3)
       wait(.4)
     end
   end)
+  love.audio.play(Assets.sounds.sfx_sounds_fanfare1)
 end
 
 function Win:update(dt)
