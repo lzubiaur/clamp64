@@ -17,6 +17,11 @@ local Play = Game:addState('Play')
 
 function Play:enteredState()
   Log.info('Entered state Play')
+
+  if game.state.cli > conf.mapsCount then
+    self:gotoState('WinSeason')
+  end
+
   self.swallowTouch = false
   self.shakeIntensity = 0
   self.shake = false
@@ -158,8 +163,7 @@ end
 
 -- Must return the world size (w,h)
 function Play:loadWorldMap()
-  local filename = string.format('resources/maps/map%02d.lua',1)
-  -- local filename = string.format('resources/maps/map%02d.lua',self.state.cli)
+  local filename = string.format('resources/maps/map%02d.lua',self.state.cli)
   Log.info('Loading map',filename)
 
   -- Load a map exported to Lua from Tiled.
