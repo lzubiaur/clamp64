@@ -106,7 +106,7 @@ function Play:createEventHandlers()
       if self.completed >= 1 then
         local oldHighScore = game:getGrandScore()
         local level = self:getCurrentLevelState()
-        area = math.ceil(area/10)
+        area = math.ceil(area * conf.areaScoreScale)
         if level.score + level.diamonds * conf.diamondScore < area + diamonds * conf.diamondScore then
           level.score = area
           level.diamonds = diamonds

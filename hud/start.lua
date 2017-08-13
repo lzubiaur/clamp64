@@ -7,7 +7,7 @@ local Label = require 'entities.ui.label'
 local Start = HUD:addState('Start')
 
 function Start:enteredState()
-  local py = 50
+  local py = 55
   if conf.mobile then
     local grid = Anim8.newGrid(12,12,Assets.img.tilesheet:getDimensions())
     local arrow = Quad:new(Assets.img.tilesheet,grid(6,7)[1],15,py)

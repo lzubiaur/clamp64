@@ -69,8 +69,8 @@ function GamePlay:enteredState()
     end)
     local after
     Beholder.observe('area',function(area)
-      area = math.ceil(area/10)
-      if area > 99 then
+      area = math.ceil(area * conf.areaScoreScale)
+      if area > 1000 * conf.areaScoreScale then
         if self.label then
           self.label = self.label:destroy()
           after = self.timer:cancel(after)

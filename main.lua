@@ -31,7 +31,7 @@ conf = {
   -- custom
   pathOffset = 1,
   defaultLivesCount = 3,
-  targetPercentArea = .070,
+  targetPercentArea = .7,
   maxLives = 5,
   laserTimeout = 2,
   sleepingEnemies = false, -- Should enemies always be updated even outside the screen
@@ -39,9 +39,10 @@ conf = {
   enemyVelocity = 25,
   laserVelocity = 25,
   minPolygonArea = 1000, -- Minimum polygon area that will be allowed when they are splitted.
+  areaScoreScale = .01,
   tellsCount = 5, -- Number of enemies warnings/tells
   diamondScore = 1000,
-  mapsCount = 2,
+  mapsCount = 4,
 }
 
 -- Load 3rd party libraries/modules globally.
