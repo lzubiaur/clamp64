@@ -10,7 +10,7 @@ local Player = Class('Player', Body):include(Stateful)
 
 function Player:initialize(world, x,y)
   Lume.extend(self, {
-    velocity = 50,
+    velocity = conf.playerVelocity,
     moved = false,
     polygons = {},
   })
@@ -54,6 +54,16 @@ function Player:createEventHandlers()
     Beholder.observe('checkpoint',function(t)
       Lume.push(t,self.x,self.y,self.w,self.h)
     end)
+    Beholder.observe('slowmo',function()
+      self.velocity = self.velocity / 2
+      self.vx = self.vx / 2
+      self.vy = self.vy / 2
+    end)
+    Beholder.observe('normalSpeed',function()
+      self.velocity = conf.playerVelocity
+      self.vx = self.vx * conf.slowMotionScale
+      self.vy = self.vy * conf.slowMotionScale
+    end)
   end)
 end
 
@@ -82,7 +92,7 @@ end
 function Player:collisionsFilter(other)
   if other.class.name == 'Segment' then
     return other.isPolygonEdge and 'cross' or 'touch'
-  elseif other.class.name == 'Xup' or other.class.name == 'Diamond' then
+  elseif other.class.name == 'Xup' or other.class.name == 'Diamond' or other.class.name == 'SlowMotion' then
     return 'cross'
   elseif other.class.name == 'Cannon' or other.class.name == 'Barrier' then
     return 'touch'
@@ -98,6 +108,9 @@ function Player:handleCollisions(cx,cy)
       return
     elseif other.class.name == 'Xup' then
       Beholder.trigger('xup',other)
+      return
+    elseif other.class.name == 'SlowMotion' then
+      Beholder.trigger('slowmo',other,other.timeout)
       return
     elseif other.class.name == 'Diamond' then
       if not other.isTouched then

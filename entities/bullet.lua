@@ -17,6 +17,14 @@ function Bullet:initialize(world,x,y,dx,dy)
     self:observeOnce('lose',function()
       self:destroy()
     end)
+    Beholder.observe('slowmo',function()
+      self.vx = self.vx / conf.slowMotionScale
+      self.vy = self.vy / conf.slowMotionScale
+    end)
+    Beholder.observe('normalSpeed',function()
+      self.vx = self.vx * conf.slowMotionScale
+      self.vy = self.vy * conf.slowMotionScale
+    end)
   end)
 end
 

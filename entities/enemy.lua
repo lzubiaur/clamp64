@@ -21,6 +21,14 @@ function Enemy:initialize(world,x,y)
     Beholder.observe('start',function()
       self.killed= false
     end)
+    Beholder.observe('slowmo',function()
+      self.vx = self.vx / conf.slowMotionScale
+      self.vy = self.vy / conf.slowMotionScale
+    end)
+    Beholder.observe('normalSpeed',function()
+      self.vx = self.vx * conf.slowMotionScale
+      self.vy = self.vy * conf.slowMotionScale
+    end)
   end)
 end
 

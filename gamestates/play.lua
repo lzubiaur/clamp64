@@ -12,6 +12,7 @@ local Xup = require 'entities.xup'
 local Cannon = require 'entities.cannon'
 local Barrier = require 'entities.barrier'
 local Diamond = require 'entities.diamond'
+local SlowMotion = require 'entities.slowmo'
 
 local Play = Game:addState('Play')
 
@@ -21,6 +22,8 @@ function Play:enteredState()
   self.swallowTouch = false
   self.shakeIntensity = 0
   self.shake = false
+  -- For slow motion
+  self:saveVelocityConfig()
 
   -- Must clear the timer on entering the scene or old timer from previous
   -- state might still be running
@@ -34,7 +37,8 @@ function Play:enteredState()
   -- Hud must be created after the tilesheet grid because it's using it
   self:createHUD('GamePlay')
 
-  local file = self.state.cli
+  -- local file = self.state.cli
+  local file = 5
   if game.state.cli > conf.mapsCount then
     self:pushState('WinSeason')
     file = 'credits.lua'
@@ -62,6 +66,25 @@ function Play:tilesheetFrame(i,j)
   return self.tilesheetGrid(i,j)[1]
 end
 
+-- Used for slow motion
+function Play:saveVelocityConfig()
+  self.back = Lume.pick(conf,'bulletVelocity','enemyVelocity','laserVelocity','laserTimeout')
+end
+
+function Play:slowMotion()
+  conf.laserTimeout = self.back.laserTimeout * conf.slowMotionScale
+  conf.laserVelocity = self.back.laserVelocity / conf.slowMotionScale
+  conf.enemyVelocity = self.back.enemyVelocity / conf.slowMotionScale
+  conf.bulletVelocity = self.back.bulletVelocity / conf.slowMotionScale
+end
+
+function Play:restoreVelocityConfig()
+  conf.laserTimeout = self.back.laserTimeout
+  conf.bulletVelocity = self.back.bulletVelocity
+  conf.enemyVelocity = self.back.enemyVelocity
+  conf.laserVelocity = self.back.laserVelocity
+end
+
 function Play:createEventHandlers()
   Beholder.group(self,function()
     Beholder.observe('GameOver',function() self:onGameOver() end)
@@ -71,6 +94,13 @@ function Play:createEventHandlers()
     Beholder.observe('entered',function(polygon,x,y)
       local tail = Tail:new(self.world,x,y)
       tail.isInvincible = self.player.isInvincible
+    end)
+    Beholder.observe('slowmo',function(obj,timeout)
+      self:slowMotion()
+      Timer.after(timeout,function()
+        self:restoreVelocityConfig()
+        Beholder.trigger('normalSpeed')
+      end)
     end)
     Beholder.observe('xup',function()
       if self.state.lives < conf.maxLives then
@@ -138,6 +168,7 @@ function Play:exitedState()
   -- Beholder.stopObserving(self)
   Beholder.reset()
   Timer.clear()
+  self:restoreVelocityConfig()
   self.hud = nil
 end
 
@@ -205,6 +236,8 @@ function Play:loadWorldMap(file)
       Barrier:new(self.world,obj.x,obj.y,obj.width,obj.height)
     elseif obj.type == 'diamond' then
       Diamond:new(self.world,obj.x,obj.y)
+    elseif obj.type == 'slowmo' then
+      SlowMotion:new(self.world,obj.x,obj.y,obj.properties.timeout)
     end
   end
   Log.info('Total area',self.totalArea)

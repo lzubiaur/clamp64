@@ -24,12 +24,14 @@ conf = {
   camMarginY = 10, -- veritcal margin must be big enough so the player is still updated when outside the map.
   -- Player config
   gravity = 0, -- vertical gravity (default 1000)
-  playerVelocity = 0, -- Player horizontal velocity in pixel/second. Default 500.
+  playerVelocity = 50, -- Player horizontal velocity in pixel/second. Default 500.
   playerImpulse = -1000, -- vertical impulse when jumping
   playerImpulse2 = -1000, -- jump 2 impulse
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
   pathOffset = 1,
+  slowMotionScale = 2,
+  slowMotionDefaultTimeout = 5,
   defaultLivesCount = 3,
   targetPercentArea = .7,
   maxLives = 5,
@@ -128,13 +130,6 @@ require 'hud.gameover'
 require 'hud.win'
 require 'hud.gameplay'
 require 'hud.winseason'
-
--- Add table.pack
-if not table.pack then
-  table.pack = function(...)
-    return { n=select('#',...), ...}
-  end
-end
 
 -- Add table.pack
 if not table.pack then
