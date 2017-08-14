@@ -48,22 +48,25 @@ function GamePlay:enteredState()
     Beholder.observe('progress',function(value)
       progressBar:setPercent(math.ceil(Lume.clamp(value,0,1)*100)/100)
     end)
+    local slowmoLabel, countDown
+    Beholder.observe('slowmo',function(obj,timeout)
+      love.audio.play(Assets.sounds.sfx_sounds_powerup16)
+      local i = timeout
+      slowmoLabel = self.node:addChild(Label:new(self.world,0,10,tostring(i),{limit=64}))
+      slowmoTimer = self.timer:every(1,function()
+        i = i - 1
+        slowmoLabel.text = tostring(i)
+        if i < 0 then slowmoLabel:destroy() end
+      end,i+1)
+    end)
     local countLives = game.state.lives
     Beholder.observe('lose',function()
+      if slowmoLabel then slowmoLabel = slowmoLabel:destroy() end
+      if slowmoTimer then slowmoTimer= self.timer:cancel(slowmoTimer) end
       if countLives > 1 then
         self.node:getChildByTag(countLives):setVisible(false)
         countLives = countLives - 1
       end
-    end)
-    Beholder.observe('slowmo',function(obj,timeout)
-      love.audio.play(Assets.sounds.sfx_sounds_powerup16)
-      local i = timeout
-      local label = self.node:addChild(Label:new(self.world,0,10,tostring(i),{limit=64}))
-      local countdown = self.timer:every(1,function()
-        i = i - 1
-        label.text = tostring(i)
-        if i < 0 then label:destroy() end
-      end,i+1)
     end)
     Beholder.observe('xup',function()
       if countLives < conf.maxLives then
