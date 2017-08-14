@@ -15,11 +15,11 @@
 * exit game prompt using love.window.showMessageBox
 * review prompt after 2/3 days (install android plugin)
 * android bug: first touch not triggered: try to put focus on the windows
-* slow-motion item to reduce enemies velocity
 * improve enemies visual warnings
 * reduce visibility when touching a "bad item" (e.g. reduce screen using a circle stencil)
 
 ## Done
+* slow-motion item to reduce enemies velocity
 * improve cannon sprite
 * disable laser when player is behind a wall
 * "pipe" to stop player
