@@ -37,8 +37,10 @@ function Play:enteredState()
   -- Hud must be created after the tilesheet grid because it's using it
   self:createHUD('GamePlay')
 
-  -- local file = self.state.cli
-  local file = 5
+  local file = self.state.cli
+  if conf.build == 'debug' then
+    file = 6
+  end
   if game.state.cli > conf.mapsCount then
     self:pushState('WinSeason')
     file = 'credits.lua'
