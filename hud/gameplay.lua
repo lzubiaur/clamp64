@@ -56,7 +56,7 @@ function GamePlay:enteredState()
       slowmoTimer = self.timer:every(1,function()
         i = i - 1
         slowmoLabel.text = tostring(i)
-        if i < 0 then slowmoLabel:destroy() end
+        if i < 0 then slowmoLabel = slowmoLabel:destroy() end
       end,i+1)
     end)
     local countLives = game.state.lives
