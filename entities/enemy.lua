@@ -36,7 +36,7 @@ function Enemy:initialize(world,x,y,opt)
 end
 
 function Enemy:filter(other)
-  if other.class.name == 'Segment' or other.class.name == 'Barrier' then
+  if other.class.name == 'Segment' or other.class.name == 'Barrier' or other.class.name == 'Cannon' then
     return 'bounce'
   elseif other.class.name == 'Player' then
     if self.killed or other.isInvincible then return nil end
