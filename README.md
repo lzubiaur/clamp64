@@ -8,6 +8,7 @@
 
 ## TODO
 
+* Add completed target on the map (custom property)
 * gifts (like bubble in xenon2)
 * transition (using stencil)
 * space background
