@@ -2,3 +2,8 @@
 build
 ProfilingReport.txt
 resources/maps/sandbox
+design/osx.icns
+design/osx.iconset
+design/icon.png
+design/win.ico
+design/feature.png
