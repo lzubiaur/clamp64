@@ -30,7 +30,7 @@ conf = {
   playerMaxVelocity = { x=1000,y=1000 },
   -- custom
   pathOffset = 1,
-  slowMotionScale = 2,
+  slowMotionScale = 4,
   slowMotionDefaultTimeout = 5,
   defaultLivesCount = 3,
   targetPercentArea = .7,
