@@ -13,7 +13,7 @@ function Start:enteredState()
 
   if not self.music then
     self.music = love.audio.newSource('resources/music/dream_candy.xm','stream')
-    self.music:setVolume(.5)
+    self.music:setVolume(.7)
     self.music:setLooping(true)
     love.audio.play(self.music)
   end
