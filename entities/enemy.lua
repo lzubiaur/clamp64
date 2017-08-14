@@ -5,9 +5,12 @@ local Quad = require 'entities.base.quad'
 
 local Enemy = Class('Enemy', Body)
 
-function Enemy:initialize(world,x,y)
+function Enemy:initialize(world,x,y,opt)
+  opt = opt or {}
+  opt.dx = opt.dx or 1 -- default direction
+  opt.dy = opt.dy or 1
   local w,h = game.visible:pointToPixel(8,8)
-  Body.initialize(self,world,x,y,w,h,{ vx=conf.enemyVelocity,vy=conf.enemyVelocity, zOrder = -1, busy=conf.sleepingEnemies })
+  Body.initialize(self,world,x,y,w,h,{ vx=opt.dx*conf.enemyVelocity,vy=opt.dy*conf.enemyVelocity, zOrder = -1, busy=conf.sleepingEnemies })
   local s = Assets.img.tilesheet
   local quad = g.newQuad(12,0,12,12,s:getDimensions())
   self:addSprite(Quad:new(s,quad,6,6))

@@ -225,7 +225,7 @@ function Play:loadWorldMap(file)
     elseif obj.type == 'player' then
       self:createPlayer(obj.x,obj.y)
     elseif obj.type == 'enemy' then
-      Enemy:new(self.world,obj.x,obj.y)
+      Enemy:new(self.world,obj.x,obj.y,obj.properties)
     elseif obj.type == 'laser' then
       Laser:new(self.world,obj.x,obj.y)
     elseif obj.type == 'xup' then
