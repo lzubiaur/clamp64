@@ -21,7 +21,7 @@ return {
       margin = 2,
       image = "../img/tilesheet.png",
       imagewidth = 72,
-      imageheight = 108,
+      imageheight = 120,
       transparentcolor = "#ff00ff",
       tileoffset = {
         x = 0,
@@ -34,7 +34,7 @@ return {
       },
       properties = {},
       terrains = {},
-      tilecount = 54,
+      tilecount = 60,
       tiles = {
         {
           id = 8,
