@@ -39,7 +39,8 @@ function Play:enteredState()
 
   local file = self.state.cli
   if conf.build == 'debug' then
-    file = 6
+    self.state.cli = 7
+    file = self.state.cli
   end
   if game.state.cli > conf.mapsCount then
     self:pushState('WinSeason')
