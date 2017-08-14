@@ -8,7 +8,7 @@ LOVE_ANDROID=../love-android-sdl2
 BUILD=release
 
 # e.g. com.mycompany.myproject
-PACKAGE=com.mycompany.myproject
+PACKAGE=com.voodoocactus.games.myproject
 
 FILES="common
 entities
@@ -17,6 +17,7 @@ modules
 resources
 conf.lua
 main.lua
+hud
 tests
 "
 
@@ -28,8 +29,8 @@ if [ "$1" == "app" ]; then
   rm build/game.love
   zip -r build/game.love $FILES -x *.DS_Store
   # Unlock the screen
-  adb shell input keyevent 82
-  adb shell input swipe 100 100 800 200
+  # adb shell input keyevent 82
+  # adb shell input swipe 100 100 800 200
 
   adb shell am force-stop "$PACKAGE"
 
@@ -63,13 +64,13 @@ pushd $LOVE_ANDROID
 # Clean the project
 # gradlew clean
 gradlew uninstallAll
-if [ "$build" == "release" ]; then
+if [ "$BUILD" == "release" ]; then
   gradlew installRelease
 else
   gradlew installDebug
 fi
 # Start the app
 adb shell am start -n "$PACKAGE/.GameActivity" && \
-adb logcat "SDL/APP":D *:S
+adb logcat "SDL/APP:D" "*:S"
 
 popd
