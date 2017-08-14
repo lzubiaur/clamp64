@@ -54,16 +54,16 @@ function Player:createEventHandlers()
     Beholder.observe('checkpoint',function(t)
       Lume.push(t,self.x,self.y,self.w,self.h)
     end)
-    Beholder.observe('slowmo',function()
-      self.velocity = self.velocity / 2
-      self.vx = self.vx / 2
-      self.vy = self.vy / 2
-    end)
-    Beholder.observe('normalSpeed',function()
-      self.velocity = conf.playerVelocity
-      self.vx = self.vx * conf.slowMotionScale
-      self.vy = self.vy * conf.slowMotionScale
-    end)
+    -- Beholder.observe('slowmo',function()
+    --   self.velocity = self.velocity / 2
+    --   self.vx = self.vx / 2
+    --   self.vy = self.vy / 2
+    -- end)
+    -- Beholder.observe('normalSpeed',function()
+    --   self.velocity = conf.playerVelocity
+    --   self.vx = self.vx * conf.slowMotionScale
+    --   self.vy = self.vy * conf.slowMotionScale
+    -- end)
   end)
 end
 
