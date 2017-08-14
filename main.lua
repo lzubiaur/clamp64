@@ -44,7 +44,7 @@ conf = {
   areaScoreScale = .01,
   tellsCount = 5, -- Number of enemies warnings/tells
   diamondScore = 1000,
-  mapsCount = 4,
+  mapsCount = 6,
 }
 
 -- Load 3rd party libraries/modules globally.
