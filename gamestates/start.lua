@@ -51,7 +51,7 @@ function Start:startGame()
 end
 
 function Start:keypressed(key, scancode, isRepeat)
-  if key == 'space' then
+  if key == 'space' or key == 'enter' then
     self:startGame()
   -- On Android the back button is mapped to the 'escape' key
   elseif key == 'escape' then
