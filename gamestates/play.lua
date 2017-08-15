@@ -39,7 +39,7 @@ function Play:enteredState()
 
   local file = self.state.cli
   if conf.build == 'debug' then
-    self.state.cli = 7
+    self.state.cli = 1
     file = self.state.cli
   end
   if game.state.cli > conf.mapsCount then
@@ -149,6 +149,7 @@ function Play:createEventHandlers()
           old=oldHighScore,
           diamonds=diamonds
         })
+        self:writeGameState()
         return false -- stop propagation
       end
     end)
