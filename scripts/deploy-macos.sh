@@ -56,4 +56,4 @@ zip -ry "$BUNDLE_NAME.osx.zip" "$BUNDLE_NAME.app"
 
 popd
 
-mv  "$LOVE_MACOS/$BUNDLE_NAME.osx.zip" distrib
+mv  "$LOVE_MACOS/$BUNDLE_NAME.osx.zip" build
