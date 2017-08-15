@@ -53,3 +53,5 @@ cat love.exe game.love > $EXE_NAME
 zip -ry "$PKG_NAME.win32.zip" $PKG_FILES
 
 popd
+
+mv "$LOVE_WIN32/$PKG_NAME.win32.zip" distrib

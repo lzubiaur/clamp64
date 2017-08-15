@@ -54,7 +54,6 @@ plutil -replace CFBundleName -string "$BUNDLE_NAME" $PLIST
 # Create the distributable zip
 zip -ry "$BUNDLE_NAME.osx.zip" "$BUNDLE_NAME.app"
 
-# open the app for testing
-open $BUNDLE_NAME.app
-
 popd
+
+mv  "$LOVE_MACOS/$BUNDLE_NAME.osx.zip" distrib
