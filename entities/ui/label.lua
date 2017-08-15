@@ -8,7 +8,7 @@ function Label:initialize(world, x,y, text, opt)
   opt = opt or {}
   opt.zOrder = opt.zOrder or 10
   self.text = text or 'label'
-  self.color = opt.color or {to_rgb(palette.text)}
+  opt.color = opt.color or {255,255,255,255}
   self.sx,self.sy = opt.sx or 1,opt.sy or 1
 
   -- XXX width and height can be wrong if new lines are created when text is aligned
