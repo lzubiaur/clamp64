@@ -9,6 +9,7 @@ function Label:initialize(world, x,y, text, opt)
   opt.zOrder = opt.zOrder or 10
   self.text = text or 'label'
   self.color = opt.color or {to_rgb(palette.text)}
+  self.sx,self.sy = opt.sx or 1,opt.sy or 1
 
   -- XXX width and height can be wrong if new lines are created when text is aligned
   local w = 0
@@ -30,9 +31,9 @@ end
 function Label:draw()
   -- self:drawBoundingBox()
   g.setColor(self.shadowColor)
-  g.printf(self.text,self.x+1,self.y+1-self.h/2,self.limit,'center')
+  g.printf(self.text,self.x+1,self.y+1-self.h/2,self.limit,'center',0,self.sx,self.sy)
   g.setColor(self.color)
-  g.printf(self.text,self.x,self.y-self.h/2,self.limit,'center')
+  g.printf(self.text,self.x,self.y-self.h/2,self.limit,'center',0,self.sx,self.sy)
 end
 
 return Label
