@@ -26,7 +26,7 @@ function Win:enteredState(score)
   if score.old < score.new then
     self:createNewHighScore(score)
   else
-    self.node:addChild(Label:new(self.world,0,25,'Score:'..score.new,{limit=64}))
+    self.node:addChild(Label:new(self.world,0,25,{{255,241,232,255},'Score:'..score.new},{limit=64}))
   end
 end
 
