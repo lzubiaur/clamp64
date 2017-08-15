@@ -37,6 +37,8 @@ cp libpolyclipping.dylib "$LOVE_MACOS/$BUNDLE_NAME.app/Contents/Frameworks"
 
 cp design/osx.icns "$LOVE_MACOS/$BUNDLE_NAME.app/Contents/Resources/OS X AppIcon.icns"
 
+cp -r licenses "$LOVE_MACOS/$BUNDLE_NAME.app/Contents/Resources"
+
 pushd $LOVE_MACOS
 
 # Create a "fused" game

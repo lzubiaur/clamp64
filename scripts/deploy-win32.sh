@@ -33,6 +33,7 @@ mpg123.dll
 msvcp120.dll
 msvcr120.dll
 polyclipping.dll
+licenses
 "
 
 # Write the debug/release configuration
@@ -43,6 +44,8 @@ zip -r $LOVE_WIN32/game.love $FILES -x *.DS_Store
 
 # Install Frameworks
 cp polyclipping.dll $LOVE_WIN32
+
+cp -r licenses $LOVE_WIN32
 
 pushd $LOVE_WIN32
 
