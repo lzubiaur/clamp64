@@ -1,3 +1,10 @@
+## Concept
+
+* Xenon1 & Xenon2
+* Mach3
+* RType
+* Ricky Dangerous II
+
 ## Features
 
 ## Nice to have
@@ -8,7 +15,7 @@
 
 ## TODO
 
-* Add completed target on the map (custom property)
+* Add complete target (percent of map complete) as a map custom property
 * gifts (like bubble in xenon2)
 * transition (using stencil)
 * space background
