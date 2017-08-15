@@ -15,8 +15,8 @@ function Start:enteredState()
     self.tween = Tween.new(.2,arrow,{ x = 18 })
     self.node:addChild(Label:new(self.world,0,py,'Play',{limit=64}))
   else
-    local label = self.node:addChild(Label:new(self.world,0,py,'Press space',{limit=64}))
-    self.tween = Tween.new(.4,label,{ color={255,255,255,0}, shadowColor={53,58,80,0}})
+    local label = self.node:addChild(Label:new(self.world,0,py,'Press space',{limit=64,color={255,241,232,255}}))
+    self.tween = Tween.new(.4,label,{ color={255,241,232,0}, shadowColor={53,58,80,0}})
   end
 end
 
