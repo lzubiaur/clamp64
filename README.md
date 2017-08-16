@@ -15,6 +15,8 @@
 
 ## TODO
 
+* investigate web port (https://github.com/TannerRogalsky/love.js) -> quid clipping binding?
+* Use WASD keys
 * Add complete target (percent of map complete) as a map custom property
 * gifts (like bubble in xenon2)
 * transition (using stencil)
@@ -27,6 +29,7 @@
 * reduce visibility when touching a "bad item" (e.g. reduce screen using a circle stencil)
 
 ## Done
+* moving stars like in Xenon2 menu
 * slow-motion item to reduce enemies velocity
 * improve cannon sprite
 * disable laser when player is behind a wall
