@@ -78,7 +78,9 @@ function Start:update(dt)
 end
 
 function Start:drawBeforeCamera()
+  -- g.setColor(255,255,255,150)
   g.draw(Assets.img.bg,0,0)
+  g.setColor(255,255,255,255)
   g.draw(self.ps,32,22)
   g.draw(Assets.img.logo,32,32,0,self.sx,self.sy,32,32)
 end
