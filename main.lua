@@ -39,7 +39,6 @@ Inspect   = require 'modules.inspect'
 Push      = require 'modules.push'
 Loader    = require 'modules.love-loader'
 Log       = require 'modules.log'
-Clipper   = require 'modules.clipper'
 Bump      = require 'modules.bump'
 HC        = require 'modules.HC'
 STI       = require 'modules.sti'
@@ -100,8 +99,6 @@ if conf.build == 'debug' then
     require 'gamestates.tests'
   end
 end
-
-require 'entities.blink' -- player blink state
 
 -- HUD states
 require 'hud.base'
