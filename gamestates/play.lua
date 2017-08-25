@@ -39,7 +39,7 @@ function Play:enteredState()
 
   local file = self.state.cli
   if conf.build == 'debug' then
-    self.state.cli = 1
+    self.state.cli = 6
     file = self.state.cli
   end
   if game.state.cli > conf.mapsCount then
@@ -345,11 +345,26 @@ function Play:released(x,y)
   Game.released(self,x,y)
 end
 
+function Play:saveWorldScreenShot()
+  local l,t,w,h = self.camera:getWorld()
+  Log.info('Save world screenshot',l,t,w,h)
+  local canvas = love.graphics.newCanvas(w,h)
+  love.graphics.setCanvas(canvas)
+    g.clear(to_rgb(palette.bg))
+    self:drawBeforeCamera(l,t,w,h)
+    self:drawEntities(l,t,w,h)
+    self:drawAfterCamera(l,t,w,h)
+  love.graphics.setCanvas()
+  canvas:newImageData():encode('png','screenshot.png')
+end
+
 function Play:keypressed(key, scancode, isrepeat)
   if key == 'escape' then
     Beholder.trigger('GotoMainMenu')
   elseif key == 'r' then
     Beholder.trigger('ResetGame')
+  -- elseif key == 's' then
+  --   self:saveWorldScreenShot()
   elseif key == 'p' then
     self:pushState('Paused')
   elseif key == 'right' then
